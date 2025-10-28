@@ -76,7 +76,7 @@ const Panel13: React.FC = () => {
               Start Your Prep
             </h2>
             <br />
-            <small className="text-[1rem] font-bold text-[#B2252A]" style={{ fontFamily: "Poppins, sans-serif" }}>Sample Papers & Mock Tests</small>
+            <small className="text-[1rem] font-bold text-[#B2252A]" style={{ fontFamily: "Poppins, sans-serif" }}>Sample Paper</small>
             <div className="h-[2px] w-24 bg-black mt-4 mb-6 mx-auto md:mx-0" />
             <p className="text-base sm:text-lg md:text-xl font-medium text-[#2d2d2d] mb-5 text-center md:text-left">
               Practice &amp; prepare with our curated sample papers.
@@ -90,30 +90,44 @@ const Panel13: React.FC = () => {
             >
               Download Sample Paper
             </button>
-            <p className="text-base sm:text-lg md:text-xl font-medium text-[#2d2d2d] mb-5 text-center md:text-left mt-10">
-              Unlock Rs 500 worth of prep material and mock tests for free.
+            <br />
+            <small className="text-[1rem] font-bold text-[#B2252A]" style={{ fontFamily: "Poppins, sans-serif" }}>Prep material and mock tests</small>
+            <div className="h-[2px] w-24 bg-black mt-4 mx-auto md:mx-0" />
+            <p className="text-base sm:text-lg md:text-xl font-medium text-[#2d2d2d] mb-5 text-center md:text-left mt-8">
+              Unlock Rs 500 worth of prep material and mock tests for free brought to you by  <a href="https://speedlearn.ai" target="_blank" rel="noopener noreferrer" className="text-[#B2252A] font-semibold"> 
+                speedlearn.ai
+              </a>
             </p>
-            <button
-              className="rounded-xl bg-[#B2252A] w-[300px] text-white text-base sm:text-lg md:text-lg font-bold px-10 py-3 mt-1 shadow-sm transition hover:bg-[#8c171b] active:scale-95 text-center hover:bg-[#a01f1f] transition-all duration-300 overflow-hidden"
-            >
-              <AnimatePresence mode="wait">
-                <motion.span
-                  key={showComingSoon ? "coming" : "prep"}
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -10 }}
-                  transition={{ duration: 0.4 }}
-                  className="block text-center w-full"
-                >
-                  {showComingSoon ? "Coming Soon" : "Prep and Practice Zone"}
-                </motion.span>
-              </AnimatePresence>
-              
-            </button>
+            <div className="relative flex flex-col items-center">
+              <button
+                className="relative w-[300px] overflow-hidden bg-gradient-to-r from-indigo-500 to-purple-500 text-white font-semibold px-6 py-3 rounded-xl text-lg shadow-md hover:shadow-lg transition-all duration-300"
+              >
+                Prep and Practice Zone
+              </button>
+
+              {/* Animated Coming Soon below button */}
+              <motion.span
+                className="absolute text-lg text-[#B2252A] font-bold"
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{
+                  repeat: Infinity,
+                  repeatType: "reverse",
+                  duration: 1.5,
+                  ease: "easeInOut",
+                }}
+                style={{ top: "20%", left: "105%", width: "100%" }}
+              >
+                Coming Soon
+              </motion.span>
+            </div>
             <small className="mt-2 text-gray-600 text-center md:text-left font-bold">
               Powered by
               <a href="https://speedlearn.ai" target="_blank" rel="noopener noreferrer" className="ml-1 text-[#B2252A] font-semibold underline"> 
-                speedlearn.ai
+                speedlearn.ai 
+                <span aria-hidden="true">
+                  <img src="/STEMLearn.AI-logo-white.png" alt="(external link)" className="inline-block ml-1 w-10 h-10" />
+                </span>
               </a>
             </small>
           </motion.div>

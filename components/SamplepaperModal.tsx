@@ -171,6 +171,13 @@ const SamplePaperModal: React.FC<SamplePaperModalProps> = ({ open, onClose, user
     const s = (seconds % 60).toString().padStart(2, "0");
     return `${m}:${s}`;
   };
+  function getOrdinal(n: string) {
+    const num = parseInt(n);
+    if (num === 1) return "1st";
+    if (num === 2) return "2nd";
+    if (num === 3) return "3rd";
+    return `${num}th`;
+  }
 
   return (
     <Dialog open={open}>
@@ -352,7 +359,7 @@ const SamplePaperModal: React.FC<SamplePaperModalProps> = ({ open, onClose, user
 
           {/* Download button */}
           {otpVerified && (
-            <div className="flex justify-center">
+            <div className="flex justify-center gap-4">
               <Button
 								type="button"
 								onClick={() => {
@@ -364,8 +371,12 @@ const SamplePaperModal: React.FC<SamplePaperModalProps> = ({ open, onClose, user
 									window.open(`/sample-papers/${fileName}`, "_blank");
 								}}
 							>
-								Download Sample Paper
+                Download Sample Paper{" "}
+                {["11", "12"].includes(formData.class)
+                  ? `${formData.class} for ${formData.stream}`
+                  : `for Class ${getOrdinal(formData.class)}`}
 							</Button>
+              <Button type="button" variant="outline" onClick={onClose}>Cancel</Button>
             </div>
           )}
 
