@@ -30,15 +30,17 @@ export function ToastContainer() {
   return (
     <>
       {Object.entries(toastsByPosition).map(([position, positionToasts]) => (
-        <div key={position} className={`fixed z-50 flex flex-col gap-2 ${positionClasses[position as ToastPosition]}`}>
+        <div key={position} className={`fixed z-[50] flex flex-col gap-2 ${positionClasses[position as ToastPosition]}`} 
+        style={{ pointerEvents: 'none' }}>
           {positionToasts.map((toast, index) => (
             <div
               key={toast.id}
               className="animate-in slide-in-from-top-full duration-300"
               style={{
                 animationDelay: `${index * 100}ms`,
-                transform: `translateY(${index * 4}px)`,
-                zIndex: 50 - index,
+                transform: `translateY(${index * 10}px)`, // ✅ Increase gap
+                zIndex: 100 + positionToasts.length - index, // ✅ Better z-index
+                pointerEvents: 'auto', // ✅ Toast ko clickable banaye
               }}
             >
               <Toast toast={toast} onClose={() => removeToast(toast.id)} />
