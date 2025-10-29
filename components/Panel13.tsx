@@ -105,7 +105,7 @@ const Panel13: React.FC = () => {
 
               {/* Animated Coming Soon below button */}
               <motion.span
-                className="absolute text-lg text-[#B2252A] font-bold"
+                className="md:absolute text-lg text-[#B2252A] font-bold"
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{
