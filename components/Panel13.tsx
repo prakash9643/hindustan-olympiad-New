@@ -94,9 +94,7 @@ const Panel13: React.FC = () => {
             <small className="text-[1rem] font-bold text-[#B2252A]" style={{ fontFamily: "Poppins, sans-serif" }}>Prep material and mock tests</small>
             <div className="h-[2px] w-24 bg-black mt-4 mx-auto md:mx-0" />
             <p className="text-base sm:text-lg md:text-xl font-medium text-[#2d2d2d] mb-5 text-center md:text-left mt-8">
-              Unlock Rs 500 worth of prep material and mock tests for free brought to you by  <a href="https://speedlearn.ai" target="_blank" rel="noopener noreferrer" className="text-[#B2252A] font-semibold"> 
-                speedlearn.ai
-              </a>
+              Unlock Rs 500 worth of prep material and mock tests for free.
             </p>
             <div className="relative flex flex-col items-center">
               <button
@@ -123,12 +121,9 @@ const Panel13: React.FC = () => {
             </div>
             <small className="mt-2 text-gray-600 text-center md:text-left font-bold">
               Powered by
-              <a href="https://speedlearn.ai" target="_blank" rel="noopener noreferrer" className="ml-1 text-[#B2252A] font-semibold underline"> 
-                speedlearn.ai 
-                <span aria-hidden="true">
-                  <img src="/STEMLearn.AI-logo-white.png" alt="(external link)" className="inline-block ml-1 w-10 h-10" />
-                </span>
-              </a>
+              <span aria-hidden="true">
+                <img src="/STEMLearn.AI-logo-white.png" alt="(external link)" className="inline-block ml-1 w-12 h-12" />
+              </span>
             </small>
           </motion.div>
 

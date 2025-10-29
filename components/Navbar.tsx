@@ -114,7 +114,57 @@ export default function Navbar() {
               </div>
             </Link>
             {/* Sponsor Logos */}
-
+            <Link href="#" onClick={() => handleCtaClick("hindustan_olympiad_2025", "article_top")}>
+              <div className="flex items-center h-[80px] cursor-pointer">
+                <Image
+                  src="/images/navbar/Amity University__Logo__Jharkhand.jpg"
+                  alt="Amity University__Logo__Jharkhand"
+                  width={80}
+                  height={80}
+                  className="object-contain"
+                  unoptimized
+                />
+              </div>
+            </Link>
+            {/* Sponsor Logos */}
+            <Link href="#" onClick={() => handleCtaClick("hindustan_olympiad_2025", "article_top")}>
+              <div className="flex items-center h-[80px] cursor-pointer">
+                <Image
+                  src="/images/navbar/Amity University__Logo__Patna.jpg"
+                  alt="Amity University__Logo__Patna"
+                  width={80}
+                  height={80}
+                  className="object-contain"
+                  unoptimized
+                />
+              </div>
+            </Link>            
+            {/* Sponsor Logos */}
+            <Link href="#" onClick={() => handleCtaClick("hindustan_olympiad_2025", "article_top")}>
+              <div className="flex items-center h-[80px] cursor-pointer">
+                <Image
+                  src="/images/navbar/NPS-Vatsalya_logo.png"
+                  alt="STEMLearn.AI-logo"
+                  width={80}
+                  height={80}
+                  className="object-contain"
+                  unoptimized
+                />
+              </div>
+            </Link>
+            {/* Sponsor Logos */}
+            <Link href="#" onClick={() => handleCtaClick("hindustan_olympiad_2025", "article_top")}>
+              <div className="flex items-center h-[80px] cursor-pointer">
+                <Image
+                  src="/images/navbar/STEMLearn.AI-logo-white.png"
+                  alt="STEMLearn.AI-logo"
+                  width={80}
+                  height={80}
+                  className="object-contain"
+                  unoptimized
+                />
+              </div>
+            </Link>            
           </div>
 
           {/* Hamburger Menu for Mobile (Visible on Small Screens) */}
@@ -242,13 +292,7 @@ export default function Navbar() {
             Participate Now
           </Button>
           </Link>
-          {pathname === "/" && user && userType ? (
-            <Link href={userType === "school-coordinator" ? "/school" : "/team"} className="h-10 block md:inline">
-              <Button>
-                {userType === "school-coordinator" ? "School Dashboard" : "Team Dashboard"}
-              </Button>
-            </Link>
-          ) : null}
+          
 
           {/* User Dropdown or Login Button */}
           {user ? (
@@ -275,10 +319,17 @@ export default function Navbar() {
                       {userType === "school-coordinator" ? "Single school" : `Regions: ${user?.region?.split(",")?.map((region: string) => regions.find((r) => r.value === region)?.label).join(", ")}`}
                     </p>
                   </div>
-                  <div className="py-2">
+                  <div className="py-2 gap-2 flex px-4">
+                    {pathname === "/" && user && userType ? (
+                      <Link href={userType === "school-coordinator" ? "/school" : "/team"} className="h-10 block md:inline">
+                        <Button>
+                          {userType === "school-coordinator" ? "School Dashboard" : "Team Dashboard"}
+                        </Button>
+                      </Link>
+                    ) : null}
                     <Button
                       onClick={handleLogout}
-                      className="ml-4 text-left px-4 py-2 text-sm transition-colors"
+                      className="ml-4 text-left py-2 text-sm transition-colors"
                     >
                       Logout
                     </Button>
