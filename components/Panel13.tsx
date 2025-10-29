@@ -78,7 +78,7 @@ const Panel13: React.FC = () => {
             <br />
             <small className="text-[1rem] font-bold text-[#B2252A]" style={{ fontFamily: "Poppins, sans-serif" }}>Sample Paper</small>
             <div className="h-[2px] w-24 bg-black mt-4 mb-6 mx-auto md:mx-0" />
-            <p className="text-base sm:text-lg md:text-xl font-medium text-[#2d2d2d] mb-5 text-center md:text-left">
+            <p className="text-base sm:text-lg md:text-lg font-medium text-[#2d2d2d] mb-5 text-center md:text-left">
               Practice &amp; prepare with our curated sample papers.
             </p>
             <button
@@ -93,8 +93,8 @@ const Panel13: React.FC = () => {
             <br />
             <small className="text-[1rem] font-bold text-[#B2252A]" style={{ fontFamily: "Poppins, sans-serif" }}>Prep material and mock tests</small>
             <div className="h-[2px] w-24 bg-black mt-4 mx-auto md:mx-0" />
-            <p className="text-base sm:text-lg md:text-xl font-medium text-[#2d2d2d] mb-5 text-center md:text-left mt-8">
-              Unlock Rs 500 worth of prep material and mock tests for free.
+            <p className="text-base sm:text-lg md:text-lg font-medium text-[#2d2d2d] mb-5 text-center md:text-left mt-8">
+              Unlock <strong>Rs 500</strong> worth of prep material and mock tests for <strong>free.</strong>
             </p>
             <div className="relative flex flex-col items-center">
               <button
