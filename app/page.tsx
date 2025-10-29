@@ -27,6 +27,7 @@ import Panel14 from "@/components/Panel14";
 import Panel15 from "@/components/Panel15";
 import Panel152 from "@/components/Panel152";
 import Panel16 from "@/components/Panel16";
+import Panel18 from "@/components/Panel18";
 import Footer from "@/components/Footer";
 
 
@@ -40,6 +41,7 @@ const Home = () => {
       <Panel3 />
       <Panel4 />
       <Panel7 />
+      <Panel18 />
       <Panel5 />
       <Panel6 />
       <Panel8 />
@@ -51,6 +53,7 @@ const Home = () => {
       <Panel14 />
       <Panel15 />
       <Panel16 />
+      <Panel18 />
       <Footer />
       {/* Placeholder for additional panels */}
       {/* Add new panels here as needed */}
