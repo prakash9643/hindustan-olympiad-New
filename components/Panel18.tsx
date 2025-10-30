@@ -15,8 +15,8 @@ const poppins = Poppins({
 const sponsors = [
   { name: "NPS Vatsalya", logo: "/images/navbar/NPS-Vatsalya_logo.png", url: "#" },
   { name: "STEMLearn.AI", logo: "/images/navbar/STEMLearn.AI-logo-white.png", url: "#" },
-  { name: "Amity University Patna", logo: "/images/navbar/Amity University__Logo__Patna.jpg", url: "#" },
-  { name: "Amity University Jharkhand", logo: "/images/navbar/Amity University__Logo__Jharkhand.jpg", url: "#" },
+//   { name: "Amity University Patna", logo: "/images/navbar/Amity University__Logo__Patna.jpg", url: "#" },
+  { name: "Amity University", logo: "/images/navbar/Amity University__Logo__Jharkhand.jpg", url: "#" },
 ];
 
 // Animation variant
@@ -35,7 +35,7 @@ export default function PanelSponsors() {
   useEffect(() => {
     function onResize() {
       const w = window.innerWidth;
-      if (w >= 1024) setSlidesToShow(4);
+      if (w >= 1024) setSlidesToShow(3);
       else if (w >= 768) setSlidesToShow(2);
       else setSlidesToShow(1);
     }
@@ -99,7 +99,7 @@ export default function PanelSponsors() {
       {/* Carousel Container */}
       <div className="relative w-full max-w-6xl flex items-center justify-center px-2">
         {/* Prev Arrow */}
-        <motion.button
+        {/* <motion.button
           aria-label="Previous"
           onClick={prev}
           className="hidden md:flex absolute -left-8 z-20 top-1/2 -translate-y-1/2 bg-[#B2252A] text-white rounded-full w-11 h-11 text-2xl items-center justify-center shadow-lg"
@@ -109,7 +109,7 @@ export default function PanelSponsors() {
           transition={{ delay: 0.3 }}
         >
           &#8249;
-        </motion.button>
+        </motion.button> */}
 
         {/* Slider */}
         <motion.div
@@ -168,7 +168,7 @@ export default function PanelSponsors() {
         </motion.div>
 
         {/* Next Arrow */}
-        <motion.button
+        {/* <motion.button
           aria-label="Next"
           onClick={next}
           className="hidden md:flex absolute -right-8 z-20 top-1/2 -translate-y-1/2 bg-[#B2252A] text-white rounded-full w-11 h-11 text-2xl items-center justify-center shadow-lg"
@@ -178,7 +178,7 @@ export default function PanelSponsors() {
           transition={{ delay: 0.3 }}
         >
           &#8250;
-        </motion.button>
+        </motion.button> */}
       </div>
 
       {/* Mobile Arrows */}

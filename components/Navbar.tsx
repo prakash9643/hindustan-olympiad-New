@@ -106,8 +106,8 @@ export default function Navbar() {
                 <Image
                   src="/images/navbar/hindustan-olympiad-logo.png"
                   alt="Hindustan Olympiad Logo"
-                  width={125}
-                  height={125}
+                  width={130}
+                  height={130}
                   className="object-contain"
                   unoptimized
                 />
@@ -126,9 +126,9 @@ export default function Navbar() {
                 <div className="flex items-center h-[80px] cursor-pointer">
                   <Image
                     src="/images/navbar/NPS-Vatsalya_logo.png"
-                    alt="STEMLearn.AI-logo"
-                    width={80}
-                    height={80}
+                    alt="NPS-Vatsalya_logo"
+                    width={120}
+                    height={120}
                     className="object-contain"
                     unoptimized
                   />
@@ -151,23 +151,10 @@ export default function Navbar() {
               <Link href="#" onClick={() => handleCtaClick("hindustan_olympiad_2025", "article_top")}>
                 <div className="flex items-center h-[80px] cursor-pointer">
                   <Image
-                    src="/images/navbar/Amity University__Logo__Patna.jpg"
-                    alt="Amity University__Logo__Patna"
-                    width={80}
-                    height={80}
-                    className="object-contain"
-                    unoptimized
-                  />
-                </div>
-              </Link>            
-              {/* Sponsor Logos */}
-              <Link href="#" onClick={() => handleCtaClick("hindustan_olympiad_2025", "article_top")}>
-                <div className="flex items-center h-[80px] cursor-pointer">
-                  <Image
                     src="/images/navbar/Amity University__Logo__Jharkhand.jpg"
                     alt="Amity University__Logo__Jharkhand"
-                    width={80}
-                    height={80}
+                    width={70}
+                    height={70}
                     className="object-contain"
                     unoptimized
                   />
