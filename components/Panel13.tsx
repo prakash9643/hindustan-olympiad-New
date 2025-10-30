@@ -53,17 +53,24 @@ const Panel13: React.FC = () => {
     <>
       {/* Sample paper */}
       <motion.section
-        className="w-full bg-[#FFF7F3] py-12 px-2 flex justify-center"
+        className="w-full relative bg-[#FFF7F3] py-12 px-2 flex justify-center"
         initial="hidden"
         whileInView="visible"
         viewport={{ once: true, amount: 0.3 }}
         variants={fadeUp}
         id="sample-papers"
+        style={{
+          background: 'url("/images/panel13/image1.svg")',
+          backgroundRepeat: 'no-repeat',
+          backgroundPosition: 'center',
+          backgroundSize: 'cover',
+        }}
       >
-        <div className="w-full max-w-6xl flex flex-col md:flex-row items-center gap-8 md:gap-8">
+        <div className="absolute inset-0 bg-black/70"></div>
+        <div className="w-full max-w-6xl flex flex-col items-center gap-8 md:gap-8 relative z-10">
           {/* Left: Heading + Line + Subheading + Button */}
           <motion.div
-            className="flex flex-col items-center md:items-start flex-1 mb-8 md:mb-0"
+            className="flex flex-col items-center md:items-center mb-8 md:mb-0"
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true, amount: 0.3 }}
@@ -71,15 +78,14 @@ const Panel13: React.FC = () => {
             transition={{ delay: 0.2 }}
           >
             <h2
-              className="text-[1.75rem] sm:text-2xl md:text-[2.4rem] font-bold text-[#B2252A] leading-tight text-center md:text-left"
+              className="text-[1.75rem] sm:text-2xl md:text-[2.4rem] font-bold text-[#FFF] leading-tight text-center md:text-left"
               style={{ fontFamily: "Poppins, sans-serif" }}
             >
               Start Your Prep
             </h2>
-            <br />
-            <small className="text-[1.4rem] font-bold text-[#B2252A]" style={{ fontFamily: "Poppins, sans-serif" }}>Sample Paper</small>
-            <div className="h-[2px] w-24 bg-black mt-4 mb-6 mx-auto md:mx-0" />
-            <p className="text-base sm:text-lg md:text-lg font-medium text-[#2d2d2d] mb-5 text-center md:text-left">
+            <div className="h-[2px] w-24 bg-white mt-4 mb-6 mx-auto md:mx-0" />
+            <small className="text-[1.4rem] font-bold text-[#FFF]" style={{ fontFamily: "Poppins, sans-serif" }}>Sample Paper</small>
+            <p className="text-base sm:text-lg md:text-lg font-medium text-[#FFF] mb-5 mt-3 text-center md:text-left">
               Practice &amp; prepare with our curated sample papers.
             </p>
             <button
@@ -94,8 +100,8 @@ const Panel13: React.FC = () => {
           </motion.div>
 
           {/* Right: Image */}
-          <motion.div
-            className="flex-1 flex justify-center w-full"
+          {/* <motion.div
+            className="flex justify-center items-center w-full"
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true, amount: 0.3 }}
@@ -112,7 +118,7 @@ const Panel13: React.FC = () => {
                 priority
               />
             </div>
-          </motion.div>
+          </motion.div> */}
         </div>
       </motion.section>
       {/* End Here */}
@@ -160,8 +166,8 @@ const Panel13: React.FC = () => {
                 animate={{ scale: [1, 1.2, 1] }} // zoom in and out
                 transition={{
                   repeat: Infinity,
-                  duration: 5,
-                  ease: "easeInOut",
+                  duration: 2,
+                  ease: "linear",
                 }}
                 style={{ width: "100%", marginTop: "1.5rem", textAlign: "center" }}
               >
