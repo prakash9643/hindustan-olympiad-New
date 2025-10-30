@@ -160,7 +160,7 @@ const Panel13: React.FC = () => {
                 animate={{ scale: [1, 1.2, 1] }} // zoom in and out
                 transition={{
                   repeat: Infinity,
-                  duration: 0.2,
+                  duration: 1,
                   ease: "easeInOut",
                 }}
                 style={{ width: "100%", marginTop: "1.5rem", textAlign: "center" }}
