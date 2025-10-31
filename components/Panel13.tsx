@@ -146,7 +146,7 @@ const Panel13: React.FC = () => {
               className="text-[1.75rem] sm:text-2xl md:text-[2.4rem] font-bold text-[#B2252A] leading-tight text-center md:text-left"
               style={{ fontFamily: "Poppins, sans-serif" }}
             >
-              Study material and mock tests
+              Study Material And Mock Tests
             </h2>
             <div className="h-[2px] w-24 bg-black mt-4 mx-auto md:mx-0" />
             <p className="text-base sm:text-lg md:text-lg font-medium text-[#2d2d2d] mb-5 text-center md:text-left mt-8">
@@ -156,7 +156,7 @@ const Panel13: React.FC = () => {
               <button
                 className="relative overflow-hidden bg-gradient-to-r from-indigo-500 to-purple-500 text-white font-semibold px-6 py-3 rounded-xl text-lg shadow-md hover:shadow-lg transition-all duration-300"
               >
-                Preparation Material and Mock Tests
+                Preparation material and mock tests
               </button>
 
               {/* Animated Coming Soon below button */}
