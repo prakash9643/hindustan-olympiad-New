@@ -102,7 +102,7 @@ const Panel10: React.FC = () => (
             </div>
           </div>
           <div className="text-2xl font-bold text-[#B2252A] flex items-center gap-2 justify-start">
-            🛴 Electric Scooters
+            🛵 Electric Scooters
           </div>
           <p className="text-gray-600 text-sm mt-2">
             5 lucky winners will win
