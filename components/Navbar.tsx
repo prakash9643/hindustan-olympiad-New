@@ -151,7 +151,7 @@ export default function Navbar() {
               <Link href="#" onClick={() => handleCtaClick("hindustan_olympiad_2025", "article_top")}>
                 <div className="flex items-center h-[80px] cursor-pointer">
                   <Image
-                    src="/images/navbar/Amity University__Logo__Jharkhand.jpg"
+                    src="/images/navbar/Amity University__Logo__Jharkhand.png"
                     alt="Amity University__Logo__Jharkhand"
                     width={70}
                     height={70}

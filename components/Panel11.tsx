@@ -52,7 +52,7 @@ const Panel11: React.FC = () => (
         transition={{ delay: 0.2 }}
       >
         <Image
-          src="/images/panel11/timeline.svg"
+          src="/images/panel11/timeline.png"
           alt="Timeline"
           width={1100}
           height={500}

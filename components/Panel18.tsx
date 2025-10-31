@@ -16,7 +16,7 @@ const sponsors = [
   { name: "NPS Vatsalya", logo: "/images/navbar/NPS-Vatsalya_logo.png", url: "#" },
   { name: "STEMLearn.AI", logo: "/images/navbar/STEMLearn.AI-logo-white.png", url: "#" },
 //   { name: "Amity University Patna", logo: "/images/navbar/Amity University__Logo__Patna.jpg", url: "#" },
-  { name: "Amity University", logo: "/images/navbar/Amity University__Logo__Jharkhand.jpg", url: "#" },
+  { name: "Amity University", logo: "/images/navbar/Amity University__Logo__Jharkhand.png", url: "#" },
 ];
 
 // Animation variant
