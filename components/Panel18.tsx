@@ -130,7 +130,7 @@ export default function PanelSponsors() {
           >
             {sponsors.map((s, index) => (
               <div
-                // key={s.name + index}
+                key={s.logo + index}
                 style={{
                   width: `${CARD_WIDTH}px`,
                   minWidth: `${CARD_WIDTH}px`,
