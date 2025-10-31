@@ -150,13 +150,13 @@ const Panel13: React.FC = () => {
             </h2>
             <div className="h-[2px] w-24 bg-black mt-4 mx-auto md:mx-0" />
             <p className="text-base sm:text-lg md:text-lg font-medium text-[#2d2d2d] mb-5 text-center md:text-left mt-8">
-              Enjoy <strong>FREE</strong> ACCESS to online mock tests and preparation material worth <strong>Rs.500</strong> on the <strong className="text-[#B2252A]">STEMlearn.AI</strong> app
+              Enjoy <strong>FREE</strong> ACCESS to online mock tests and preparation material worth <strong>Rs.500</strong> on the <strong className="text-[#B2252A]">STEMLearn.AI</strong> app
             </p>
             <div className="relative flex flex-col items-center">
               <button
                 className="relative overflow-hidden bg-gradient-to-r from-indigo-500 to-purple-500 text-white font-semibold px-6 py-3 rounded-xl text-lg shadow-md hover:shadow-lg transition-all duration-300"
               >
-                Preparation material and mock tests
+                Preparation Material and Mock Tests
               </button>
 
               {/* Animated Coming Soon below button */}
