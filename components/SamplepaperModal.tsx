@@ -267,7 +267,7 @@ const SamplePaperModal: React.FC<SamplePaperModalProps> = ({ open, onClose, user
                       <SelectItem value="PCM">PCM</SelectItem>
                       <SelectItem value="COMM">Commerce with Maths</SelectItem>
                       <SelectItem value="COMW">Commerce without Maths</SelectItem>
-                      <SelectItem value="ARTS">Humanities</SelectItem>
+                      <SelectItem value="Humanities">Humanities</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
