@@ -13,10 +13,10 @@ const poppins = Poppins({
 
 // List of sponsors — replace these with your actual logos
 const sponsors = [
-  { logo: "/images/navbar/NPS-Vatsalya_logo.png", url: "#" },
-  { logo: "/images/navbar/STEMLearn.AI-logo-white.png", url: "#" },
+  { name: "NPS Vatsalya", logo: "/images/navbar/NPS-Vatsalya_logo.png", url: "#" },
+  { name: "STEMLearn.AI", logo: "/images/navbar/STEMLearn.AI-logo-white.png", url: "#" },
 //   { name: "Amity University Patna", logo: "/images/navbar/Amity University__Logo__Patna.jpg", url: "#" },
-  { logo: "/images/navbar/Amity University__Logo__Jharkhand.jpg", url: "#" },
+  { name: "Amity University", logo: "/images/navbar/Amity University__Logo__Jharkhand.jpg", url: "#" },
 ];
 
 // Animation variant
@@ -130,7 +130,7 @@ export default function PanelSponsors() {
           >
             {sponsors.map((s, index) => (
               <div
-                key={s.logo + index}
+                key={s.name + index}
                 style={{
                   width: `${CARD_WIDTH}px`,
                   minWidth: `${CARD_WIDTH}px`,
@@ -153,7 +153,7 @@ export default function PanelSponsors() {
                 >
                   <Image
                     src={s.logo}
-                    alt={s.logo}
+                    alt={s.name}
                     width={150}
                     height={150}
                     className="object-contain w-[150px] h-[100px]"
