@@ -39,9 +39,12 @@ html {
   border-radius: 8px !important;
   padding: 10px 30px !important;
 }
-/* .z-99{
-  z-index: 99 !important;
-} */
+.toast {
+  z-index: 9999 !important;
+}
+.dialog-overlay {
+  z-index: 9998 !important;
+}
 @layer base {
     :root {
         --background: 0 0% 100%;

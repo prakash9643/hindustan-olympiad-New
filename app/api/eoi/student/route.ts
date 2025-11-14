@@ -92,7 +92,7 @@ export async function POST(request: NextRequest) {
       !schoolBranch ||
       !schoolAddress ||
       !orderId ||          // 👈 save
-      !transactionId ||    // 👈 save
+      // !transactionId ||    // 👈 save
       !dateOfBirth ||
       !region ||
       !schoolDistrict ||

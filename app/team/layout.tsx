@@ -15,7 +15,7 @@ const tabs = [
     { label: 'Bulk Add Students', href: '/team/bulk-add-students' },
     { label: 'Bulk Add Schools', href: '/team/bulk-add-school' },    
     { label: 'Individual Students', href: '/team/eoi-students' },
-    // { label: 'Multi Add Students', href: '/team/multi-add-students' },
+    { label: 'Multi Add Students', href: '/team/multi-add-students' },
     // { label: 'Eoi School', href: '/team/eoi-schools' },
     // { label: 'Old Eoi Student', href: '/team/old-eoiStudents' },
 ]

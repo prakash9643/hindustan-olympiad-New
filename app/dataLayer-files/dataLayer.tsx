@@ -15,7 +15,7 @@ export default function DataLayerEvents({ user }: { user?: any }) {
     console.log("Login Status:", userData ? "logged_in" : "logged_out");
     window.dataLayer = window.dataLayer || [];
     window.dataLayer.push({
-      event: "page_view",
+      event: "custom_page_view",
       section_name: "hindustanolympiad",
       page_type: "hindustanolympiad",
       user_ID: userData ? "User" : "Guest",

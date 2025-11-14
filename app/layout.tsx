@@ -90,7 +90,7 @@ export default function RootLayout({
       <body
         suppressContentEditableWarning
         suppressHydrationWarning
-        className={inter.className + " pt-[80px] p-0 m-0"}
+        className={inter.className + " md:pt-[80px] pt-[160px] p-0 m-0"}
       >
         {/* GTM NoScript */}
         <noscript>

@@ -282,7 +282,7 @@ export default function BulkAddStudentForm() {
   return (
     <Card className="p-0 border-none pb-12">
       <CardHeader className="p-0 py-4">
-        <CardTitle>Bulk Add Students</CardTitle>
+        <CardTitle>Bulk Multi Add Students</CardTitle>
         <CardDescription>
           Upload an Excel file with student data including School ID to add multiple students at once
         </CardDescription>

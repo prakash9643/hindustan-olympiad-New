@@ -267,7 +267,7 @@ export default function BulkAddStudentForm() {
     const requiredFields = [
       student.name,
       student.class,
-      student.section,
+      // student.section,
       student.gender,
     ];
 

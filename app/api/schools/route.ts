@@ -246,7 +246,19 @@ export async function POST(req: NextRequest) {
     if (!data.region || !data.district ) {
       return json({ error: "Region and district are required" }, 400);
     }
+    // 🧩 Step 1: Check if coordinator phone already exists
+    if (data.coordinatorPhone) {
+      const existingCoordinator = await SchoolCoordinator.findOne({
+        phone: data.coordinatorPhone.trim(),
+      });
 
+      if (existingCoordinator) {
+        return json(
+          { error: `Coordinator phone ${data.coordinatorPhone} already exists` },
+          400
+        );
+      }
+    }
     // map/normalize district to numeric code
     const mappedDistrict = getDistrictCode(String(data.region), String(data.district));
     if (!/^\d+$/.test(mappedDistrict)) {
