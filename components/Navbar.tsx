@@ -73,7 +73,7 @@ export default function Navbar() {
     const userData = localStorage.getItem("user");
     window.dataLayer = window.dataLayer || [];
     window.dataLayer.push({
-      event: "cta_click",
+      event: "cta_clicked",
       cta_text, // e.g. "participate_now"
       section_name: "hindustanolympiad",
       page_type: "hindustanolympiad",
@@ -85,7 +85,7 @@ export default function Navbar() {
     });
     // 👇 Add this log for testing
     console.log("CTA Click Event Fired:", {
-      event: "cta_click",
+      event: "cta_clicked",
       cta_text,
       cta_position,
       user_ID: userData,
@@ -113,32 +113,32 @@ export default function Navbar() {
                 />
               </div>
             </Link>
-            <Link
+            {/* <Link
               href="/#sponsors"
               className="block md:hidden px-4 py-2 text-lg font-bold text-[#B2252A]"
               onClick={() => handleCtaClick("our_sponsors", "article_top")}
             >
               Our Sponsors
-            </Link>
-            <div className="hidden md:flex items-center space-x-2">
+            </Link> */}
+            <div className="hidden md:flex items-center space-x-2 gap-2">
               {/* Sponsor Logos */}
               <Link href="#" onClick={() => handleCtaClick("hindustan_olympiad_2025", "article_top")}>
                 <div className="flex items-center h-[80px] cursor-pointer">
                   <Image
-                    src="/images/navbar/NPS-Vatsalya_logo.png"
+                    src="/images/navbar/Sponsors-logos-strip.png"
                     alt="NPS-Vatsalya_logo"
-                    width={120}
-                    height={120}
+                    width={400}
+                    height={100}
                     className="object-contain"
                     unoptimized
                   />
                 </div>
               </Link>
               {/* Sponsor Logos */}
-              <Link href="#" onClick={() => handleCtaClick("hindustan_olympiad_2025", "article_top")}>
+              {/* <Link href="#" onClick={() => handleCtaClick("hindustan_olympiad_2025", "article_top")}>
                 <div className="flex items-center h-[80px] cursor-pointer">
                   <Image
-                    src="/images/navbar/STEMLearn.AI-logo-white.png"
+                    src="/images/navbar/stemleanai.png"
                     alt="STEMLearn.AI-logo"
                     width={80}
                     height={80}
@@ -146,20 +146,35 @@ export default function Navbar() {
                     unoptimized
                   />
                 </div>
-              </Link>            
+              </Link>             */}
               {/* Sponsor Logos */}
-              <Link href="#" onClick={() => handleCtaClick("hindustan_olympiad_2025", "article_top")}>
+              {/* <Link href="#" onClick={() => handleCtaClick("hindustan_olympiad_2025", "article_top")}>
                 <div className="flex items-center h-[80px] cursor-pointer">
                   <Image
-                    src="/images/navbar/Amity University__Logo__Jharkhand.png"
+                    src="/images/navbar/amityuniversity.png"
                     alt="Amity University__Logo__Jharkhand"
-                    width={70}
-                    height={70}
+                    width={80}
+                    height={80}
                     className="object-contain"
                     unoptimized
                   />
                 </div>
-              </Link>
+              </Link> */}
+              
+              {/* Sponsor Logos */}
+              {/* <Link href="#" onClick={() => handleCtaClick("hindustan_olympiad_2025", "article_top")}>
+                <div className="flex items-center h-[80px] cursor-pointer">
+                  <Image
+                    src="/images/navbar/aireynolds.png"
+                    alt="Sponsors-logosai_Reynolds"
+                    width={80}
+                    height={80}
+                    className="object-contain"
+                    unoptimized
+                  />
+                </div>
+              </Link> */}
+              
             </div>
           </div>
 
@@ -288,7 +303,13 @@ export default function Navbar() {
             Participate Now
           </Button>
           </Link>
-          
+          {/* {pathname === "/" && user && userType ? (
+            <Link href={userType === "school-coordinator" ? "/school" : "/team"} className="h-10 block md:inline">
+              <Button>
+                {userType === "school-coordinator" ? "School Dashboard" : "Team Dashboard"}
+              </Button>
+            </Link>
+          ) : null} */}
 
           {/* User Dropdown or Login Button */}
           {user ? (
@@ -302,7 +323,7 @@ export default function Navbar() {
 
               {/* User Dropdown Menu */}
               {isUserDropdownOpen && (
-                <div className="absolute top-full right-0 mt-2 w-72 bg-white border border-gray-200 rounded-lg shadow-lg z-50">
+                <div className="absolute top-full md:right-0 right-[-7.5rem] mt-2 w-72 bg-white border border-gray-200 rounded-lg shadow-lg z-50">
                   <div className="py-3 px-4 border-b border-gray-100">
                     <p className="text-sm font-medium text-gray-900">
                       Logged in as {user.name || user.username || "User"}
@@ -339,6 +360,20 @@ export default function Navbar() {
             </Button>
           )}
 
+        </div>
+        <div className="block md:hidden items-center space-x-2 gap-2">
+          <Link href="#" onClick={() => handleCtaClick("hindustan_olympiad_2025", "article_top")}>
+            <div className="flex items-center h-[80px] cursor-pointer">
+              <Image
+                src="/images/navbar/Sponsors-logos-strip.png"
+                alt="NPS-Vatsalya_logo"
+                width={400}
+                height={100}
+                className="object-contain"
+                unoptimized
+              />
+            </div>
+          </Link>
         </div>
       </div>
     </nav>

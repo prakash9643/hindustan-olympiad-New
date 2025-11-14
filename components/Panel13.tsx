@@ -5,6 +5,7 @@ import Image from "next/image";
 import { motion, Variants, AnimatePresence } from "framer-motion";
 // Sample Paper Modal
 import SamplePaperModal from "@/components/SamplepaperModal";
+import MocktestModal from "@/components/mockTestModal";
 // Animation variant
 const fadeUp: Variants = {
   hidden: { opacity: 0, y: 30 },
@@ -16,7 +17,7 @@ const handleCtaClick = (cta_text: string, cta_position: string) => {
   const userData = localStorage.getItem("user");
   window.dataLayer = window.dataLayer || [];
   window.dataLayer.push({
-    event: "cta_click",
+    event: "cta_clicked",
     cta_text,
     section_name: "hindustanolympiad",
     page_type: "hindustanolympiad",
@@ -27,7 +28,7 @@ const handleCtaClick = (cta_text: string, cta_position: string) => {
     domain_name: window.location.hostname,
   });
   console.log("CTA Click Event Fired:", {
-    event: "cta_click",
+    event: "cta_clicked",
     cta_text,
     cta_position,
     user_ID: userData ? "User" : "Guest",
@@ -39,6 +40,7 @@ const handleCtaClick = (cta_text: string, cta_position: string) => {
 
 const Panel13: React.FC = () => {
   const [showModal, setShowModal] = useState(false); // ✅ inside function body
+  const [mockshowModal, setMockShowModal] = useState(false); // ✅ inside function body
   const [showComingSoon, setShowComingSoon] = useState(false);
 
   // Toggle text every 2 seconds
@@ -53,7 +55,7 @@ const Panel13: React.FC = () => {
     <>
       {/* Sample paper */}
       <motion.section
-        className="w-full relative bg-[#FFF7F3] py-12 px-2 flex justify-center"
+        className="w-full relative bg-[#FFF7F3] py-32 px-2 flex justify-center"
         initial="hidden"
         whileInView="visible"
         viewport={{ once: true, amount: 0.3 }}
@@ -125,14 +127,21 @@ const Panel13: React.FC = () => {
 
       {/* Study Material And Preparetions */}
       <motion.section
-        className="w-full bg-white py-16 px-2 flex justify-center"
+        className="w-full bg-white py-32 px-2 flex justify-center relative"
         initial="hidden"
         whileInView="visible"
         viewport={{ once: true, amount: 0.3 }}
         variants={fadeUp}
         id="sample-papers"
+        style={{
+          background: 'url("/images/panel13/mock_test.jpg")',
+          backgroundRepeat: 'no-repeat',
+          backgroundPosition: 'center',
+          backgroundSize: '100%',
+        }}
       >
-        <div className="w-full max-w-6xl flex flex-col md:flex-row items-center gap-8 md:gap-8">
+        <div className="absolute inset-0 bg-black/50"></div>
+        <div className="w-full max-w-6xl flex flex-col md:flex-row items-center gap-8 md:gap-8 relative">
           {/* Left: Heading + Line + Subheading + Button */}
           <motion.div
             className="flex flex-col items-center flex-1 mb-8 md:mb-0"
@@ -143,25 +152,49 @@ const Panel13: React.FC = () => {
             transition={{ delay: 0.2 }}
           >
             <h2
-              className="text-[1.75rem] sm:text-2xl md:text-[2.4rem] font-bold text-[#B2252A] leading-tight text-center md:text-left"
-              style={{ fontFamily: "Poppins, sans-serif" }}
+              className="text-[1.75rem] sm:text-2xl md:text-[2.4rem]  font-bold text-[#fff] leading-tight text-center "
+              style={{ fontFamily: "Poppins, sans-serif" , lineHeight: '1.5'} }
             >
-              Study Material And Mock Tests
+              Prepare Smarter for the Hindustan Olympiad with <a href="https://stemlearn.ai/" target="_blank"><u>STEMLearn.AI</u></a> App
             </h2>
-            <div className="h-[2px] w-24 bg-black mt-4 mx-auto md:mx-0" />
-            <p className="text-base sm:text-lg md:text-lg font-medium text-[#2d2d2d] mb-5 text-center md:text-left mt-8">
+            <div className="h-[2px] w-24 bg-black mt-10 mx-auto md:mx-0" />
+            {/* <p className="text-base sm:text-lg md:text-lg font-medium text-[#2d2d2d] mb-5 text-center md:text-left mt-8">
               Enjoy <strong>FREE</strong> ACCESS to online mock tests and preparation material worth <strong>Rs.500</strong> on the <strong className="text-[#B2252A]">STEMLearn.AI</strong> app
-            </p>
+            </p> */}
             <div className="relative flex flex-col items-center">
-              <button
-                className="relative overflow-hidden bg-gradient-to-r from-indigo-500 to-purple-500 text-white font-semibold px-6 py-3 rounded-xl text-lg shadow-md hover:shadow-lg transition-all duration-300"
+              {/* <button
+                className="relative overflow-hidden bg-gradient-to-r from-indigo-500 to-purple-500 text-white font-semibold px-6 py-3 rounded-xl md:text-lg text-sm shadow-md hover:shadow-lg transition-all duration-300"
+                
               >
                 Preparation material and mock tests
+              </button> */}
+              <button
+                  className="
+                    relative inline-block text-white font-semibold
+                    text-xl sm:text-2xl md:text-3xl lg:text-3xl
+                    px-10 py-4 sm:px-14 sm:py-4 md:px-20 md:py-5 lg:px-[6rem] lg:py-5
+                    rounded-full bg-[#e6576f]
+                    shadow-[0_8px_15px_rgba(0,0,0,0.3)]
+                    border-[4px] sm:border-[5px] md:border-[6px] border-[#dadada]
+                    transition-all duration-300 ease-out
+                    hover:scale-105 hover:shadow-[0_12px_25px_rgba(0,0,0,0.35)]
+                  "
+                  onClick={() => {
+                    handleCtaClick("preparation_material_and_mock_tests", "article_bottom");
+                    setMockShowModal(true); // ✅ open modal
+                  }}
+                >
+                  <span
+                    className="
+                      absolute inset-0 rounded-full border-[5px] sm:border-[6px] md:border-[8px]
+                      border-white/50 pointer-events-none drop-shadow-[0_3px_8px_rgba(0,0,0,0.5)]
+                    "
+                  ></span>
+                  Start your <br/> <strong>Olympiad Prep</strong> here
               </button>
-
               {/* Animated Coming Soon below button */}
-              <motion.span
-                className="text-[1.5rem] text-[#B2252A] font-bold"
+              {/* <motion.span
+                className="md:text-[1.5rem] text-[1rem] text-[#fff] font-bold"
                 initial={{ scale: 1 }}
                 animate={{ scale: [1, 1.2, 1] }} // zoom in and out
                 transition={{
@@ -172,7 +205,7 @@ const Panel13: React.FC = () => {
                 style={{ width: "100%", marginTop: "1.5rem", textAlign: "center" }}
               >
                 Coming Soon
-              </motion.span>
+              </motion.span> */}
             </div>
             {/* <small className="mt-2 text-gray-600 text-center md:text-left font-bold">
               Powered by
@@ -187,6 +220,7 @@ const Panel13: React.FC = () => {
       
       {/* Popup modal */}
       <SamplePaperModal open={showModal} onClose={() => setShowModal(false)} />
+      <MocktestModal open={mockshowModal} onClose={() => setMockShowModal(false)} />
     </>
   );
 };

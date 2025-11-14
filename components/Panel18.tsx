@@ -13,10 +13,10 @@ const poppins = Poppins({
 
 // List of sponsors — replace these with your actual logos
 const sponsors = [
-  { name: "NPS Vatsalya", logo: "/images/navbar/NPS-Vatsalya_logo.png", url: "#" },
-  { name: "STEMLearn.AI", logo: "/images/navbar/STEMLearn.AI-logo-white.png", url: "#" },
-//   { name: "Amity University Patna", logo: "/images/navbar/Amity University__Logo__Patna.jpg", url: "#" },
-  { name: "Amity University", logo: "/images/navbar/Amity University__Logo__Jharkhand.png", url: "#" },
+  { name: "NPS Vatsalya", logo: "/images/navbar/vatsalyalogo.png", url: "#" },
+  { name: "STEMLearn.AI", logo: "/images/navbar/stemleanai.png", url: "#" },
+  { name: "Amity University", logo: "/images/navbar/amityuniversity.png", url: "#" },
+  { name: "Sponsors-logosai_Reynolds", logo: "/images/navbar/aireynolds.png", url: "#" },
 ];
 
 // Animation variant
@@ -35,7 +35,7 @@ export default function PanelSponsors() {
   useEffect(() => {
     function onResize() {
       const w = window.innerWidth;
-      if (w >= 1024) setSlidesToShow(3);
+      if (w >= 1024) setSlidesToShow(4);
       else if (w >= 768) setSlidesToShow(2);
       else setSlidesToShow(1);
     }
@@ -151,16 +151,13 @@ export default function PanelSponsors() {
                   rel="noopener noreferrer"
                   className="flex flex-col items-center"
                 >
-                  <Image
+                  <img
                     src={s.logo}
                     alt={s.name}
                     width={150}
                     height={150}
                     className="object-contain w-[150px] h-[100px]"
                   />
-                  {/* <p className="text-center mt-3 text-sm font-semibold text-black">
-                    {s.name}
-                  </p> */}
                 </a>
               </div>
             ))}

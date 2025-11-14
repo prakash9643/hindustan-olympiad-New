@@ -34,7 +34,7 @@ const Panel16: React.FC = () => {
     const userData = localStorage.getItem("user");
     window.dataLayer = window.dataLayer || [];
     window.dataLayer.push({
-      event: "cta_click",
+      event: "cta_clicked",
       cta_text, // e.g. "participate_now"
       section_name: "hindustanolympiad",
       page_type: "hindustanolympiad",
@@ -46,7 +46,7 @@ const Panel16: React.FC = () => {
     });
     // 👇 Add this log for testing
     console.log("CTA Click Event Fired:", {
-      event: "cta_click",
+      event: "cta_clicked",
       cta_text,
       cta_position,
       user_ID: userData ? "User" : "Guest",
@@ -75,19 +75,19 @@ const Panel16: React.FC = () => {
         Want to Register for Hindustan Olympiad 2025?
       </motion.h2>
         <div className="flex flex-col md:flex-row gap-4 mt-6">
-          <button
+          {/* <button
             onClick={() => { chooseSchool(); handleCtaClick("register_as_school", "article_bottom"); }}
             className="bg-[#B2252A] text-white font-bold text-base sm:text-lg px-6 py-3 rounded-md shadow transition hover:bg-[#861B1D]"
             style={{ fontFamily: "Poppins, sans-serif" }}
           >
             Register as school
-          </button>
+          </button> */}
           <button
             onClick={() => {chooseStudent(); handleCtaClick("register_for_individual_student", "article_bottom");}}
             className="bg-[#B2252A] text-white font-bold text-base sm:text-lg px-6 py-3 rounded-md shadow transition hover:bg-[#861B1D]"
             style={{ fontFamily: "Poppins, sans-serif" }}
           >
-            Register for individual student 
+            Register as individual student 
           </button>
         </div>
       {/* Initial Heading & CTA */}

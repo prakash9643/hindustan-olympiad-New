@@ -24,7 +24,7 @@ import { useToast } from "@/hooks/use-toast";
 import OTPInput from "./six-square-login";
 import { DialogClose } from "@radix-ui/react-dialog";
 
-interface SamplePaperModalProps {
+interface MocktestModalProps {
   open: boolean;
   onClose: () => void;
   user?: { region: string };
@@ -33,12 +33,14 @@ interface SamplePaperModalProps {
 const OTP_EXPIRY_SECONDS = 180; // 3 minutes
 const RESEND_COOLDOWN = 10; // 10 seconds
 
-const SamplePaperModal: React.FC<SamplePaperModalProps> = ({ open, onClose, user }) => {
+const MocktestModal: React.FC<MocktestModalProps> = ({ open, onClose, user }) => {
   const [formData, setFormData] = useState({
-    name: "",
+    Studentname: "",
     phone: "",
+    email: "",
     class: "",
     stream: "",
+    schoolName: "",
     region: "",
     district: "",
   });
@@ -49,7 +51,7 @@ const SamplePaperModal: React.FC<SamplePaperModalProps> = ({ open, onClose, user
   const [otpTimer, setOtpTimer] = useState(0);
   const [canResend, setCanResend] = useState(false);
   const [sendingOtp, setSendingOtp] = useState(false);
-	const { success, error } = useToast();
+    const { success, error } = useToast();
   const handleInputChange = (field: string, value: string) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
   };
@@ -70,7 +72,7 @@ const SamplePaperModal: React.FC<SamplePaperModalProps> = ({ open, onClose, user
     if (!formData.phone || !formData.class || sendingOtp) return;
     setSendingOtp(true);
     try {
-      const res = await fetch("/api/sample-paper-Otp/", {
+      const res = await fetch("/api/mock-test-Otp/", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ phone: formData.phone, Class: formData.class }),
@@ -79,29 +81,29 @@ const SamplePaperModal: React.FC<SamplePaperModalProps> = ({ open, onClose, user
       if (data.success) {
         setOtpSent(true);
         setOtpTimer(OTP_EXPIRY_SECONDS);
-				console.log("OTP for testing:", data.otp); // ✅ see OTP in browser console
+                console.log("OTP for testing:", data.otp); // ✅ see OTP in browser console
         setCanResend(false);
         setOtp(""); // clear input        
-				success("OTP sent to your phone!", {
+                success("OTP sent to your phone!", {
           position: "top-right",
           duration: 100,
           description: "Check your phone for the OTP.",
         });
       } else {
         console.error(data);
-				error("Failed to send OTP. Try again !", {
-					duration: 100,
-					position: "top-right",
-					description: "Please try again later.",
-				});
+                error("Failed to send OTP. Try again !", {
+                    duration: 100,
+                    position: "top-right",
+                    description: "Please try again later.",
+                });
       }
     } catch (err) {
       console.error(err);
-			error("Error sending OTP", {
-				duration: 100,
-				position: "top-right",
-				description: "Please try again later.",
-			});
+            error("Error sending OTP", {
+                duration: 100,
+                position: "top-right",
+                description: "Please try again later.",
+            });
     } finally {
       setSendingOtp(false);
     }
@@ -110,16 +112,16 @@ const SamplePaperModal: React.FC<SamplePaperModalProps> = ({ open, onClose, user
   // Verify OTP
   const handleVerifyOTP = async () => {
     if (otpTimer === 0) {
-			error("OTP expired. Please resend.", {
-				duration: 100,
-				position: "top-right",
-				description: "Please try again later.",
-			});
+            error("OTP expired. Please resend.", {
+                duration: 100,
+                position: "top-right",
+                description: "Please try again later.",
+            });
       return;
     }
     if (otp === otp) {
       try {
-        const res = await fetch("/api/SamplePaper", {
+        const res = await fetch("/api/MockTest", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ ...formData, otpVerified: true }),
@@ -184,12 +186,12 @@ const SamplePaperModal: React.FC<SamplePaperModalProps> = ({ open, onClose, user
       <DialogContent className="max-w-4xl max-h-[80vh] [&>button]:hidden overflow-y-auto sm:w-full">
         <DialogHeader>
           <DialogTitle className="text-center text-xl font-semibold">
-            Request Sample Paper
+            Study Material And Mock Tests
           </DialogTitle>
-          <DialogDescription className="text-center">
+          <DialogDescription className="text-center lg:px-32 px-20">
             {otpSent && !otpVerified
               ? "Enter the OTP sent to your phone."
-              : "Fill in your details to get your class-wise sample paper."}
+              : "Fill in your details to get Enjoy FREE ACCESS to online mock tests and preparation material worth Rs.500 on the STEMLearn.AI app."}
           </DialogDescription>
         </DialogHeader>
 
@@ -198,24 +200,37 @@ const SamplePaperModal: React.FC<SamplePaperModalProps> = ({ open, onClose, user
           {!otpSent && (
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="space-y-2">
-                <Label htmlFor="name">Name</Label>
+                <Label htmlFor="Studentname">Student Name</Label>
                 <Input
-                  id="name"
+                  id="Studentname"
+                  type="text"
                   placeholder="Enter your name"
-                  value={formData.name}
-                  onChange={(e) => handleInputChange("name", e.target.value)}
+                  value={formData.Studentname}
+                  onChange={(e) => handleInputChange("Studentname", e.target.value)}
                   required
                 />
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="phone">Phone Number</Label>
+                <Label htmlFor="phone">Mobile Number</Label>
                 <Input
                   id="phone"
                   type="tel"
                   placeholder="Enter phone number"
                   value={formData.phone}
                   onChange={(e) => handleInputChange("phone", e.target.value)}
+                  required
+                />
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="phone">Email</Label>
+                <Input
+                  id="email"
+                  type="email"
+                  placeholder="Enter Your Email"
+                  value={formData.email}
+                  onChange={(e) => handleInputChange("email", e.target.value)}
                   required
                 />
               </div>
@@ -274,6 +289,18 @@ const SamplePaperModal: React.FC<SamplePaperModalProps> = ({ open, onClose, user
               )}
 
               <div className="space-y-2">
+                <Label htmlFor="schoolName">School Name</Label>
+                <Input
+                  id="schoolName"
+                  type="text"
+                  placeholder="Enter School Name"
+                  value={formData.schoolName}
+                  onChange={(e) => handleInputChange("schoolName", e.target.value)}
+                  required
+                />
+              </div>
+
+              <div className="space-y-2">
                 <Label htmlFor="region">Region</Label>
                 <Select
                   value={formData.region}
@@ -322,22 +349,22 @@ const SamplePaperModal: React.FC<SamplePaperModalProps> = ({ open, onClose, user
           {/* OTP Section */}
           {otpSent && !otpVerified && (
             <div className="text-center space-y-4">
-							<div className="space-y-2">
-								{/* <Input
-									type="text"
-									value={otp}
-									onChange={(e) => setOtp(e.target.value)}
-									placeholder="Enter OTP"
-									className="w-40"
-									disabled={otpTimer === 0}
-								/> */}
-								<OTPInput onChange={setOtp} />
-							</div>
-							<div className="space-y-2">
-								<Button type="button" onClick={handleVerifyOTP} disabled={otpTimer === 0 && otpVerified}>
+                            <div className="space-y-2">
+                                {/* <Input
+                                    type="text"
+                                    value={otp}
+                                    onChange={(e) => setOtp(e.target.value)}
+                                    placeholder="Enter OTP"
+                                    className="w-40"
+                                    disabled={otpTimer === 0}
+                                /> */}
+                                <OTPInput onChange={setOtp} />
+                            </div>
+                            <div className="space-y-2">
+                                <Button type="button" onClick={handleVerifyOTP} disabled={otpTimer === 0 && otpVerified}>
                   {otpVerified ? "Verify..." : "Verify OTP"}
-								</Button>
-							</div>
+                                </Button>
+                            </div>
               <div className="flex flex-col text-sm mt-2 md:mt-0 items-center">
                 {otpTimer > 0 ? (
                   <span className={otpTimer <= 30 ? "text-red-500" : ""}>
@@ -359,24 +386,13 @@ const SamplePaperModal: React.FC<SamplePaperModalProps> = ({ open, onClose, user
 
           {/* Download button */}
           {otpVerified && (
-            <div className="flex justify-center gap-4">
-              <Button
-								type="button"
-								onClick={() => {
-									const isSeniorClass = ["11", "12"].includes(formData.class);
-									const fileName = isSeniorClass
-										? `${formData.class}-${formData.stream}.pdf`
-										: `${formData.class}.pdf`;
-
-									window.open(`/sample-papers/${fileName}`, "_blank");
-								}}
-							>
-                Download Sample Paper{" "}
-                {["11", "12"].includes(formData.class)
-                  ? `${formData.class} for ${formData.stream}`
-                  : `for Class ${getOrdinal(formData.class)}`}
-							</Button>
-              <Button type="button" variant="outline" onClick={onClose}>Cancel</Button>
+            <div className="flex flex-col justify-center gap-4 items-center text-center">
+              <p className="">
+                Your <a href="https://stemlearn.ai/" className="font-bold text-red-500">STEMLearn.AI</a> app credentials and download link will be shared via SMS
+                within 48 hours. <br/> Use them to access mock tests and study material for
+                Hindustan Olympiad 2025
+              </p>
+              <Button type="button" className="px-16" onClick={onClose}>Close</Button>
             </div>
           )}
 
@@ -395,4 +411,4 @@ const SamplePaperModal: React.FC<SamplePaperModalProps> = ({ open, onClose, user
   );
 };
 
-export default SamplePaperModal;
+export default MocktestModal;

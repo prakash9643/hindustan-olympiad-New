@@ -113,7 +113,7 @@ const Panel10: React.FC = () => (
 
       {/* Floating elements for visual appeal */}
       <motion.div 
-        className="absolute top-4 right-4 bg-yellow-400 text-black px-4 py-2 rounded-full font-bold text-sm rotate-12 shadow-lg z-20"
+        className="absolute md:top-4 md:right-4 top-[5rem] right-[5rem] bg-yellow-400 text-black px-4 py-2 rounded-full font-bold text-sm rotate-12 shadow-lg z-20"
         initial="hidden"
         whileInView="visible"
         viewport={{ once: true, amount: 0.3 }}
