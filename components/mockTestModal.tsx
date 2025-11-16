@@ -191,7 +191,7 @@ const MocktestModal: React.FC<MocktestModalProps> = ({ open, onClose, user }) =>
           <DialogDescription className="text-center lg:px-32 px-20">
             {otpSent && !otpVerified
               ? "Enter the OTP sent to your phone."
-              : "Fill in your details to get Enjoy FREE ACCESS to online mock tests and preparation material worth Rs.500 on the STEMLearn.AI app."}
+              : "Thankyou for registering"}
           </DialogDescription>
         </DialogHeader>
 
