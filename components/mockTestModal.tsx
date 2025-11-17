@@ -185,10 +185,10 @@ const MocktestModal: React.FC<MocktestModalProps> = ({ open, onClose, user }) =>
     <Dialog open={open}>
       <DialogContent className="max-w-4xl max-h-[80vh] [&>button]:hidden overflow-y-auto sm:w-full">
         <DialogHeader>
-          <DialogTitle className="text-center text-xl font-semibold">
+          <DialogTitle className="text-center md:text-xl text-lg font-semibold">
             Study Material And Mock Tests
           </DialogTitle>
-          <DialogDescription className="text-center lg:px-32 px-20">
+          <DialogDescription className="text-center lg:px-32 px-10">
             {otpSent && !otpVerified
               ? "Enter the OTP sent to your phone."
               : "Thankyou for registering"}
@@ -387,7 +387,7 @@ const MocktestModal: React.FC<MocktestModalProps> = ({ open, onClose, user }) =>
           {/* Download button */}
           {otpVerified && (
             <div className="flex flex-col justify-center gap-4 items-center text-center">
-              <p className="">
+              <p className="md:text-lg text-sm text-base font-medium">
                 Your <a href="https://stemlearn.ai/" className="font-bold text-red-500">STEMLearn.AI</a> app credentials and download link will be shared via SMS
                 within 48 hours. <br/> Use them to access mock tests and study material for
                 Hindustan Olympiad 2025
