@@ -393,6 +393,22 @@ const MocktestModal: React.FC<MocktestModalProps> = ({ open, onClose, user }) =>
                 Hindustan Olympiad 2025
               </p>
               <Button type="button" className="px-16" onClick={onClose}>Close</Button>
+              <div className="flex flex-row gap-2 items-center justify-center mt-2">
+                <a href="https://play.google.com/store/apps/details?id=ai.stemlearn.study" target="_blank" rel="noopener noreferrer">
+                    <img
+                    src="/images/hero/google-play.png"
+                    alt="Mock Test"
+                    className="w-[160px]"
+                    />
+                </a>
+                <a href="https://apps.apple.com/us/app/stemlearn/id6754865159" target="_blank" rel="noopener noreferrer">
+                    <img
+                    src="/images/hero/apple-store.png"
+                    alt="Mock Test"
+                    className="w-[150px] object-contain"
+                    />
+                </a>                
+              </div>
             </div>
           )}
 
