@@ -1,5 +1,17 @@
 import mongoose, { Schema, models } from "mongoose";
 
+export interface SamplePaperRequestSchemaS extends mongoose.Document{
+  name: String;
+  phone: String;
+  class: String;
+  stream?: String;
+  region: String;
+  district: String;
+  otpVerified: Boolean;
+  createdAt: Date;
+}
+
+
 const SamplePaperRequestSchema = new Schema(
   {
     name: { type: String, required: true },

@@ -1,10 +1,20 @@
-// next.config.js
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: false,
-  trailingSlash: true,
+  trailingSlash: false,
   compress: true,
   basePath: '',
+
+  // async redirects() {
+  //   return [
+  //     {
+  //       source: '/Reynolds',
+  //       destination: 'https://forms.gle/R1i5UQoUaGs3uq169',
+  //       permanent: true, // 301 redirect
+  //     },
+  //   ];
+  // },
+
   async headers() {
     return [
       {
@@ -13,16 +23,16 @@ const nextConfig = {
         headers: [
           {
             key: 'Access-Control-Allow-Origin',
-            value: 'https://www.livehindustan.com'
+            value: 'https://www.livehindustan.com',
           },
           {
             key: 'Access-Control-Allow-Methods',
-            value: 'GET, OPTIONS'
+            value: 'GET, OPTIONS',
           },
           {
             key: 'Access-Control-Allow-Headers',
-            value: '*'
-          }
+            value: '*',
+          },
         ],
       },
       {
@@ -31,12 +41,12 @@ const nextConfig = {
         headers: [
           {
             key: 'Access-Control-Allow-Origin',
-            value: 'https://www.livehindustan.com'
-          }
+            value: 'https://www.livehindustan.com',
+          },
         ],
-      }
-    ]
-  }
+      },
+    ];
+  },
 };
 
 module.exports = nextConfig;
