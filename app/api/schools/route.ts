@@ -7,6 +7,7 @@ import { TeamMember } from "@/utils/models/team-members";
 // server side import only
 import { districts as DISTRICTS_CONST } from "@/utils/constants";
 import { ActivityLog } from "@/utils/models/ActivityLogs";
+import { Student } from "@/utils/models/Student";
 
 connectDB().catch(console.error);
 
@@ -94,8 +95,35 @@ async function getAuthEntities(token: string) {
   const schoolCoordinator = await SchoolCoordinator.findById(token);
   return { teamMember, schoolCoordinator };
 }
-
 /* ========================= GET ========================= */
+
+// Helper to attach real student count
+async function attachStudentCounts(schools: any[]) {
+  // Collect numeric schoolIds (string)
+  const schoolNumericIds = schools.map((s: any) => s.schoolId);
+
+  const counts = await Student.aggregate([
+    { $match: { schoolId: { $in: schoolNumericIds } } },
+    {
+      $group: {
+        _id: "$schoolId",
+        count: { $sum: 1 },
+      },
+    },
+  ]);
+
+  const countMap: Record<string, number> = {};
+  counts.forEach((c: any) => {
+    countMap[c._id] = c.count;
+  });
+
+  return schools.map((s: any) => ({
+    ...s,
+    studentCountFromDB: countMap[s.schoolId] || 0, // <-- correct mapping
+  }));
+}
+/* ========================= GET ========================= */
+// New Get function for schools with filters, pagination, auth, etc.
 export async function GET(req: NextRequest) {
   try {
     const { searchParams } = new URL(req.url);
@@ -114,11 +142,11 @@ export async function GET(req: NextRequest) {
     if (!token) return json({ error: "Authorization header required" }, 401);
 
     const { teamMember, schoolCoordinator } = await getAuthEntities(token);
-    if (!teamMember && !schoolCoordinator) return json({ error: "Unauthorized" }, 401);
+    if (!teamMember && !schoolCoordinator)
+      return json({ error: "Unauthorized" }, 401);
 
     const filter: any = {};
     const orFilters: any[] = [];
-
 
     // Search
     if (query) {
@@ -130,22 +158,23 @@ export async function GET(req: NextRequest) {
       if (orFilters.length) filter.$or = orFilters;
     }
 
-    // explicit filters
+    // Filters
     if (regionParam) filter.region = regionParam;
-    // if (districtParam) filter.district = districtParam;
+
     if (districtParam) {
       const DISTRICTS_CONST = districtParam.split(",");
       if (DISTRICTS_CONST.length > 0) {
         filter.district = { $in: DISTRICTS_CONST };
       }
     }
+
     if (boardParam) filter.board = boardParam;
 
     // team-member region guard
     let teamRegions: string[] = [];
     let appliedRegionGuard = false;
     const role = teamMember?.role || schoolCoordinator?.role;
-    if (teamMember?.role === "viewer"){
+    if (teamMember?.role === "viewer") {
       filter.addedBy = teamMember._id.toString();
     }
     if (teamMember && role === "team-member") {
@@ -169,8 +198,13 @@ export async function GET(req: NextRequest) {
     const sort: any = {};
     sort[sortBy] = 1;
 
+    /* ---------------- ALL SCHOOLS ---------------- */
     if (all) {
-      const schools = await School.find(filter).sort(sort).lean();
+      let schools = await School.find(filter).sort(sort).lean();
+
+      // attach real student count
+      schools = await attachStudentCounts(schools);
+
       return json({
         schools,
         ...(debug
@@ -191,11 +225,16 @@ export async function GET(req: NextRequest) {
       });
     }
 
+    /* ---------------- PAGINATED ---------------- */
     const skip = (page - 1) * limit;
-    const [schools, total] = await Promise.all([
+
+    let [schools, total] = await Promise.all([
       School.find(filter).sort(sort).skip(skip).limit(limit).lean(),
       School.countDocuments(filter),
     ]);
+
+    // attach real student count
+    schools = await attachStudentCounts(schools);
 
     return json({
       schools,
@@ -221,9 +260,142 @@ export async function GET(req: NextRequest) {
     });
   } catch (err: any) {
     console.error("GET /api/schools error:", err);
-    return json({ error: "Server error", details: err?.message }, 500);
+    return json(
+      { error: "Server error", details: err?.message },
+      500
+    );
   }
 }
+
+// Old Get function for schools (to be deleted)
+// export async function GET(req: NextRequest) {
+//   try {
+//     const { searchParams } = new URL(req.url);
+//     const all = searchParams.get("all") === "true";
+//     const debug = searchParams.get("debug") === "true";
+//     const query = searchParams.get("query") || "";
+//     const sortBy = searchParams.get("sortBy") || "schoolName";
+//     const page = parseInt(searchParams.get("page") || "1", 10);
+//     const limit = parseInt(searchParams.get("limit") || "10", 10);
+
+//     const regionParam = searchParams.get("region") || "";
+//     const districtParam = searchParams.get("district") || "";
+//     const boardParam = searchParams.get("board") || "";
+
+//     const token = req.headers.get("authorization") || "";
+//     if (!token) return json({ error: "Authorization header required" }, 401);
+
+//     const { teamMember, schoolCoordinator } = await getAuthEntities(token);
+//     if (!teamMember && !schoolCoordinator) return json({ error: "Unauthorized" }, 401);
+
+//     const filter: any = {};
+//     const orFilters: any[] = [];
+
+
+//     // Search
+//     if (query) {
+//       const regex = new RegExp(query, "i");
+//       orFilters.push({ schoolName: regex }, { branch: regex }, { principalName: regex });
+//       if (/^[A-Za-z0-9_-]+$/.test(query)) {
+//         orFilters.push({ schoolId: query });
+//       }
+//       if (orFilters.length) filter.$or = orFilters;
+//     }
+
+//     // explicit filters
+//     if (regionParam) filter.region = regionParam;
+//     // if (districtParam) filter.district = districtParam;
+//     if (districtParam) {
+//       const DISTRICTS_CONST = districtParam.split(",");
+//       if (DISTRICTS_CONST.length > 0) {
+//         filter.district = { $in: DISTRICTS_CONST };
+//       }
+//     }
+//     if (boardParam) filter.board = boardParam;
+
+//     // team-member region guard
+//     let teamRegions: string[] = [];
+//     let appliedRegionGuard = false;
+//     const role = teamMember?.role || schoolCoordinator?.role;
+//     if (teamMember?.role === "viewer"){
+//       filter.addedBy = teamMember._id.toString();
+//     }
+//     if (teamMember && role === "team-member") {
+//       teamRegions = (teamMember.region || "")
+//         .split(",")
+//         .map((r: string) => r.trim())
+//         .filter(Boolean);
+//       if (teamMember.region !== "all" && teamRegions.length > 0) {
+//         appliedRegionGuard = true;
+//         filter.$and = (filter.$and || []).concat([
+//           {
+//             $or: [
+//               { region: { $in: teamRegions } },
+//               { region: { $regex: new RegExp(`\\b(${teamRegions.join("|")})\\b`, "i") } },
+//             ],
+//           },
+//         ]);
+//       }
+//     }
+
+//     const sort: any = {};
+//     sort[sortBy] = 1;
+
+//     if (all) {
+//       const schools = await School.find(filter).sort(sort).lean();
+//       return json({
+//         schools,
+//         ...(debug
+//           ? {
+//               debug: {
+//                 token,
+//                 role,
+//                 teamMember: teamMember
+//                   ? { _id: teamMember._id.toString(), role: teamMember.role, region: teamMember.region }
+//                   : null,
+//                 filter,
+//                 appliedRegionGuard,
+//                 teamRegions,
+//                 count: schools.length,
+//               },
+//             }
+//           : {}),
+//       });
+//     }
+
+//     const skip = (page - 1) * limit;
+//     const [schools, total] = await Promise.all([
+//       School.find(filter).sort(sort).skip(skip).limit(limit).lean(),
+//       School.countDocuments(filter),
+//     ]);
+
+//     return json({
+//       schools,
+//       total,
+//       page,
+//       limit,
+//       totalPages: Math.ceil(total / limit),
+//       ...(debug
+//         ? {
+//             debug: {
+//               token,
+//               role,
+//               teamMember: teamMember
+//                 ? { _id: teamMember._id.toString(), role: teamMember.role, region: teamMember.region }
+//                 : null,
+//               filter,
+//               appliedRegionGuard,
+//               teamRegions,
+//               returned: schools.length,
+//             },
+//           }
+//         : {}),
+//     });
+//   } catch (err: any) {
+//     console.error("GET /api/schools error:", err);
+//     return json({ error: "Server error", details: err?.message }, 500);
+//   }
+// }
 
 /* ========================= POST ========================= */
 export async function POST(req: NextRequest) {

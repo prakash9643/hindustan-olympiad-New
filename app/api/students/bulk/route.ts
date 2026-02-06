@@ -52,6 +52,7 @@ export async function POST(req: NextRequest) {
           region: school.region,
           city: school.city || s.city || "",
           pincode: school.pincode || "",
+          Source_code: s.Source_code || "",
         };
   
         currentRoll += 1;

@@ -52,7 +52,7 @@ const Home = () => {
       <Panel13 />
       <Panel14 />
       <Panel15 />
-      <Panel16 />
+      {/* <Panel16 /> */}
       <Panel18 />
       <Footer />
       {/* Placeholder for additional panels */}

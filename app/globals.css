@@ -45,6 +45,11 @@ html {
 .dialog-overlay {
   z-index: 9998 !important;
 }
+@media (max-width: 768px) {
+  .new-visi{
+    display: flex !important;
+  }
+}
 @layer base {
     :root {
         --background: 0 0% 100%;

@@ -36,14 +36,14 @@ export async function POST(req: NextRequest,) {
             tm_id: "1702158080740553305",       // 👈 parent SMS ka DLT tm_id
     });
     
-    console.log("📩 Sending Parent SMS to:", phone,);
+    // console.log("📩 Sending Parent SMS to:", phone,);
     
     const response = await axios.post("https://api.meseji.one/sendSMS", data, {
         headers: { "Content-Type": "application/x-www-form-urlencoded" },
     });
     
-    console.log("📌 API route hit");
-    console.log("✅ Parent SMS response:", response.data);
+    // console.log("📌 API route hit");
+    // console.log("✅ Parent SMS response:", response.data);
 
     return NextResponse.json({ success: true, data: response.data, otp });
   } catch (error: any) {

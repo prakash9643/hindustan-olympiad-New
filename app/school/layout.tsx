@@ -8,9 +8,9 @@ import { usePathname , useRouter } from 'next/navigation';
 
 const tabs = [
     { label: 'School Details', href: '/school/dashboard' },
-    { label: 'Add Student', href: '/school/add-student' },
+    // { label: 'Add Student', href: '/school/add-student' },
     { label: 'View Students', href: '/school/view-students' },
-    { label: 'Bulk Add Students', href: '/school/bulk-add-students' },
+    // { label: 'Bulk Add Students', href: '/school/bulk-add-students' },
 ]
 
 export default function SchoolLayout({

@@ -46,6 +46,8 @@ const constantFilters = [
 export default function ViewStudents() {
   const [user, setUser] = useState<{ role: string } | null>(null)
   const searchParams = useSearchParams()
+  const schoolId = searchParams.get("schoolId") || "";
+  const Newsearch = searchParams.get("q") || "";
   const { success, error } = useToast()
 
   const [loading, setLoading] = useState(true)
@@ -146,7 +148,9 @@ export default function ViewStudents() {
     setLoading(true)
     try {
       const res = await fetch(
-        `/api/students?page=${pageNumber}&limit=10&search=${search}&filters=${JSON.stringify(filters)}&sortBy=${sortBy}`,
+        // `/api/students?page=${pageNumber}&limit=10&search=${search}&filters=${JSON.stringify(filters)}&sortBy=${sortBy}`,
+        `/api/students?page=${pageNumber}&limit=10&schoolId=${schoolId}&filters=${JSON.stringify(filters)}&sortBy=${sortBy}`,
+        
         {
           method: "GET",
           headers: {
@@ -162,6 +166,7 @@ export default function ViewStudents() {
     } finally {
       setLoading(false)
     }
+    console.log("URL ->", `/api/students?page=${pageNumber}&limit=10&schoolId=${schoolId}&filters=${JSON.stringify(filters)}&sortBy=${sortBy}`);
   }
 
   useEffect(() => {
@@ -227,32 +232,75 @@ export default function ViewStudents() {
     }
   }
 
-  const handleExport = () => {
-    setExportLoading(true)
-    fetch(`/api/export/students?search=${search}&sortBy=${sortBy}`, {
-      method: "GET",
-      headers: {
-        authorization: `${JSON.parse(localStorage.getItem("user") || "{}")._id}`,
-      },
-    })
-      .then((res) => {
-        if (!res.ok) throw new Error("Failed to export")
-        return res.blob()
-      })
-      .then((blob) => {
-        const url = window.URL.createObjectURL(blob)
-        const a = document.createElement("a")
-        a.href = url
-        a.download = "students.csv"
-        a.click()
-      })
-      .catch(() => {
-        error("Failed to export students.")
-      })
-      .finally(() => {
-        setExportLoading(false)
-      })
+  // const handleExport = () => {
+  //   setExportLoading(true)
+  //   fetch(`/api/export/students?search=${search}&sortBy=${sortBy}`, {
+  //     method: "GET",
+  //     headers: {
+  //       authorization: `${JSON.parse(localStorage.getItem("user") || "{}")._id}`,
+  //     },
+  //   })
+  //     .then((res) => {
+  //       if (!res.ok) throw new Error("Failed to export")
+  //       return res.blob()
+  //     })
+  //     .then((blob) => {
+  //       const url = window.URL.createObjectURL(blob)
+  //       const a = document.createElement("a")
+  //       a.href = url
+  //       a.download = "students.csv"
+  //       a.click()
+  //     })
+  //     .catch(() => {
+  //       error("Failed to export students.")
+  //     })
+  //     .finally(() => {
+  //       setExportLoading(false)
+  //     })
+  // }
+
+  const handleExport = (type = "") => {
+  setExportLoading(true);
+
+  const user = JSON.parse(localStorage.getItem("user") || "{}");
+
+  let url = `/api/export/students?search=${search}&sortBy=${sortBy}`;
+
+  // add type only when passed
+  if (type) {
+    url += `&type=${type}`;
   }
+
+  fetch(url, {
+    method: "GET",
+    headers: {
+      authorization: user._id, // same as backend expects
+    },
+  })
+    .then((res) => {
+      if (!res.ok) throw new Error("Failed to export");
+      return res.blob();
+    })
+    .then((blob) => {
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+
+      // smart filename
+      if (type === "before") a.download = "students_till_17_nov_2025.csv";
+      else if (type === "after") a.download = "my_students_after_18_nov_2025.csv";
+      else a.download = "students.csv";
+
+      a.click();
+    })
+    .catch(() => {
+      error("Failed to export students.");
+    })
+    .finally(() => {
+      setExportLoading(false);
+    });
+};
+
 
   return (
     <Card className="p-0 border-none pb-12">
@@ -261,7 +309,7 @@ export default function ViewStudents() {
           <CardTitle>Students List</CardTitle>
           <CardDescription>View and manage all students in the system</CardDescription>
         </CardHeader>
-        <Button onClick={handleExport} className="py-2 px-4" disabled={exportLoading}>
+        <Button onClick={() => handleExport("before")} className="py-2 px-4" disabled={exportLoading}>
           <Download className="h-4 w-4" />
           {exportLoading ? "Exporting..." : "Export"}
         </Button>
@@ -298,6 +346,7 @@ export default function ViewStudents() {
                   <TableHead>School</TableHead>
                   <TableHead>Roll Number</TableHead>
                   <TableHead>Contact</TableHead>
+                  <TableHead>Source_code</TableHead>
                   <TableHead>Payment</TableHead>
                   <TableHead>Actions</TableHead>
                 </TableRow>
@@ -318,8 +367,10 @@ export default function ViewStudents() {
                     <TableCell>{student.gender}</TableCell>
                     <TableCell>{student.stream}</TableCell>
                     <TableCell>{student.schoolName}</TableCell>
-                    <TableCell>{student.paymentVerified ? student.studentId : "XXXXX"}</TableCell>
+                    {/* <TableCell>{student.paymentVerified ? student.studentId : "XXXXX"}</TableCell> */}
+                    <TableCell>{student.studentId}</TableCell>
                     <TableCell>{student.parentContact}</TableCell>
+                    <TableCell>{student.Source_code}</TableCell>
                     <TableCell className={student.paymentVerified ? "text-green-500" : "text-red-500"}>
                       {student.paymentVerified ? "Received" : "Pending"}
                     </TableCell>
@@ -331,6 +382,7 @@ export default function ViewStudents() {
                           size="sm"
                           onClick={() => setEditingStudent(student)}
                           title="Edit Student"
+                          disabled
                         >
                           <Edit className="h-4 w-4" />
                         </Button>
@@ -340,7 +392,7 @@ export default function ViewStudents() {
                           size="sm"
                           onClick={() => setDeletingStudent(student)}
                           title="Delete Student"
-                          // disabled
+                          disabled
                         >
                           <Trash2 className="h-4 w-4" />
                         </Button>

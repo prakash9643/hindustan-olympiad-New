@@ -32,6 +32,7 @@ import CopyToClipboard from "@/components/copy-to-clipboard";
 import { regions, districts } from "@/utils/constants";
 import ActivityLogDialog from "@/components/ActivityLogs";
 import MultiSelectDistrict, { OptionType } from "@/components/ui/multiSelectDistrict";
+import { add } from "date-fns";
 
 /* -------------------- local types -------------------- */
 type RegionOption = { value: string; label: string };
@@ -309,6 +310,7 @@ export default function ViewSchools() {
         body: JSON.stringify({
           ...school,
           confirmPayment: true,
+          addedBy: user?._id,
         }),
       });
 
@@ -366,6 +368,10 @@ export default function ViewSchools() {
     }
   };
 
+  // const viewSchoolStudents = (school: School) => {
+  //   router.push(`/team/view-students?schoolId=${school.schoolId}&q=${school}`);
+  //   router.push(`/team/view-students?search=${school.schoolId}`);
+  // };
   const viewSchoolStudents = (school: School) => {
     router.push(`/team/view-students?search=${school.schoolId}`);
   };
@@ -590,8 +596,21 @@ export default function ViewSchools() {
                         )}
                       </TableCell>
                       <TableCell>{school.principalName}</TableCell>
-                      <TableCell>
+                      {/* <TableCell>
                         {school.paymentVerification}/{school.studentsCount}
+                      </TableCell> */}
+                      <TableCell>
+                        <div className={`flex items-center ${
+                          (school.paymentVerification || 0) !== (school.studentCountFromDB || 0) 
+                            ? 'text-green-500 font-semibold' 
+                            : ''
+                        }`}>
+                          {Math.min(school.paymentVerification || 0, school.studentCountFromDB || 0)}/
+                          {school.studentCountFromDB || 0}
+                          {(school.paymentVerification || 0) > (school.studentCountFromDB || 0) && (
+                            <span className="ml-1 text-xs" title="Payment verified count exceeds student count">⚠️</span>
+                          )}
+                        </div>
                       </TableCell>
                       <TableCell>
                         <div className="flex space-x-2">
@@ -601,6 +620,7 @@ export default function ViewSchools() {
                             size="sm"
                             onClick={() => setEditingSchool(school)}
                             title="Edit School"
+                            disabled
                           >
                             <Edit className="h-4 w-4" />
                           </Button>
@@ -611,7 +631,7 @@ export default function ViewSchools() {
                             size="sm"
                             onClick={() => setDeletingSchool(school)}
                             title="Delete School"
-                            // disabled
+                            disabled
                           >
                             <Trash2 className="h-4 w-4" />
                           </Button>

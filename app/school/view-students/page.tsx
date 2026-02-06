@@ -14,6 +14,7 @@ import SearchAndFilter from "@/components/search-and-filter"
 import { useToast } from "@/hooks/use-toast"
 import { SchoolCoordinator } from "@/types/school-coordinator"
 import { useRouter } from 'next/navigation';
+import { tr } from "date-fns/locale"
 
 
 export default function ViewStudents() {
@@ -236,10 +237,12 @@ export default function ViewStudents() {
                                     </TableCell>
                                     <TableCell>
                                         <div className="flex space-x-2">
-                                            <Button className="w-9 h-9" variant="outline" size="sm" title="Edit Student" onClick={() => setEditingStudent(student)}>
+                                            <Button className="w-9 h-9" variant="outline" size="sm" title="Edit Student" onClick={() => setEditingStudent(student)}
+                                                disabled={true}>
                                                 <Edit className="h-4 w-4" />
                                             </Button>
-                                            <Button className="w-9 h-9" variant="outline" size="sm" title="Delete Student" onClick={() => setDeletingStudent(student)}>
+                                            <Button className="w-9 h-9" variant="outline" size="sm" title="Delete Student" onClick={() => setDeletingStudent(student)}
+                                                disabled={true}>
                                                 <Trash2 className="h-4 w-4" />
                                             </Button>
                                         </div>

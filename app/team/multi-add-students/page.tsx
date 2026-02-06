@@ -20,6 +20,7 @@ export default function BulkAddStudentForm() {
   const [bulkStudents, setBulkStudents] = useState<Student[]>([])
   const [schoolsMap, setSchoolsMap] = useState<Map<string, School>>(new Map())
   const [isLoading, setIsLoading] = useState(false)
+  const [statusFilter, setStatusFilter] = useState<"ALL" | "VALID" | "INVALID">("ALL");
 
   // Get user ID for addedBy field
   const getUserId = () => {
@@ -115,6 +116,8 @@ export default function BulkAddStudentForm() {
             parentName: String(row["Parent Name"] || "").trim(),
             parentContact: String(row["Parent Contact"] || "").trim(),
             schoolId: String(row["School"] || row["School ID"] || "").trim(),
+            // Source_code: String(row["Source_code"] || "").trim(),
+            studentId: String(row["Student ID"] || "").trim(),
           }
 
           console.log("Processing student:", student.name, "with school ID:", student.schoolId)
@@ -129,6 +132,7 @@ export default function BulkAddStudentForm() {
               student.region = school.region
               student.city = school.city
               student.pincode = school.pincode
+              // student.Source_code = student.Source_code 
               console.log("✅ School found:", school.schoolName)
             } else {
               console.log("❌ School not found for ID:", student.schoolId)
@@ -201,12 +205,15 @@ export default function BulkAddStudentForm() {
             parentContact: student.parentContact,
             addedBy: userId,
             schoolId: student.schoolId,
+            studentId: student.studentId,
+            // Source_code: student.Source_code,
             paymentVerified: student.paymentVerified || false,
           }))
         }),
       })
 
       const data = await response.json()
+      console.log("Bulk save response:", data || data.SourceCode)
       
       if (data.error) {
         error("Bulk upload failed!", { 
@@ -241,9 +248,9 @@ export default function BulkAddStudentForm() {
 
   const isStreamValid = ({class: studentClass, stream} : {class: string, stream: string}): boolean => {
     if(studentClass === "11" || studentClass === "12") {
-      return stream ? ["PCB", "PCM", "COMMERCE WITH MATH", "COMMERCE WITHOUT MATH", "HUMANITIES"].includes(stream.trim().toUpperCase()) : false;
+      return stream ? ["PCB", "PCM", "COMMERCE WITH MATH", "COMMERCE W/O MATHS", "COMMERCE W/O MATH", "COMMERCE WITH MATHS", "COMMERCE WITHOUT MATH", "HUMANITIES", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10"].includes(stream.trim().toUpperCase()) : false;
     } else {
-      return stream === "" || stream === "null";
+      return stream === "" || stream === "null" || stream === "NOT FILLED";
     }
   }
 
@@ -251,10 +258,10 @@ export default function BulkAddStudentForm() {
     const requiredFields = [
       student.name,
       student.class,
-      student.section,
-      student.gender,
-      student.parentName,
-      student.parentContact,
+      // student.section,
+      // student.gender,
+      student.parentName || "N/A",
+      // student.parentContact || "",
       student.schoolId,
     ];
 
@@ -262,11 +269,13 @@ export default function BulkAddStudentForm() {
       return value.toString().trim() !== "";
     });
 
-    const genderValid = ["M", "F"].includes(student.gender.toUpperCase());
-    const streamValid : boolean = isStreamValid({class: student.class+ "", stream: student.stream});
-    const contactValid = /^[0-9]{10}$/.test(student.parentContact);
+    // const genderValid = ["M", "F"].includes(student.gender.toUpperCase());
+    // const streamValid : boolean = isStreamValid({class: student.class+ "", stream: student.stream});
+    // const contactValid =
+    // student.parentContact.trim() === "" ||
+    // /^[0-9]{9,10}$/.test(student.parentContact);
 
-    return allFieldsFilled && genderValid && streamValid && contactValid;
+    return allFieldsFilled ;
   }
 
   const isAllStudentsValid = bulkStudents.every(isStudentValid);
@@ -278,6 +287,11 @@ export default function BulkAddStudentForm() {
     const school = schoolsMap.get(schoolId)
     return school ? school.schoolName : "School ID"
   }
+  const filteredStudents = bulkStudents.filter(student => {
+    if (statusFilter === "VALID") return isStudentValid(student);
+    if (statusFilter === "INVALID") return !isStudentValid(student);
+    return true; // ALL
+  });
 
   return (
     <Card className="p-0 border-none pb-12">
@@ -336,8 +350,17 @@ export default function BulkAddStudentForm() {
                   Students Preview ({bulkStudents.length} students)
                 </h3>
                 <div className="flex items-center gap-4">
-                  <div className="text-sm text-muted-foreground">
+                  <div className="text-sm text-muted-foreground flex items-center gap-4">
                     {bulkStudents.filter(isStudentValid).length} valid / {bulkStudents.length} total
+                    <select
+                      value={statusFilter}
+                      onChange={(e) => setStatusFilter(e.target.value as any)}
+                      className="border rounded px-2 py-1 text-sm"
+                    >
+                      <option value="ALL">All</option>
+                      <option value="VALID">Valid Only</option>
+                      <option value="INVALID">Invalid Only</option>
+                    </select>
                   </div>
                   <Button 
                     type="button" 
@@ -364,11 +387,13 @@ export default function BulkAddStudentForm() {
                         <TableHead>Parent Name</TableHead>
                         <TableHead>Parent Contact</TableHead>
                         <TableHead>School</TableHead>
+                        {/* <TableHead>Source_code</TableHead> */}
+                        <TableHead>Student ID</TableHead>
                         <TableHead>Action</TableHead>
                       </TableRow>
                     </TableHeader>
                     <TableBody>
-                      {bulkStudents.map((student, index) => (
+                      {filteredStudents.map((student, index) => (
                         <TableRow key={index}>
                           <TableCell>
                             {isStudentValid(student) ? (
@@ -398,6 +423,8 @@ export default function BulkAddStudentForm() {
                               </div>
                             </div>
                           </TableCell>
+                          {/* <TableCell>{student.Source_code}</TableCell> */}
+                          <TableCell>{student.studentId}</TableCell>
                           <TableCell>
                             <Button 
                               type="button" 

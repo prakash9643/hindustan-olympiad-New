@@ -61,6 +61,7 @@ export async function GET(req: NextRequest) {
         stream: SIndiviualStudent.stream,
         yourName: SIndiviualStudent.relationshipWithStudent,
         parentContact: SIndiviualStudent.parentContact,
+        parentEmail: SIndiviualStudent.parentEmail,
         schoolName: SIndiviualStudent.schoolName,
         SchoolBranch: SIndiviualStudent.SchoolBranch,
         City: SIndiviualStudent.district,

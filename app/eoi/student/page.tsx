@@ -473,28 +473,28 @@ console.log("this s order data",orderId,amount,currency,"this ksy",key)
             body: JSON.stringify({ orderId, transactionId }),
           });
           // 5️⃣ Send Parent SMS
-          await fetch("/api/eoi/student/parent-sms", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-              phoneNumber: studentForm.parentContact,
-              studentId: newStudentId,
-            }),
-          });
+          // await fetch("/api/eoi/student/parent-sms", {
+          //   method: "POST",
+          //   headers: { "Content-Type": "application/json" },
+          //   body: JSON.stringify({
+          //     phoneNumber: studentForm.parentContact,
+          //     studentId: newStudentId,
+          //   }),
+          // });
 
           // 6️⃣ Send Parent Email
-          await fetch("/api/eoi/student/parent-email", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-              ...studentForm,
-              region: studentForm.region,
-              orderId,
-              transactionId,
-              studentId: newStudentId,
-              city: studentForm.district, // agar city field aap form me rakhte ho
-            }),
-          });
+          // await fetch("/api/eoi/student/parent-email", {
+          //   method: "POST",
+          //   headers: { "Content-Type": "application/json" },
+          //   body: JSON.stringify({
+          //     ...studentForm,
+          //     region: studentForm.region,
+          //     orderId,
+          //     transactionId,
+          //     studentId: newStudentId,
+          //     city: studentForm.district, // agar city field aap form me rakhte ho
+          //   }),
+          // });
 
           // 6️⃣ Success UI + redirect
           success("Registration & Payment Successful!", {
@@ -564,16 +564,13 @@ const handleClosePopup = () => {
         <Card>
           <CardHeader>
             <CardDescription className="text-base font-medium text-black">
-              <p className="mb-2">The exam would be conducted in 20 cities across UP, Bihar, Jharkhand and Uttarakhand</p>
-              <p className="mb-2"><strong> Kindly select your city of preference.</strong></p>
-              <p className="mb-2">The exam centre would be allocated according to your selection and the student will have to reach the exam center on their own.</p>
-              <p className="mb-2">Other details related to the exam such as; exam date, center, instructions etc. will be shared along with your Admit card, 7 days prior to the exam date</p>              
+              <h1 className="mb-2 text-[#B2252A] text-center font-bold text-lg">Registration has been stopped; no new applications will be accepted now.</h1>
             </CardDescription>
           </CardHeader>
 
           <CardContent>
             {/* ✅ Direct District (City) Dropdown */}
-            <div className="space-y-2 mb-4">
+            {/* <div className="space-y-2 mb-4">
               <Label htmlFor="district">City</Label>
               <Select
                 value={studentForm.district}
@@ -590,10 +587,10 @@ const handleClosePopup = () => {
                   ))}
                 </SelectContent>
               </Select>
-            </div>
+            </div> */}
 
             {/* Form fields */}
-            {studentForm.district && (
+            {/* {studentForm.district && (
               <form onSubmit={handleSubmit} className="space-y-4 mt-4">
                 <div className="space-y-2">
                   <Label>Student Name</Label>
@@ -617,7 +614,6 @@ const handleClosePopup = () => {
                     </SelectContent>
                   </Select>
                 </div>
-                {/* Stream field for class 11/12 */}
                 {(studentForm.class === "11" || studentForm.class === "12") && (
                   <div className="space-y-2">
                     <Label htmlFor="stream">Stream</Label>
@@ -699,7 +695,6 @@ const handleClosePopup = () => {
                   <Label>Contact Number <small className="text-[#B2252A]">(The students Hindustan Olympiad 2025 Roll No. and Admit card will be shared here)</small></Label>
                   <Input value={studentForm.parentContact} onChange={(e) => setStudentForm((p) => ({ ...p, parentContact: e.target.value }))} />
                 </div>
-                {/* ✅ Email field with validation */}
                 <div className="space-y-2">
                   <Label>Email Id <small className="text-[#B2252A]">(The students Hindustan Olympiad 2025 Roll No. and Admit card will be shared here)</small></Label>
                   <Input
@@ -720,7 +715,6 @@ const handleClosePopup = () => {
                   <Input value={studentForm.schoolBranch} onChange={(e) => setStudentForm((p) => ({ ...p, schoolBranch: e.target.value }))} />
                 </div>
 
-                {/* School Region */}
                 <div className="space-y-2 mb-4">
                   <Label htmlFor="region">School Region</Label>
                   <Select
@@ -741,7 +735,6 @@ const handleClosePopup = () => {
                 </div>
 
                 
-                {/* School District */}
                 <div className="space-y-2 mb-4">
                   <Label htmlFor="district">School District</Label>
                   <Select
@@ -799,11 +792,11 @@ const handleClosePopup = () => {
                   {isSubmitting ? "Submitting..." : "Submit Details"}
                 </Button>
               </form>
-            )}
+            )} */}
           </CardContent>
         </Card>
       </div>
-      <Dialog open={openPopup} onOpenChange={setOpenPopup}>
+      {/* <Dialog open={openPopup} onOpenChange={setOpenPopup}>
         <DialogContent>
           <DialogHeader>
             <DialogTitle>Confirm Details & Make Payment</DialogTitle>
@@ -836,13 +829,13 @@ const handleClosePopup = () => {
             </Button>
           </DialogFooter>
       </DialogContent>
-    </Dialog>
-    {isRedirecting && (
+    </Dialog> */}
+    {/* {isRedirecting && (
       <div className="fixed inset-0 bg-white/80 flex flex-col items-center justify-center z-50">
         <Loader2 className="h-10 w-10 animate-spin text-[#B2252A]" />
         <p className="mt-4 text-lg font-medium text-gray-700">Processing Payment...</p>
       </div>
-    )}
+    )} */}
     </div>
   );
 }

@@ -56,7 +56,7 @@ export async function PUT(req: NextRequest, { params }: { params: { id: string }
 
         const students = await Student.updateMany(
             { schoolId: existingSchool.schoolId },
-            { paymentVerified: true, paymentVerifiedBy: user?._id  }
+            { paymentVerified: true, paymentVerifiedBy: user?._id,  }
         );
         console.log(students);
 

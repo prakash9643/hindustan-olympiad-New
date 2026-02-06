@@ -254,7 +254,7 @@ export default function BulkAddStudentForm() {
 
     if (studentClass === "11" || studentClass === "12") {
       console.log("Stream Valid:", studentClass, normalizedStream);
-      return ["PCB", "PCM", "COMM", "COWM", "COMMERCE WITHOUT MATH", "COMMERCE WITH MATH", "HUMANITIES", "NOT APPLICABLE", "NOT FILLED"].includes(normalizedStream);
+      return ["PCB", "PCM", "COMMERCE WITH MATHS", "COMMERCE WITHOUT MATHS", "HUMANITIES", " Not applicable", "Not filled"].includes(normalizedStream);
     } else {
       // For classes other than 11 or 12, allow empty or null-like streams
       return normalizedStream === "" || normalizedStream === "NULL";

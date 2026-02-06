@@ -14,22 +14,94 @@ function generateStudentId(schoolId: string, rollNumber: string) {
   return `${schoolPart}${rollStr}`;
 }
 
+// export async function GET(req: NextRequest) {
+//   const { searchParams } = new URL(req.url);
+//   const headers = req.headers;
+//   const authorization = headers.get("authorization");
+//   var isTeamMember = false;
+//   if (!authorization) {
+//     return NextResponse.json({ error: "Authorization header required" }, { status: 400 });
+//   }
+
+//   const token = authorization.split(" ")[0];
+
+//   if (!token) {
+//     return NextResponse.json({ error: "Unauthorized : No token provided" }, { status: 401 });
+//   }
+
+//   if (token.length !== 24) {
+//     return NextResponse.json({ error: "Unauthorized : Invalid token" }, { status: 401 });
+//   }
+
+//   const schoolCoordinator = await SchoolCoordinator.findById(token);
+//   const teamMember = await TeamMember.findById(token);
+
+//   if (!schoolCoordinator && !teamMember) {
+//     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+//   }
+
+//   if (teamMember) {
+//     isTeamMember = true;
+//   }
+
+//   const page = parseInt(searchParams.get("page") || "1");
+//   const limit = parseInt(searchParams.get("limit") || "10");
+//   const search = searchParams.get("search") || "";
+//   const sortBy = searchParams.get("sortBy") || "name";
+
+//   const query: any = {};
+
+//   if (search) {
+//     const searchRegex = new RegExp(search, "i");
+
+//     const orQuery: any[] = [
+//       { name: searchRegex },
+//       { studentId: searchRegex },
+//       { schoolName: searchRegex }, // added this line
+//     ];
+
+//     query.$or = orQuery;
+//   }
+
+//   if (isTeamMember) {
+//     query.region = { $in: teamMember.region.split(",") };
+//   }
+//   if (schoolCoordinator) {
+//     query.schoolId = schoolCoordinator.school_id;
+//   }
+
+//   console.log(query);
+
+//   const students = await Student.find(query)
+//     .skip((page - 1) * limit)
+//     .limit(limit)
+//     .sort({ [sortBy]: 1 });
+
+//   const total = await Student.countDocuments(query);
+
+//   return NextResponse.json({
+//     students,
+//     total,
+//     page,
+//     totalPages: Math.ceil(total / limit),
+//   });
+// }
+
+
+// New GET function for students with schoolId filter
 export async function GET(req: NextRequest) {
   const { searchParams } = new URL(req.url);
   const headers = req.headers;
   const authorization = headers.get("authorization");
-  var isTeamMember = false;
+  let isTeamMember = false;
+
   if (!authorization) {
     return NextResponse.json({ error: "Authorization header required" }, { status: 400 });
   }
 
   const token = authorization.split(" ")[0];
 
-  if (!token) {
-    return NextResponse.json({ error: "Unauthorized : No token provided" }, { status: 401 });
-  }
-
-  if (token.length !== 24) {
+  if (!token || token.length !== 24) {
     return NextResponse.json({ error: "Unauthorized : Invalid token" }, { status: 401 });
   }
 
@@ -40,37 +112,52 @@ export async function GET(req: NextRequest) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
-  if (teamMember) {
-    isTeamMember = true;
-  }
+  if (teamMember) isTeamMember = true;
 
   const page = parseInt(searchParams.get("page") || "1");
   const limit = parseInt(searchParams.get("limit") || "10");
   const search = searchParams.get("search") || "";
   const sortBy = searchParams.get("sortBy") || "name";
 
+  // 👇 NEW — read schoolId from query
+  const schoolIdParam = searchParams.get("schoolId");
+  const q = searchParams.get("q");
   const query: any = {};
 
-  if (search) {
-    const searchRegex = new RegExp(search, "i");
+  // ⭐ EXACT MATCH MODE (when viewing school students)
+  if (schoolIdParam) {
+  query.schoolId = schoolIdParam;
 
-    const orQuery: any[] = [
+  // search inside THIS school only
+    if (q) {
+      const searchRegex = new RegExp(q, "i");
+      query.$or = [
+        { name: searchRegex },
+        { studentId: searchRegex },
+        { parentName: searchRegex },
+      ];
+    }
+  } 
+  // global search (no school)
+  else if (q) {
+    const searchRegex = new RegExp(q, "i");
+    query.$or = [
       { name: searchRegex },
       { studentId: searchRegex },
-      { schoolName: searchRegex }, // added this line
+      { schoolName: searchRegex },
     ];
-
-    query.$or = orQuery;
   }
 
+  // region filters
   if (isTeamMember) {
     query.region = { $in: teamMember.region.split(",") };
   }
+
   if (schoolCoordinator) {
     query.schoolId = schoolCoordinator.school_id;
   }
 
-  console.log(query);
+  console.log("FINAL QUERY = ", query);
 
   const students = await Student.find(query)
     .skip((page - 1) * limit)
@@ -87,8 +174,10 @@ export async function GET(req: NextRequest) {
   });
 }
 
+
 export async function POST(req: NextRequest) {
   const data = await req.json();
+  console.log("RECEIVED DATA = ", data);
   const headers = req.headers;
   const authorization = headers.get("authorization") || "";
 
@@ -167,6 +256,7 @@ export async function POST(req: NextRequest) {
   data.district = data.district = Array.isArray(school.district) ? school.district[0] : school.district;
   data.region = school.region;
   data.pincode = school.pincode || "";
+  // data.Source_code = data.Source_code || "";
 
   const student = new Student(data);
   await student.save();
