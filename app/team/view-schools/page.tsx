@@ -601,13 +601,13 @@ export default function ViewSchools() {
                       </TableCell> */}
                       <TableCell>
                         <div className={`flex items-center ${
-                          (school.paymentVerification || 0) !== (school.studentCountFromDB || 0) 
+                          (school.paymentVerification || 0) !== (school.studentsCount || 0) 
                             ? 'text-green-500 font-semibold' 
                             : ''
                         }`}>
-                          {Math.min(school.paymentVerification || 0, school.studentCountFromDB || 0)}/
-                          {school.studentCountFromDB || 0}
-                          {(school.paymentVerification || 0) > (school.studentCountFromDB || 0) && (
+                          {Math.min(school.paymentVerification || 0, school.studentsCount || 0)}/
+                          {school.studentsCount || 0}
+                          {(school.paymentVerification || 0) > (school.studentsCount || 0) && (
                             <span className="ml-1 text-xs" title="Payment verified count exceeds student count">⚠️</span>
                           )}
                         </div>
