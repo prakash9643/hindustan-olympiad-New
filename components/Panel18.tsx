@@ -4,7 +4,7 @@ import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import { motion, Variants } from "framer-motion";
 import { Poppins } from "next/font/google";
-
+import { ArrowLeft, ArrowRight } from "lucide-react";
 const poppins = Poppins({
   subsets: ["latin"],
   weight: "700",
@@ -13,10 +13,12 @@ const poppins = Poppins({
 
 // List of sponsors — replace these with your actual logos
 const sponsors = [
-  { name: "NPS Vatsalya", logo: "/images/navbar/vatsalyalogo.png", url: "#" },
-  { name: "STEMLearn.AI", logo: "/images/navbar/stemleanai.png", url: "#" },
-  { name: "Amity University", logo: "/images/navbar/amityuniversity.png", url: "#" },
-  { name: "Sponsors-logosai_Reynolds", logo: "/images/navbar/aireynolds.png", url: "#" },
+  { name: "NPS Vatsalya", logo: "/images/navbar/Vatsalya-logo.jpg", url: "#" },
+  { name: "STEMLearn.AI", logo: "/images/navbar/StemLearn-logo.jpg", url: "#" },
+  { name: "Amity University", logo: "/images/navbar/Amity.jpg", url: "#" },
+  { name: "Sponsors-logosai_Reynolds", logo: "/images/navbar/Reynolds.jpg", url: "#" },
+  { name: "Invertis", logo: "/images/navbar/sponsors-logo-new.jpg", url: "#" },
+  { name: "CareerEase", logo: "/images/navbar/CareerEase.jpg", url: "#" },
 ];
 
 // Animation variant
@@ -25,8 +27,8 @@ const fadeUp: Variants = {
   visible: { opacity: 1, y: 0, transition: { duration: 0.6 } },
 };
 
-const CARD_WIDTH = 250;
-const GAP = 18;
+const CARD_WIDTH = 200;
+const GAP = 15;
 
 export default function PanelSponsors() {
   const [slidesToShow, setSlidesToShow] = useState(1);
@@ -35,7 +37,7 @@ export default function PanelSponsors() {
   useEffect(() => {
     function onResize() {
       const w = window.innerWidth;
-      if (w >= 1024) setSlidesToShow(4);
+      if (w >= 1024) setSlidesToShow(5);
       else if (w >= 768) setSlidesToShow(2);
       else setSlidesToShow(1);
     }
@@ -120,6 +122,13 @@ export default function PanelSponsors() {
           variants={fadeUp}
           transition={{ delay: 0.4 }}
         >
+          <button
+            aria-label="Previous"
+            onClick={prev}
+            className="bg-[#B2252A] absolute z-[10] md:left-[0%] left-[15%] flex top-[40%] text-white rounded-full w-9 h-9 text-xl new-visi items-center justify-center shadow"
+          >
+            <ArrowLeft size={24} color="white" />
+          </button>
           <div
             className="flex transition-transform duration-500"
             style={{
@@ -154,14 +163,21 @@ export default function PanelSponsors() {
                   <img
                     src={s.logo}
                     alt={s.name}
-                    width={150}
-                    height={150}
-                    className="object-contain w-[150px] h-[100px]"
+                    width={200}
+                    height={200}
+                    className="object-contain w-[200px] h-[100px]"
                   />
                 </a>
               </div>
             ))}
           </div>
+            <button
+            aria-label="Next"
+            onClick={next}
+            className="bg-[#B2252A] z-[10] absolute flex md:right-[0%] right-[15%] top-[40%] text-white rounded-full w-9 h-9 text-xl new-visi items-center justify-center shadow"
+          >
+            <ArrowRight size={24} color="white" />
+          </button>
         </motion.div>
 
         {/* Next Arrow */}
@@ -179,7 +195,7 @@ export default function PanelSponsors() {
       </div>
 
       {/* Mobile Arrows */}
-      <motion.div
+      {/* <motion.div
         className="flex md:hidden w-full justify-between mt-7 max-w-sm"
         initial="hidden"
         whileInView="visible"
@@ -191,16 +207,16 @@ export default function PanelSponsors() {
           onClick={prev}
           className="bg-[#B2252A] text-white rounded-full w-9 h-9 text-xl flex items-center justify-center shadow"
         >
-          &#8249;
+          <ArrowLeft size={24} color="white" />
         </button>
         <button
           aria-label="Next"
           onClick={next}
           className="bg-[#B2252A] text-white rounded-full w-9 h-9 text-xl flex items-center justify-center shadow"
         >
-          &#8250;
+          <ArrowRight size={24} color="white" />
         </button>
-      </motion.div>
+      </motion.div> */}
     </motion.section>
   );
 }

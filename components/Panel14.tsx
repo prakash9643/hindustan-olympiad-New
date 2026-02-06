@@ -4,7 +4,7 @@
 import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import { motion, Variants } from "framer-motion";
-
+import { ArrowLeft, ArrowRight } from "lucide-react";
 // Font import for Poppins
 import { Poppins } from "next/font/google";
 const poppins = Poppins({ subsets: ["latin"], weight: "700", variable: "--font-poppins" });
@@ -137,7 +137,7 @@ export default function Panel14() {
           variants={fadeUp}
           transition={{ delay: 0.3 }}
         >
-          &#8249;
+          <ArrowLeft size={24} color="white" />
         </motion.button>
 
         {/* Slides Container */}
@@ -186,7 +186,7 @@ export default function Panel14() {
           variants={fadeUp}
           transition={{ delay: 0.3 }}
         >
-          &#8250;
+          <ArrowRight size={24} color="white" />
         </motion.button>
       </div>
 
@@ -203,14 +203,14 @@ export default function Panel14() {
           onClick={prev}
           className="bg-[#B2252A] text-white rounded-full w-9 h-9 text-xl flex items-center justify-center shadow"
         >
-          &#8249;
+          <ArrowLeft size={24} color="white" />
         </button>
         <button
           aria-label="Next"
           onClick={next}
           className="bg-[#B2252A] text-white rounded-full w-9 h-9 text-xl flex items-center justify-center shadow"
         >
-          &#8250;
+          <ArrowRight size={24} color="white" />
         </button>
       </motion.div>
     </motion.section>

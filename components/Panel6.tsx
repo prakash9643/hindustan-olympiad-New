@@ -69,7 +69,7 @@ const SUBJECTS = {
       list: [
         "Political Science",
         "History",
-        "Economics",
+        "Geography",
         "English",
         "Logical Reasoning",
       ],

@@ -168,10 +168,19 @@ const Panel13: React.FC = () => {
         {/* RIGHT SIDE IMAGE (VISIBLE, NOT BACKGROUND) */}
       </motion.div>
         <div className="flex-1 flex justify-center">
-          <img
-          src="/images/panel13/mock_test.jpg"
-          alt="Mock Test"
-          className="rounded-3xl shadow-lg max-w-[500px] w-full object-cover"
+           <img
+            src="/images/panel13/mock_test.jpg"
+            alt="Mock Test"
+            className="
+              rounded-3xl 
+              shadow-[0_8px_20px_rgba(0,0,0,0.15)]
+              max-w-[400px]
+              w-full
+              object-cover
+              transition-all
+              duration-500
+              filter saturate-[0.9] brightness-[0.98]
+            "
           />
         </div>
       </div>

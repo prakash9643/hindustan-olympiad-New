@@ -298,10 +298,10 @@ export default function Navbar() {
           </Button>
           </Link>
           {/* End Here */}
-          <Link href="#participate" className="h-10 block md:inline" onClick={() => handleCtaClick("participate_now", "article_bottom")}>
-          <Button>
-            Participate Now
-          </Button>
+          <Link href="/Result" className="h-10 block md:inline" onClick={() => handleCtaClick("Olympiad-Result-2025", "article_top")}>
+            <Button>
+              Olympiad Result 2025
+            </Button>
           </Link>
           {/* {pathname === "/" && user && userType ? (
             <Link href={userType === "school-coordinator" ? "/school" : "/team"} className="h-10 block md:inline">

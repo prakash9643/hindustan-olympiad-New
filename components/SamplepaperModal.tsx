@@ -53,7 +53,7 @@ const SamplePaperModal: React.FC<SamplePaperModalProps> = ({ open, onClose, user
   const handleInputChange = (field: string, value: string) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
   };
-
+  const [serverOtp, setServerOtp] = useState("");
   // OTP countdown timer
   useEffect(() => {
     let timer: NodeJS.Timeout;
@@ -64,10 +64,30 @@ const SamplePaperModal: React.FC<SamplePaperModalProps> = ({ open, onClose, user
     }
     return () => clearTimeout(timer);
   }, [otpTimer, otpSent]);
-
+  const isValidPhone = (phone: string) => {
+    const regex = /^[6-9]\d{9}$/;
+    return regex.test(phone);
+  };
   // Send OTP
   const handleSendOTP = async () => {
-    if (!formData.phone || !formData.class || sendingOtp) return;
+
+    if (!formData.phone) {
+      error("Phone number is required", {
+        duration: 1500,
+        position: "top-right",
+      });
+      return;
+    }
+
+    if (!isValidPhone(formData.phone)) {
+      error("Invalid phone number! Must be 10 digits & start with 6, 7, 8 or 9", {
+        duration: 2000,
+        position: "top-right",
+      });
+      return;
+    }
+
+    if (!formData.class || sendingOtp) return;
     setSendingOtp(true);
     try {
       const res = await fetch("/api/sample-paper-Otp/", {
@@ -79,8 +99,9 @@ const SamplePaperModal: React.FC<SamplePaperModalProps> = ({ open, onClose, user
       if (data.success) {
         setOtpSent(true);
         setOtpTimer(OTP_EXPIRY_SECONDS);
-				console.log("OTP for testing:", data.otp); // ✅ see OTP in browser console
+				// console.log("OTP for testing:", data.otp); // ✅ see OTP in browser console
         setCanResend(false);
+        setServerOtp(data.otp);
         setOtp(""); // clear input        
 				success("OTP sent to your phone!", {
           position: "top-right",
@@ -110,47 +131,58 @@ const SamplePaperModal: React.FC<SamplePaperModalProps> = ({ open, onClose, user
   // Verify OTP
   const handleVerifyOTP = async () => {
     if (otpTimer === 0) {
-			error("OTP expired. Please resend.", {
-				duration: 100,
-				position: "top-right",
-				description: "Please try again later.",
-			});
+      error("OTP expired. Please resend.", {
+        duration: 1000,
+        position: "top-right",
+      });
       return;
     }
-    if (otp === otp) {
-      try {
-        const res = await fetch("/api/SamplePaper", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ ...formData, otpVerified: true }),
-        });
-        const data = await res.json();
 
-        if (data.success) {
-          setOtpVerified(true);
-          success("OTP verified!", {
-            position: "top-right",
-            duration: 100,
-            description: "You can now download the sample paper.",
-          });
-        } else {
-          error("Failed to save request.", {
-            position: "top-right",
-            duration: 100,
-            description: data.message,
-          });
-        }
-      } catch (err) {
-        console.error(err);
-        error("Error saving request.", {
-          position: "top-right",
-          duration: 100,
-          description: "Please try again later.",
-        });
-      }
+    if (!otp || otp.length !== 6) {
+      error("Please enter a valid 6-digit OTP.", {
+        duration: 1500,
+        position: "top-right",
+      });
+      return;
     }
 
+    if (otp !== serverOtp) {
+      error("Invalid OTP! Please enter correct OTP.", {
+        duration: 1500,
+        position: "top-right",
+      });
+      return;
+    }
+
+    // OTP MATCHED → Now save data
+    try {
+      const res = await fetch("/api/SamplePaper", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ ...formData, otpVerified: true }),
+      });
+
+      const data = await res.json();
+
+      if (data.success) {
+        setOtpVerified(true);
+        success("OTP verified!", {
+          position: "top-right",
+          duration: 100,
+        });
+      } else {
+        error("Failed to save request.", {
+          position: "top-right",
+          duration: 100,
+          description: data.message,
+        });
+      }
+    } catch (err) {
+      console.error(err);
+      error("Error saving request.");
+    }
   };
+
 
   // Resend OTP
   const handleResendOTP = () => {
