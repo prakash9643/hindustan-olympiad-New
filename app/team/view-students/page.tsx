@@ -346,7 +346,7 @@ export default function ViewStudents() {
                   <TableHead>School</TableHead>
                   <TableHead>Roll Number</TableHead>
                   <TableHead>Contact</TableHead>
-                  <TableHead>Source_code</TableHead>
+                  {/* <TableHead>Source_code</TableHead> */}
                   <TableHead>Payment</TableHead>
                   <TableHead>Actions</TableHead>
                 </TableRow>
@@ -370,7 +370,7 @@ export default function ViewStudents() {
                     {/* <TableCell>{student.paymentVerified ? student.studentId : "XXXXX"}</TableCell> */}
                     <TableCell>{student.studentId}</TableCell>
                     <TableCell>{student.parentContact}</TableCell>
-                    <TableCell>{student.Source_code}</TableCell>
+                    {/* <TableCell>{student.Source_code}</TableCell> */}
                     <TableCell className={student.paymentVerified ? "text-green-500" : "text-red-500"}>
                       {student.paymentVerified ? "Received" : "Pending"}
                     </TableCell>
