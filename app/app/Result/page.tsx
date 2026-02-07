@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { Button } from "../../components/ui/button";
+import { Button } from "@/components/ui/button";
 
 export default function ResultPage() {
   const [studentId, setstudentId] = useState("");

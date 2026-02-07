@@ -1,6 +1,6 @@
 "use client";
 import { useState } from "react";
-import { Button } from "../../components/ui/button";
+import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import Image from "next/image";
@@ -43,24 +43,8 @@ const submitForm = async (e: any) => {
 		duration: 3000,
 		description: data.message,
 	});
-	// formData.reset();
-
-	// resetFileInput();
+	window.location.reload();
 };
-
-// const handleFileChange = (e: any) => {
-// 	const file = e.target.files[0];
-// 	if (!file) return;
-
-// 	setFileName(file.name);
-// 	setFileType(file.type);
-
-// 	if (file.type.startsWith("image/")) {
-// 		setFilePreview(URL.createObjectURL(file));
-// 	} else {
-// 		setFilePreview(null);
-// 	}
-// };
 const handleEssayChange = (e: any) => {
 	const file = e.target.files?.[0];
 	if (!file) return;
