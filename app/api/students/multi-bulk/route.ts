@@ -98,7 +98,7 @@ export async function POST(req: NextRequest) {
             name: s.name?.trim(),
             parentContact: s.parentContact?.trim(),
             class: s.class?.trim(),
-            studentId: s.studentId?.trim(),
+            // studentId: s.studentId?.trim(),
           });
 
           if (existing) {
