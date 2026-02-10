@@ -16,7 +16,7 @@ export default function Pagination({
   totalPages,
   total,
   onPageChange,
-  itemsPerPage = 5,
+  itemsPerPage = 10,
 }: PaginationProps) {
   const startItem = (currentPage - 1) * itemsPerPage + 1
   const endItem = Math.min(currentPage * itemsPerPage, total)
