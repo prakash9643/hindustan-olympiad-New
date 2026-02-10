@@ -148,8 +148,8 @@ export default function ViewStudents() {
     setLoading(true)
     try {
       const res = await fetch(
-        // `/api/students?page=${pageNumber}&limit=10&search=${search}&filters=${JSON.stringify(filters)}&sortBy=${sortBy}`,
-        `/api/students?page=${pageNumber}&limit=10&schoolId=${schoolId}&filters=${JSON.stringify(filters)}&sortBy=${sortBy}`,
+        `/api/students?page=${pageNumber}&limit=10&search=${search}&schoolId=${schoolId}&filters=${JSON.stringify(filters)}&sortBy=${sortBy}`,
+        // `/api/students?page=${pageNumber}&limit=10&schoolId=${schoolId}&filters=${JSON.stringify(filters)}&sortBy=${sortBy}`,
         
         {
           method: "GET",
@@ -309,7 +309,7 @@ export default function ViewStudents() {
           <CardTitle>Students List</CardTitle>
           <CardDescription>View and manage all students in the system</CardDescription>
         </CardHeader>
-        <Button onClick={() => handleExport("before")} className="py-2 px-4" disabled={exportLoading}>
+        <Button onClick={() => handleExport()} className="py-2 px-4" disabled={exportLoading}>
           <Download className="h-4 w-4" />
           {exportLoading ? "Exporting..." : "Export"}
         </Button>

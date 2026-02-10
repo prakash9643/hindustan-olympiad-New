@@ -3,6 +3,7 @@ import { connectDB } from "@/utils/config/dbConfig";
 import { Student } from "@/utils/models/Student";
 import { cookies } from "next/headers";
 import { verifyResultToken } from "@/utils/jwt";
+import { Result } from "@/utils/models/result";
 
 export async function POST() {
   try {
@@ -31,6 +32,7 @@ export async function POST() {
 
     // 🔥 3. FINAL studentId (ONLY from JWT)
     const studentId = payload.studentId;
+    // console.log("JWT studentId:", studentId, typeof studentId);
 
     const student = await Student.findOne({ studentId }).lean();
 
@@ -41,9 +43,23 @@ export async function POST() {
       );
     }
 
+    // 2️⃣ Result fetch (IMPORTANT)
+    const result = await Result.findOne({ studentId }).lean();
+    // console.log("🎯 Any Result:", result);
+
+    // console.log("🎯 Result Fetch:", { studentId, result });
+
+    if (!result) {
+      return NextResponse.json(
+        { message: "Result not declared yet" },
+        { status: 404 }
+      );
+    }
+
     return NextResponse.json({
       success: true,
       student,
+      result,
     });
   } catch (error) {
     console.error("❌ Fetch Student Error:", error);

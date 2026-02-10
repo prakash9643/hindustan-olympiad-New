@@ -52,6 +52,28 @@ export async function GET(req: NextRequest) {
     if (schoolCoordinator) {
         return new Response(JSON.stringify({ error: "School cant download schools list" }), { status: 401 });
     }
+    // 🔥 Live student count map
+    const studentCounts = await School.aggregate([
+    {
+        $lookup: {
+        from: "students",
+        localField: "schoolId",
+        foreignField: "schoolId",
+        as: "students",
+        },
+    },
+    {
+        $project: {
+        schoolId: 1,
+        studentsCount: { $size: "$students" },
+        },
+    },
+    ]);
+
+    const countMap: Record<string, number> = {};
+    studentCounts.forEach((s: any) => {
+    countMap[s.schoolId] = s.studentsCount;
+    });
 
     const cursor = School.find(query).cursor();
 
@@ -90,7 +112,8 @@ export async function GET(req: NextRequest) {
                 "Coordinator Name": school.coordinatorName,
                 "Coordinator Phone": school.coordinatorPhone,
                 "Coordinator Email": school.coordinatorEmail,
-                "Total Students": school.studentsCount,
+                // "Total Students": school.studentsCount,
+                "Total Students": countMap[school.schoolId] || 0,
                 "Payment Verified": school.paymentVerification,
             });
         }

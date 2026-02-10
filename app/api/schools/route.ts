@@ -119,7 +119,8 @@ async function attachStudentCounts(schools: any[]) {
 
   return schools.map((s: any) => ({
     ...s,
-    studentCountFromDB: countMap[s.schoolId] || 0, // <-- correct mapping
+    // studentCountFromDB: countMap[s.schoolId] || 0, // <-- correct mapping
+    studentsCount: countMap[s.schoolId] || 0, // override with real count
   }));
 }
 /* ========================= GET ========================= */

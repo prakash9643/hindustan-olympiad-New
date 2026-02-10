@@ -60,22 +60,22 @@ export async function GET(req: NextRequest) {
   // if (type === "before") {
   //   query.createdAt = { $lte: cutoff };
   // }
-  const startDate = new Date("2025-12-07T10:30:00.000Z");
-  const endDate = new Date("2025-12-08T23:59:59.999Z");
+  // const startDate = new Date("2025-12-07T10:30:00.000Z");
+  // const endDate = new Date("2025-12-08T23:59:59.999Z");
 
   // Export students between 7 July and 8 July 2025
-  if (type === "before") {
-    query.createdAt = {
-      $gte: startDate,
-      $lte: endDate,
-    };
-  }
+  // if (type === "before") {
+  //   query.createdAt = {
+  //     $gte: startDate,
+  //     $lte: endDate,
+  //   };
+  // }
 
   // Export students added by your ID after 18 Nov 2025
-  if (type === "after") {
-    query.createdAt = { $gte: new Date("2025-11-18T00:00:00.000Z") };
-    query.addedBy = { $ne: "6874f0592c97dbf80815617c" };    // YOUR ID FIXED
-  }
+  // if (type === "after") {
+  //   query.createdAt = { $gte: new Date("2025-11-18T00:00:00.000Z") };
+  //   query.addedBy = { $ne: "6874f0592c97dbf80815617c" };    // YOUR ID FIXED
+  // }
 
   // Existing Filters
   if (isTeamMember) {
@@ -124,7 +124,6 @@ export async function GET(req: NextRequest) {
         district: getDistrictLabel(student.region, student.district),
         region: getRegionLabel(student.region),
         city: student.city,
-        Source_code: student.Source_code,
         paymentVerified: student.paymentVerified ? "Yes" : "No",
         schoolId: student.schoolId,
         pincode: student.pincode,

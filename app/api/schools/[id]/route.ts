@@ -20,6 +20,14 @@ export async function GET(
     if (!access) {
         return NextResponse.json({ error: message }, { status: 401 });
     }
+    // 🔥 LIVE studentsCount (from Student DB)
+    const studentsCountAgg = await Student.aggregate([
+        { $match: { schoolId: school.schoolId } }, // string schoolId
+        { $group: { _id: "$studentId" } },
+        { $count: "total" }
+    ]);
+
+    school.studentsCount = studentsCountAgg[0]?.total || 0;
 
     return NextResponse.json(school);
 
@@ -37,6 +45,15 @@ export async function PUT(req: NextRequest, { params }: { params: { id: string }
     if (!access) {
         return NextResponse.json({ error: message }, { status: 401 });
     }
+    
+    // 🔥 LIVE studentsCount (from Student DB)
+    const studentsCountAgg = await Student.aggregate([
+        { $match: { schoolId: school.schoolId } }, // string schoolId
+        { $group: { _id: "$studentId" } },
+        { $count: "total" }
+    ]);
+
+    school.studentsCount = studentsCountAgg[0]?.total || 0;
 
     if (data && data.confirmPayment && data.confirmPayment === true && id) {
         if (user?.role !== "finance") {

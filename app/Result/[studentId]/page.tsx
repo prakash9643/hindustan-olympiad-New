@@ -8,10 +8,12 @@ import { Button } from "@/components/ui/button";
 import { Trophy, Medal, Award } from "lucide-react";
 import { url } from "inspector";
 import Image from "next/image";
+import { set } from "mongoose";
 
 export default function ResultPage() {
   const [student, setStudent] = useState<any>(null);
   const [loading, setLoading] = useState(true);
+  const [result, setResult] = useState<any>(null);
   const [error, setError] = useState("");
 
   useEffect(() => {
@@ -19,6 +21,7 @@ export default function ResultPage() {
       try {
         const res = await fetch("/api/result/get-student", {
           method: "POST",
+
         });
 
         const data = await res.json();
@@ -27,6 +30,7 @@ export default function ResultPage() {
           setError(data.message || "Result not found");
         } else {
           setStudent(data.student);
+          setResult(data.result);
         }
       } catch {
         setError("Failed to load result");
@@ -43,8 +47,8 @@ export default function ResultPage() {
           Loading Result...
         </div>
       </div>;
-  if (error) return <div className="flex items-center justify-center h-screen">
-        <div className="text-2xl font-bold text-red-600">
+  if (error) return <div className="flex items-center justify-center h-screen px-6">
+        <div className="md:text-2xl text-1xl font-bold text-red-600">
           {error}
         </div>
       </div>;
@@ -85,6 +89,13 @@ export default function ResultPage() {
       </div>
     );
 
+    const sections = [
+      { key: "sectionA", label: "A" },
+      { key: "sectionB", label: "B" },
+      { key: "sectionC", label: "C" },
+      { key: "sectionD", label: "D" },
+      { key: "sectionE", label: "E" },
+    ];
   return (
     <>
     <div className="min-h-screen bg-gradient-to-br from-red-50 to-blue-100 p-4 md:p-10" 
@@ -121,13 +132,13 @@ export default function ResultPage() {
           </div>
         </div>
         <div className="bg-gray-50 rounded-xl mx-6 mt-2">
-          <div className="gap-2 grid grid-cols-1 md:grid-cols-4 px-6 py-4 border-b">
+          <div className="gap-2 grid grid-cols-1 md:grid-cols-4 md:px-6 px-3 py-4 border-b">
             <Info label="Full Name" value={student.name} />
             <Info label="Class" value={student.class} />
             <Info label="Roll Number" value={student.studentId} highlight />
             <Info label="Stream" value={student.stream}  />
           </div>
-          <div className="px-6 py-4 grid grid-cols-1 md:grid-cols-4 gap-2">
+          <div className="md:px-6 px-3 py-4 grid grid-cols-1 md:grid-cols-4 gap-2">
             <div className="md:col-span-2 border-r">
               <Info label="School Name" value={student.schoolName} />
             </div>
@@ -158,7 +169,21 @@ export default function ResultPage() {
           </div>
         </div>
         <div className="rounded-xl shadow mx-6 mt-3">
-          <div className="space-y-6 p-6 bg-gray-50">
+          <div className="space-y-6 md:p-6 p-3 bg-gray-50">
+            {sections.map((sec) => (
+              <div key={sec.key} className="md:flex block md:gap-4 gap-2 items-center">
+                <p className="text-gray-600 w-24">
+                  Section <strong>{sec.label}</strong>
+                </p>
+                <ProgressBar
+                  label=""
+                  value={result[sec.key] || 0}
+                  max={20}
+                />
+              </div>
+            ))}
+          </div>
+          {/* <div className="space-y-6 p-6 bg-gray-50">
             <div className="flex gap-4 flex-row items-center">
               <p className="text-gray-600">Section <strong>A</strong></p>
               <ProgressBar label="" value={18} max={20} />
@@ -179,17 +204,17 @@ export default function ResultPage() {
               <p className="text-gray-600">Section <strong>E</strong></p>
               <ProgressBar label="Section E" value={16} max={20} />
             </div>
-          </div>
-          <div className="p-6 bg-white flex gap-4 flex-row items-center">
-            <p className="text-gray-600 text-lg w-[15%]"><strong>Total Marks</strong></p>
-            <ProgressBar label="Total Marks" value={86} max={100} bold />
+          </div> */}
+          <div className="p-6 bg-white md:flex block md:gap-4 gap-2 flex-row items-center">
+            <p className="text-gray-600 w-24"><strong>Total Marks</strong></p>
+            <ProgressBar label="Total Marks" value={result.fullmarks} max={100} bold />
           </div>
         </div>
 
 
 
         {/* Rank */}
-        <div className="bg-gradient-to-r mx-6 mt-8 mb-10 from-blue-50 to-purple-50 rounded-2xl p-6 shadow">
+        <div className="bg-gradient-to-r mx-6 mt-8 mb-10 from-blue-50 to-purple-50 rounded-2xl md:p-6 p-3 shadow">
       
           {/* Header */}
           <div className="flex items-center gap-4 mb-6">
@@ -210,21 +235,21 @@ export default function ResultPage() {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-6">
             <RankCard
               title="National Rank"
-              rank={1}
+              rank={result.nationalmarks}
               icon={<Trophy size={20} />}
               gradient="bg-gradient-to-r from-green-500 to-emerald-400"
             />
 
             <RankCard
               title="Region Rank"
-              rank={5}
+              rank={result.regionmarks}
               icon={<Medal size={20} />}
               gradient="bg-gradient-to-r from-blue-500 to-sky-400"
             />
 
             <RankCard
               title="District Rank"
-              rank={2}
+              rank={result.districtmarks}
               icon={<Award size={20} />}
               gradient="bg-gradient-to-r from-orange-500 to-amber-400"
             />
@@ -247,11 +272,11 @@ export default function ResultPage() {
             </div>
           </div>
           <div>
-            <h2 className="text-xl font-bold text-gray-900">Download Your Certificate & Performance Report</h2>
+            <h2 className="md:text-xl text-md font-bold text-gray-900">Download Your Certificate & Performance Report</h2>
             <p className="text-sm text-gray-500 mt-1">Get your official documents</p>
           </div>
         </div>
-        <div className="grid grid-cols-2 md:grid-cols-2 gap-4 px-6 py-4 mt-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 px-6 py-4 mt-4">
           <Button
             className="h-12 block md:inline"
             onClick={() => window.open("/api/result/download-certificate", "_blank")}
@@ -283,16 +308,16 @@ export default function ResultPage() {
             </div>
           </div>
           <div>
-            <h2 className="text-xl font-bold text-gray-900">Certificate Correction Request</h2>
+            <h2 className="md:text-xl text-md font-bold text-gray-900">Certificate Correction Request</h2>
             <p className="text-sm text-gray-500 mt-1">Request changes to your certificate</p>
           </div>
         </div>
-        <div className="grid grid-cols-2 md:grid-cols-2 gap-4 px-6 py-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 px-6 py-4">
           <div className="text-sm text-gray-600 mb-2">
             <p>Found an error in your certificate details? Submit a correction request here.
             Button - Request Correction</p>
           </div>
-          <div className="flex justify-end">
+          <div className="flex md:justify-end justify-center">
             <a href="https://forms.gle/GMegDtxsqTARLJUe8" target="_blank" className="h-10 block button bg-[#a22f35] text-[#fff] font-semibold px-6 py-2 rounded-lg transition">
               Request Correction
             </a>
@@ -392,7 +417,7 @@ function ProgressBar({
   }, [percent]);
 
   return (
-    <div className="space-y-1 w-[90%] flex items-center gap-4">
+    <div className="space-y-1 md:w-[90%] flex items-center gap-1">
       {/* Progress bar */}
       <div className="h-3 w-full rounded-full bg-gray-200 overflow-hidden">
         <div
@@ -405,7 +430,7 @@ function ProgressBar({
         />
       </div>
       {/* Label row */}
-      <div className="flex justify-between text-sm text-gray-700 w-[10%]">
+      <div className="flex justify-between text-sm text-gray-700 md:w-[10%]">
         {/* <span className={bold ? "font-semibold" : ""}>{label}</span> */}
         <span className={bold ? "font-semibold" : ""}>
           <strong>{value}</strong>  / {max}
