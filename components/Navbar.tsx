@@ -292,11 +292,11 @@ export default function Navbar() {
             </div>
           </div>
           {/* Sample Paper */}
-          <Link href="#sample-papers" className="h-10 block md:inline" onClick={() => handleCtaClick("participate_now", "article_bottom")}>
+          {/* <Link href="#sample-papers" className="h-10 block md:inline" onClick={() => handleCtaClick("participate_now", "article_bottom")}>
           <Button>
             Sample Paper
           </Button>
-          </Link>
+          </Link> */}
           {/* End Here */}
           <Link href="/Result" className="h-10 block md:inline" onClick={() => handleCtaClick("Olympiad-Result-2025", "article_top")}>
             <Button>
