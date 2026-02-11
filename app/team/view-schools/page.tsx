@@ -442,6 +442,17 @@ export default function ViewSchools() {
       ],
     },
   ];
+  const allowedExportUsers = [
+    "685b7c72ad2fe5fd0b127374",
+    "685b7c73ad2fe5fd0b127378",
+    "685b7c73ad2fe5fd0b12737c",
+    "685b7c73ad2fe5fd0b12737e",
+    "686fe912ea03867f29ef2770",
+    "686fe912ea03867f29ef2774",
+    "687e3d8651cd20af0acefe0f",
+    "68a315644e9ba8d109135d1c",
+    "6874f0592c97dbf80815617c",
+  ];
 
   /* --------------- Render --------------- */
 
@@ -454,15 +465,24 @@ export default function ViewSchools() {
             View and manage all schools in the system
           </CardDescription>
         </CardHeader>
-
-        <Button
+        {allowedExportUsers.includes(user?._id) && (
+          <Button
+            onClick={handleExport}
+            className="py-2 px-4"
+            disabled={exportLoading}
+          >
+            <Download className="h-4 w-4" />
+            {exportLoading ? "Exporting..." : "Export"}
+          </Button>
+        )}
+        {/* <Button
           onClick={handleExport}
           className="py-2 px-4"
           disabled={exportLoading || !user?._id}
         >
           <Download className="h-4 w-4" />
           {exportLoading ? "Exporting..." : "Export"}
-        </Button>
+        </Button> */}
       </div>
 
       <CardContent className="p-0">

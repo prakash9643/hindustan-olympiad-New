@@ -58,6 +58,7 @@ export async function GET(req: NextRequest) {
       { name: searchRegex },
       { studentId: searchRegex },
       { schoolName: searchRegex }, // added this line
+      { schoolId: searchRegex }, // added this line
     ];
 
     query.$or = orQuery;

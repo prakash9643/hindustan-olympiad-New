@@ -12,6 +12,12 @@ import {
 	SelectTrigger,
 	SelectValue,
 } from "@/components/ui/select";
+import Script from "next/script";
+declare global {
+  interface Window {
+    gtag?: (...args: any[]) => void;
+  }
+}
 export default function EssayForm() {
 	const [loading, setLoading] = useState(false);
 	const [essayFile, setEssayFile] = useState<File | null>(null);
@@ -73,6 +79,13 @@ export default function EssayForm() {
 			console.log("Response data:", data);
 			
 			if (res.ok) {
+				if (typeof window !== "undefined" && window.gtag) {
+					window.gtag('event', 'conversion', {
+						send_to: 'AW-877933553/8k8ICNHjlvYbEPHn0KID',
+						value: 1.0,
+						currency: 'INR'
+					});
+				}
 				success(data.message, {
 					position: "top-right",
 					duration: 3000,
@@ -406,243 +419,273 @@ const Locations = [
 ];
 
 return (
-	<div className="min-h-screen bg-gradient-to-br from-red-50 to-indigo-100 flex flex-col items-center justify-center p-4">
-		<div className="w-full max-w-2xl rounded-2xl my-6">
-			<Image 
-				src="/images/hero/reynolads-header.jpg" 
-				alt="Reynolds Logo" 
-				className="mb-6 rounded-2xl" 
-				width={800}
-				height={600}
-				unoptimized
-				/>
-		</div>
-		<div className="w-full max-w-2xl bg-white rounded-2xl shadow-xl p-6 md:p-8">
-			<h1 className="text-2xl font-bold text-gray-800 mb-6 text-left">
-				One Super Power I would like to have &amp; Why - Reynolds Essay Competition
-			</h1>
-			<p className="text-md text-gray-800 mb-6 text-left"><strong>Imagine. Write. Win!</strong> Tell us about one superpower you wish you had and why, and you could be one of the lucky winners to receive a Reynolds gift hamper. Fill up the below form with the necessary details.</p>
+	<>
+		<Script async src="https://www.googletagmanager.com/gtag/js?id=AW-877933553"></Script>
+		 <Script id="google-ads-gtag" strategy="afterInteractive">
+				{`
+					window.dataLayer = window.dataLayer || [];
+					function gtag(){dataLayer.push(arguments);}
+					gtag('js', new Date());
+					gtag('config', 'AW-877933553');
+				`}
+			</Script>
+			<Script id="google-ads-conversion" strategy="afterInteractive">
+				{`
+					function gtag_report_conversion(url) {
+						var callback = function () {
+							if (typeof(url) != 'undefined') {
+								window.location = url;
+							}
+						};
+						gtag('event', 'conversion', {
+								'send_to': 'AW-877933553/8k8ICNHjlvYbEPHn0KID',
+								'value': 1.0,
+								'currency': 'INR',
+								'event_callback': callback
+						});
+						return false;
+					}
+				`}
+			</Script>
 
-			<form ref={formRef} onSubmit={submitForm} className="space-y-4">
-				{/* Inputs */}
-				<div className="grid grid-cols-1 gap-4">
-					<div className="space-y-2">
-						<Label htmlFor="Name">Name <span className="text-red-600">*</span></Label>
-						<Input 
-							name="name" 
-							id="Name"
-							value={formData.name}
-							onChange={handleInputChange} 
-							required 
-						/>
-					</div>
-					
-					<div className="space-y-2">
-						<Label htmlFor="Age">Age <span className="text-red-600">*</span></Label>
-						<Input 
-							name="age" 
-							id="Age" 
-							value={formData.age}
-							onChange={handleInputChange}
-							required />
-					</div>
-					
-					<div className="space-y-2">
-						<Label htmlFor="Gender">Gender</Label>
-
-						<Select
-							required
-							name="gender"
-							value={formData.gender}
-							onValueChange={(value) => handleSelectChange("gender", value)}
-						>
-							<SelectTrigger>
-								<SelectValue placeholder="Select Gender" />
-							</SelectTrigger>
-							<SelectContent>
-								<SelectItem value="Male">Male</SelectItem>
-								<SelectItem value="Female">Female</SelectItem>
-								<SelectItem value="Others">Others</SelectItem>
-							</SelectContent>
-						</Select>
-					</div>
-
-					<div className="space-y-2">
-						<Label htmlFor="Class">Class</Label>
-
-						<Select
-							required
-							name="class"
-							value={formData.class}
-							onValueChange={(value) => handleSelectChange("class", value)}
-						>
-							<SelectTrigger>
-								<SelectValue placeholder="Select Class" />
-							</SelectTrigger>
-							<SelectContent>
-								<SelectItem value="Class 5">Class 5</SelectItem>
-								<SelectItem value="Class 6">Class 6</SelectItem>
-								<SelectItem value="Class 7">Class 7</SelectItem>
-								<SelectItem value="Class 8">Class 8</SelectItem>
-							</SelectContent>
-						</Select>
-					</div>
-					
-					<div className="space-y-2">
-						<Label htmlFor="School">School <span className="text-red-600">*</span></Label>
-						<Input 
-							name="school" 
-							id="School"
-							value={formData.school}
-							onChange={handleInputChange} 
-							required />
-					</div>
-					
-					<div className="space-y-2">
-						<Label htmlFor="Phone">Phone <span className="text-red-600">*</span></Label>
-						<Input 
-							name="phone" 
-							id="Phone"
-							value={formData.phone}
-							onChange={handleInputChange} 
-							required />
-					</div>
-
-					<div className="space-y-2">
-						<Label htmlFor="Location">Location</Label>
-
-						<Select
-							required
-							name="location"
-							value={formData.location}
-							onValueChange={(value) => handleSelectChange("location", value)}
-						>
-							<SelectTrigger>
-								<SelectValue placeholder="Select Location" />
-							</SelectTrigger>
-							<SelectContent>
-								{Locations.map((loc, idx) => (
-									<SelectItem key={idx} value={loc}>{loc}</SelectItem>
-								))}
-							</SelectContent>
-						</Select>
-					</div>
-				</div>
-
-
-				{/* File Upload */}
-				<p className="text-sm text-black-800 mb-6 text-left">Upload your essay here <sub className="text-red-600">*</sub></p>
-				<div className="border-2 relative border-dashed rounded-xl p-4 text-center hover:border-blue-400 transition">
-					<input
-						name="essay"
-						type="file"
-						accept=".pdf,.doc,.docx,.jpg,.png"
-						required
-						onChange={handleEssayChange}
-						className="visually-hidden"
-						id="essayUpload"
-						style={{
-							position: "absolute",
-							left: "0",
-							width: "100%",
-							height: "100%",
-							top: "0",
-							opacity: "0",
-							cursor: "pointer",
-						}}	
+		<div className="min-h-screen bg-gradient-to-br from-red-50 to-indigo-100 flex flex-col items-center justify-center p-4">
+			<div className="w-full max-w-2xl rounded-2xl my-6">
+				<Image 
+					src="/images/hero/reynolads-header.jpg" 
+					alt="Reynolds Logo" 
+					className="mb-6 rounded-2xl" 
+					width={800}
+					height={600}
+					unoptimized
 					/>
-					<label htmlFor="essayUpload" className="cursor-pointer">
-						<p className="text-sm text-gray-500">
-							Click to upload Essay (PDF, DOC, Image)
-						</p>
-					</label>
+			</div>
+			<div className="w-full max-w-2xl bg-white rounded-2xl shadow-xl p-6 md:p-8">
+				<h1 className="text-2xl font-bold text-gray-800 mb-6 text-left">
+					One Super Power I would like to have &amp; Why - Reynolds Essay Competition
+				</h1>
+				<p className="text-md text-gray-800 mb-6 text-left"><strong>Imagine. Write. Win!</strong> Tell us about one superpower you wish you had and why, and you could be one of the lucky winners to receive a Reynolds gift hamper. Fill up the below form with the necessary details.</p>
 
-					{/* Preview */}
-					{essayFile && (
-						<div className="mt-4">
-							{essayPreview ? (
+				<form ref={formRef} onSubmit={submitForm} className="space-y-4">
+					{/* Inputs */}
+					<div className="grid grid-cols-1 gap-4">
+						<div className="space-y-2">
+							<Label htmlFor="Name">Name <span className="text-red-600">*</span></Label>
+							<Input 
+								name="name" 
+								id="Name"
+								value={formData.name}
+								onChange={handleInputChange} 
+								required 
+							/>
+						</div>
+						
+						<div className="space-y-2">
+							<Label htmlFor="Age">Age <span className="text-red-600">*</span></Label>
+							<Input 
+								name="age" 
+								id="Age" 
+								value={formData.age}
+								onChange={handleInputChange}
+								required />
+						</div>
+						
+						<div className="space-y-2">
+							<Label htmlFor="Gender">Gender</Label>
+
+							<Select
+								required
+								name="gender"
+								value={formData.gender}
+								onValueChange={(value) => handleSelectChange("gender", value)}
+							>
+								<SelectTrigger>
+									<SelectValue placeholder="Select Gender" />
+								</SelectTrigger>
+								<SelectContent>
+									<SelectItem value="Male">Male</SelectItem>
+									<SelectItem value="Female">Female</SelectItem>
+									<SelectItem value="Others">Others</SelectItem>
+								</SelectContent>
+							</Select>
+						</div>
+
+						<div className="space-y-2">
+							<Label htmlFor="Class">Class</Label>
+
+							<Select
+								required
+								name="class"
+								value={formData.class}
+								onValueChange={(value) => handleSelectChange("class", value)}
+							>
+								<SelectTrigger>
+									<SelectValue placeholder="Select Class" />
+								</SelectTrigger>
+								<SelectContent>
+									<SelectItem value="Class 5">Class 5</SelectItem>
+									<SelectItem value="Class 6">Class 6</SelectItem>
+									<SelectItem value="Class 7">Class 7</SelectItem>
+									<SelectItem value="Class 8">Class 8</SelectItem>
+								</SelectContent>
+							</Select>
+						</div>
+						
+						<div className="space-y-2">
+							<Label htmlFor="School">School <span className="text-red-600">*</span></Label>
+							<Input 
+								name="school" 
+								id="School"
+								value={formData.school}
+								onChange={handleInputChange} 
+								required />
+						</div>
+						
+						<div className="space-y-2">
+							<Label htmlFor="Phone">Phone <span className="text-red-600">*</span></Label>
+							<Input 
+								name="phone" 
+								id="Phone"
+								value={formData.phone}
+								onChange={handleInputChange} 
+								required />
+						</div>
+
+						<div className="space-y-2">
+							<Label htmlFor="Location">Location</Label>
+
+							<Select
+								required
+								name="location"
+								value={formData.location}
+								onValueChange={(value) => handleSelectChange("location", value)}
+							>
+								<SelectTrigger>
+									<SelectValue placeholder="Select Location" />
+								</SelectTrigger>
+								<SelectContent>
+									{Locations.map((loc, idx) => (
+										<SelectItem key={idx} value={loc}>{loc}</SelectItem>
+									))}
+								</SelectContent>
+							</Select>
+						</div>
+					</div>
+
+
+					{/* File Upload */}
+					<p className="text-sm text-black-800 mb-6 text-left">Upload your essay here <sub className="text-red-600">*</sub></p>
+					<div className="border-2 relative border-dashed rounded-xl p-4 text-center hover:border-blue-400 transition">
+						<input
+							name="essay"
+							type="file"
+							accept=".pdf,.doc,.docx,.jpg,.png"
+							required
+							onChange={handleEssayChange}
+							className="visually-hidden"
+							id="essayUpload"
+							style={{
+								position: "absolute",
+								left: "0",
+								width: "100%",
+								height: "100%",
+								top: "0",
+								opacity: "0",
+								cursor: "pointer",
+							}}	
+						/>
+						<label htmlFor="essayUpload" className="cursor-pointer">
+							<p className="text-sm text-gray-500">
+								Click to upload Essay (PDF, DOC, Image)
+							</p>
+						</label>
+
+						{/* Preview */}
+						{essayFile && (
+							<div className="mt-4">
+								{essayPreview ? (
+									<div className="relative mx-auto h-32 w-32">
+										<Image
+											src={essayPreview}
+											alt="Essay Preview"
+											fill
+											className="rounded-lg object-cover shadow"
+										/>
+									</div>
+								) : (
+									<p className="text-sm font-medium">{essayFile.name}</p>
+								)}
+							</div>
+						)}
+					</div>
+
+					{/* File Upload */}
+					<p className="text-sm text-black-800 mb-6 text-left">Upload your selfie holding a Reynolds Trimax pen here <sub className="text-red-600">*</sub></p>
+					<div className="border-2 relative border-dashed rounded-xl p-4 text-center hover:border-blue-400 transition">
+						<input
+							name="selfie"
+							type="file"
+							accept=".jpg,.png"
+							required
+							onChange={handleSelfieChange}
+							className="visually-hidden"
+							id="selfieUpload"
+							style={{
+								position: "absolute",
+								left: "0",
+								width: "100%",
+								height: "100%",
+								top: "0",
+								opacity: "0",
+								cursor: "pointer",
+							}}
+						/>
+						<label htmlFor="selfieUpload" className="cursor-pointer">
+							<p className="text-sm text-gray-500">
+								Click to upload Selfie (PDF, DOC, Image)
+							</p>
+						</label>
+
+						{/* Preview */}
+						{selfieFile && (
+							<div className="mt-4">
 								<div className="relative mx-auto h-32 w-32">
 									<Image
-										src={essayPreview}
-										alt="Essay Preview"
+										src={selfiePreview!}
+										alt="Selfie Preview"
 										fill
 										className="rounded-lg object-cover shadow"
 									/>
 								</div>
-							) : (
-								<p className="text-sm font-medium">{essayFile.name}</p>
-							)}
-						</div>
-					)}
-				</div>
-
-				{/* File Upload */}
-				<p className="text-sm text-black-800 mb-6 text-left">Upload your selfie holding a Reynolds Trimax pen here <sub className="text-red-600">*</sub></p>
-				<div className="border-2 relative border-dashed rounded-xl p-4 text-center hover:border-blue-400 transition">
-					<input
-						name="selfie"
-						type="file"
-						accept=".jpg,.png"
-						required
-						onChange={handleSelfieChange}
-						className="visually-hidden"
-						id="selfieUpload"
-						style={{
-							position: "absolute",
-							left: "0",
-							width: "100%",
-							height: "100%",
-							top: "0",
-							opacity: "0",
-							cursor: "pointer",
-						}}
-					/>
-					<label htmlFor="selfieUpload" className="cursor-pointer">
-						<p className="text-sm text-gray-500">
-							Click to upload Selfie (PDF, DOC, Image)
-						</p>
-					</label>
-
-					{/* Preview */}
-					{selfieFile && (
-						<div className="mt-4">
-							<div className="relative mx-auto h-32 w-32">
-								<Image
-									src={selfiePreview!}
-									alt="Selfie Preview"
-									fill
-									className="rounded-lg object-cover shadow"
-								/>
 							</div>
-						</div>
-					)}
-				</div>
+						)}
+					</div>
 
-				{/* Checkbox */}
-				
-				<div className="flex space-x-3 mt-6">
-					<input
-						type="checkbox"
-						id="terms"
-						name="terms"
-						checked={formData.terms}
-						onChange={handleInputChange}
-						className="w-8 h-8"
-					/>
-					<Label htmlFor="terms" className="text-md font-bold">
-						I confirm that all the above information is correct, and I understand that any misinformation may cancel my participation 
-					</Label>
-				</div>
+					{/* Checkbox */}
+					
+					<div className="flex space-x-3 mt-6">
+						<input
+							type="checkbox"
+							id="terms"
+							name="terms"
+							checked={formData.terms}
+							onChange={handleInputChange}
+							className="w-8 h-8"
+						/>
+						<Label htmlFor="terms" className="text-md font-bold">
+							I confirm that all the above information is correct, and I understand that any misinformation may cancel my participation 
+						</Label>
+					</div>
 
-				{/* Button */}
-				<Button
-					disabled={loading}
-					className="h-10 block md:inline"
-				>
-					{loading ? "Submitting..." : "Submit"}
-				</Button>
-			</form>
+					{/* Button */}
+					<Button
+						disabled={loading}
+						className="h-10 block md:inline"
+					>
+						{loading ? "Submitting..." : "Submit"}
+					</Button>
+				</form>
+			</div>
 		</div>
-	</div>
+	</>
 );
 }

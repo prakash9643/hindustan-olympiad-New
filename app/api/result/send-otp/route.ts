@@ -14,7 +14,7 @@ export async function POST(req: Request) {
         { status: 400 }
       );
     }
-
+    
     const student = await Student.findOne({ studentId });
 
     if (!student) {
@@ -22,6 +22,27 @@ export async function POST(req: Request) {
         { message: "Invalid Roll Number" },
         { status: 404 }
       );
+    }
+
+    
+    const mobile = student.parentContact?.trim();
+
+    // ❌ Case 1: Mobile not filled
+    if (!mobile) {
+        return NextResponse.json(
+        { message: "Your provided mobile number is not valid." },
+        { status: 400 }
+        );
+    }
+
+    // ❌ Case 2: Not 10 digits
+    const cleanNumber = mobile.replace(/\D/g, ""); // remove spaces, +91 etc.
+
+    if (cleanNumber.length !== 10) {
+        return NextResponse.json(
+        { message: "You have not filled mobile number. Please connect to customer support." },
+        { status: 400 }
+        );
     }
 
     // 🔐 Generate OTP
@@ -54,9 +75,12 @@ export async function POST(req: Request) {
       throw new Error("SMS sending failed");
     }
 
+    const masked = cleanNumber.replace(/\d(?=\d{4})/g, "*");
     return NextResponse.json({
       success: true,
       message: "OTP sent to registered mobile number",
+      mobile: masked,
+      otp: otp, // 👈 for testing only, remove in production
     });
   } catch (error) {
     console.error("❌ OTP Error:", error);

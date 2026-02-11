@@ -131,7 +131,7 @@ export async function GET(req: NextRequest) {
     const all = searchParams.get("all") === "true";
     const debug = searchParams.get("debug") === "true";
     const query = searchParams.get("query") || "";
-    const sortBy = searchParams.get("sortBy") || "schoolName";
+    const sortBy = searchParams.get("sortBy") || "schoolName" || "schoolId";
     const page = parseInt(searchParams.get("page") || "1", 10);
     const limit = parseInt(searchParams.get("limit") || "10", 10);
 

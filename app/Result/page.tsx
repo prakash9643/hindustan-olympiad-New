@@ -10,6 +10,7 @@ export default function ResultPage() {
   const [message, setMessage] = useState("");
   const [otpStep, setOtpStep] = useState(false);
 	const [otp, setOtp] = useState("");
+	const [mobileLast4, setMobileLast4] = useState("");
 
   const sendOtp = async () => {
     setLoading(true);
@@ -22,15 +23,20 @@ export default function ResultPage() {
     });
 
     const data = await res.json();
+		console.log("SEND OTP RESPONSE:", data.otp); // 👈 MUST CHECK
     setLoading(false);
 
     if (!res.ok) {
       setMessage(data.message);
       return;
     }
+		// 👇 last 4 digit nikal lo
+		if (data.mobile) {
+			setMobileLast4(data.mobile.slice(-4));
+		}
 
     setOtpStep(true);
-    setMessage("OTP sent to registered mobile number");
+    setMessage("");
   };
 
 	// Verify OTP
@@ -104,6 +110,9 @@ export default function ResultPage() {
 
         {otpStep && (
 					<>
+					<p className="text-sm text-red-600 mb-3 text-center">
+						OTP sent to registered mobile number ending with ****{mobileLast4}
+					</p>
 						<label className="block mb-2 font-medium">
 							Enter OTP
 						</label>

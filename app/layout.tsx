@@ -59,9 +59,9 @@ export default function RootLayout({
     <html lang="en">
       <head>
         {/* <script async src="https://www.googletagmanager.com/gtag/js?id=GTM-MXGJR36"></script> */}
-        <Script
+        {/* <Script
           src="https://checkout.razorpay.com/v1/checkout.js" strategy="afterInteractive"
-        />
+        /> */}
         {/* <!-- Add to your page for debugging --> */}
         <Script async src="https://www.google-analytics.com/analytics_debug.js"></Script>
         <Script id="gtm-script" strategy="afterInteractive">
@@ -85,6 +85,26 @@ export default function RootLayout({
             gtag('js', new Date());
           `}
         </Script>
+        {/* <!-- Facebook Pixel Code --> */}
+        <Script id="facebook-pixel" strategy="afterInteractive">
+          {`
+            !function(f,b,e,v,n,t,s)
+            {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+            n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+            if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+            n.queue=[];t=b.createElement(e);t.async=!0;
+            t.src=v;s=b.getElementsByTagName(e)[0];
+            s.parentNode.insertBefore(t,s)}(window, document,'script',
+            'https://connect.facebook.net/en_US/fbevents.js');
+            fbq('init', '2442192816092061');
+            fbq('track', 'PageView');
+            fbq('track', 'CompleteRegistration');
+          `}
+        </Script>
+        <noscript><img height="1" width="1" style={{display:"none"}}
+        src="https://www.facebook.com/tr?id=2442192816092061&ev=PageView&noscript=1"
+        /></noscript>
+        {/* <!-- End Facebook Pixel Code --> */}
         {/* <script
           dangerouslySetInnerHTML={{
             __html: `
