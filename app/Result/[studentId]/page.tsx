@@ -15,7 +15,7 @@ export default function ResultPage() {
   const [loading, setLoading] = useState(true);
   const [result, setResult] = useState<any>(null);
   const [error, setError] = useState("");
-
+  const [downloading, setDownloading] = useState<string | null>(null);
   useEffect(() => {
     async function fetchResult() {
       try {
@@ -41,6 +41,32 @@ export default function ResultPage() {
 
     fetchResult();
   }, []);
+
+  const handleDownload = async (url: string, filename: string) => {
+    try {
+      setDownloading(filename);
+
+      const res = await fetch(url);
+      if (!res.ok) throw new Error("Download failed");
+
+      const blob = await res.blob();
+      const downloadUrl = window.URL.createObjectURL(blob);
+
+      const a = document.createElement("a");
+      a.href = downloadUrl;
+      a.download = filename;
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+
+      window.URL.revokeObjectURL(downloadUrl);
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setDownloading(null);
+    }
+  };
+
 
   if (loading) return <div className="flex items-center justify-center h-screen">
         <div className="animate-pulse text-lg font-semibold">
@@ -89,20 +115,63 @@ export default function ResultPage() {
       </div>
     );
 
-    const sections = [
-      { key: "sectionA", label: "A" },
-      { key: "sectionB", label: "B" },
-      { key: "sectionC", label: "C" },
-      { key: "sectionD", label: "D" },
-      { key: "sectionE", label: "E" },
+    // Subjects for Class 1–10
+    const subjectsUpto10 = [
+      "MATHEMATICS",
+      "SCIENCE",
+      "LOGICALREASONING",
+      "ENGLISH",
+      "GENERALKNOWLEDGE",
     ];
+
+    // Stream wise subjects for 11–12
+    const streamSubjects: Record<string, string[]> = {
+      PCB: ["PHYSICS", "CHEMISTRY", "BIOLOGY", "ENGLISH"],
+      PCM: ["PHYSICS", "CHEMISTRY", "MATHEMATICS", "ENGLISH"],
+      Commerce: ["ACCOUNTS", "ECONOMICS", "BUSINESSSTUDIES", "MATHEMATICS", "ENGLISH"],
+      Arts: ["HISTORY", "POLITICALSCIENCE", "ECONOMICS", "ENGLISH", "SOCIOLOGY"],
+    };
+
+    const studentClass = Number(result.class);
+    const studentStream = result.stream;
+
+    let subjects: string[] = [];
+
+    if (studentClass >= 1 && studentClass <= 10) {
+      subjects = subjectsUpto10;
+    } else if (studentClass === 11 || studentClass === 12) {
+      subjects = streamSubjects[studentStream] || [];
+    }
+
+    // Class 11–12 students also have the common subjects
+    function formatClassWithOrdinal(classNumber: number | string) {
+      const num = Number(classNumber);
+
+      if (!num) return "";
+
+      if (num % 100 >= 11 && num % 100 <= 13) {
+        return num + "th";
+      }
+
+      switch (num % 10) {
+        case 1:
+          return num + "st";
+        case 2:
+          return num + "nd";
+        case 3:
+          return num + "rd";
+        default:
+          return num + "th";
+      }
+    }
+
   return (
     <>
     <div className="min-h-screen bg-gradient-to-br from-red-50 to-blue-100 p-4 md:p-10" 
     style={{
-      background:'url("/images/hero/result-star-trophy.png")',
+      background:'url("/images/hero/bg-2.jpeg")',
       backgroundRepeat: 'no-repeat',
-      backgroundPosition: '50% 10%',
+      backgroundPosition: 'top center',
       backgroundSize: 'cover',
     }}
     >
@@ -115,12 +184,12 @@ export default function ResultPage() {
           Roll Number: {student.studentId}
         </p>
       </div> */}
-      <div className="max-w-5xl mx-auto bg-white rounded-2xl shadow overflow-hidden">
+      <div className="max-w-4xl mx-auto bg-white rounded-2xl shadow overflow-hidden">
 
         {/* Student Info */}
         <div className="px-6 pt-6 flex items-center gap-4 mb-6">
           <div className="relative">
-            <div className="h-10 w-10 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-lg flex items-center justify-center shadow-sm">
+            <div className="h-10 w-10 bg-gradient-to-r from-[#7f2328] via-[#a22f35] to-[#d45a60] rounded-lg flex items-center justify-center shadow-sm">
               <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
               </svg>
@@ -133,22 +202,22 @@ export default function ResultPage() {
         </div>
         <div className="bg-gray-50 rounded-xl mx-6 mt-2">
           <div className="gap-2 grid grid-cols-1 md:grid-cols-4 md:px-6 px-3 py-4 border-b">
-            <Info label="Full Name" value={student.name} />
-            <Info label="Class" value={student.class} />
-            <Info label="Roll Number" value={student.studentId} highlight />
-            <Info label="Stream" value={student.stream}  />
+            <Info label="Full Name" value={result.studentname} />
+            <Info label="Class" value={formatClassWithOrdinal(result.class)} />
+            <Info label="Roll Number" value={result.studentId} highlight />
+            <Info label="Stream" value={result.stream || "Not Applicable"}  />
           </div>
           <div className="md:px-6 px-3 py-4 grid grid-cols-1 md:grid-cols-4 gap-2">
             <div className="md:col-span-2 border-r">
-              <Info label="School Name" value={student.schoolName} />
+              <Info label="School Name" value={result.schoolname} />
             </div>
             <Info
               label="Region"
-              value={getRegionName(student.region)}
+              value={result.region}
             />
             <Info
               label="District"
-              value={getDistrictName(student.region, student.district)}
+              value={result.district}
             />
 
           </div>
@@ -157,7 +226,7 @@ export default function ResultPage() {
         {/* Marks Info */}
         <div className="px-6 pt-6 flex items-center gap-4 mb-6">
           <div className="relative">
-            <div className="h-10 w-10 bg-gradient-to-br from-green-500 to-emerald-600 rounded-lg flex items-center justify-center shadow-sm">
+            <div className="h-10 w-10 bg-gradient-to-r from-[#7f2328] via-[#a22f35] to-[#d45a60] rounded-lg flex items-center justify-center shadow-sm">
               <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
               </svg>
@@ -170,19 +239,20 @@ export default function ResultPage() {
         </div>
         <div className="rounded-xl shadow mx-6 mt-3">
           <div className="space-y-6 md:p-6 p-3 bg-gray-50">
-            {sections.map((sec) => (
-              <div key={sec.key} className="md:flex block md:gap-4 gap-2 items-center">
-                <p className="text-gray-600 w-24">
-                  Section <strong>{sec.label}</strong>
+            {subjects.map((subject) => (
+              <div key={subject} className="md:flex block md:gap-4 gap-2 items-center">
+                <p className="text-gray-600 w-24 truncate">
+                  <strong>{subject}</strong>
                 </p>
                 <ProgressBar
                   label=""
-                  value={result[sec.key] || 0}
+                  value={Number(result[subject]) || 0}
                   max={20}
                 />
               </div>
             ))}
           </div>
+
           {/* <div className="space-y-6 p-6 bg-gray-50">
             <div className="flex gap-4 flex-row items-center">
               <p className="text-gray-600">Section <strong>A</strong></p>
@@ -207,7 +277,7 @@ export default function ResultPage() {
           </div> */}
           <div className="p-6 bg-white md:flex block md:gap-4 gap-2 flex-row items-center">
             <p className="text-gray-600 w-24"><strong>Total Marks</strong></p>
-            <ProgressBar label="Total Marks" value={result.fullmarks} max={100} bold />
+            <ProgressBar label="Total Marks" value={result.fullmark} max={100} bold />
           </div>
         </div>
 
@@ -219,7 +289,7 @@ export default function ResultPage() {
           {/* Header */}
           <div className="flex items-center gap-4 mb-6">
             <div className="relative">
-              <div className="h-10 w-10 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-lg flex items-center justify-center shadow-sm">
+              <div className="h-10 w-10 bg-gradient-to-r from-[#7f2328] via-[#a22f35] to-[#d45a60] rounded-lg flex items-center justify-center shadow-sm">
                 <svg className="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 20 20">
                   <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
                 </svg>
@@ -235,32 +305,32 @@ export default function ResultPage() {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-6">
             <RankCard
               title="National Rank"
-              rank={result.nationalmarks}
+              rank={result.nationalrank}
               icon={<Trophy size={20} />}
-              gradient="bg-gradient-to-r from-green-500 to-emerald-400"
+              gradient="bg-gradient-to-r from-yellow-400 to-amber-500"
             />
 
             <RankCard
               title="Region Rank"
-              rank={result.regionmarks}
+              rank={result.regionrank}
               icon={<Medal size={20} />}
-              gradient="bg-gradient-to-r from-blue-500 to-sky-400"
+              gradient="bg-gradient-to-r from-orange-400 to-orange-600"
             />
 
             <RankCard
               title="District Rank"
-              rank={result.districtmarks}
+              rank={result.districtrank}
               icon={<Award size={20} />}
-              gradient="bg-gradient-to-r from-orange-500 to-amber-400"
+              gradient="bg-gradient-to-r from-gray-400 to-gray-600"
             />
           </div>
         </div>
       </div>
-      <div className="max-w-5xl mx-auto bg-gray-100 rounded-2xl shadow-xl overflow-hidden mt-6">
+      <div className="max-w-4xl mx-auto bg-gray-100 rounded-2xl shadow-xl overflow-hidden mt-6">
         {/* Download Certificate & Performance Report */}
         <div className="px-6 pt-6 flex items-center gap-4 mb-6">
           <div className="relative">
-            <div className="h-10 w-10 bg-gradient-to-br from-emerald-500 to-green-600 rounded-lg flex items-center justify-center shadow-sm">
+            <div className="h-10 w-10 bg-gradient-to-r from-[#7f2328] via-[#a22f35] to-[#d45a60] rounded-lg flex items-center justify-center shadow-sm">
               <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
               </svg>
@@ -278,25 +348,36 @@ export default function ResultPage() {
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 px-6 py-4 mt-4">
           <Button
-            className="h-12 block md:inline"
-            onClick={() => window.open("/api/result/download-certificate", "_blank")}
-          >
-            Download Certificate PDF
-          </Button>
+              className="h-12"
+              disabled={downloading === "certificate.pdf"}
+              onClick={() =>
+                handleDownload("/api/result/download-certificate", "certificate.pdf")
+              }
+            >
+              {downloading === "certificate.pdf"
+                ? "Downloading..."
+                : "Download Certificate PDF"}
+            </Button>
 
           <Button
             className="bg-red-100 text-[#a22f35] font-bold px-4 py-2 h-12 rounded-lg hover:bg-red-200 transition"
-            onClick={() => window.open("/api/result/download-performance", "_blank")}
+            disabled={downloading === "performance.pdf"}
+            onClick={() =>
+              handleDownload("/api/result/download-performance", "performance.pdf")
+            }
           >
-            Download Performance Report
+            {downloading === "performance.pdf"
+              ? "Downloading..."
+              : "Download Performance Report"}
           </Button>
+
         </div>
       </div>
-      <div className="max-w-5xl mx-auto bg-red-50 rounded-2xl shadow-xl overflow-hidden mt-6">
+      <div className="max-w-4xl mx-auto bg-red-50 rounded-2xl shadow-xl overflow-hidden mt-6">
         {/* Certificate Correction Request */}
         <div className="px-6 pt-6 flex items-center gap-4 mb-6">
           <div className="relative">
-            <div className="h-10 w-10 bg-gradient-to-br from-amber-500 to-orange-600 rounded-lg flex items-center justify-center shadow-sm">
+            <div className="h-10 w-10 bg-gradient-to-r from-[#7f2328] via-[#a22f35] to-[#d45a60] rounded-lg flex items-center justify-center shadow-sm">
               <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
               </svg>
@@ -324,7 +405,7 @@ export default function ResultPage() {
           </div>
         </div>
       </div>
-      <div className="max-w-5xl mx-auto bg-[#FFF9F4] rounded-2xl shadow-xl overflow-hidden mt-6">
+      <div className="max-w-4xl mx-auto bg-[#FFF9F4] rounded-2xl shadow-xl overflow-hidden mt-6">
         <div className="px-6 pt-3 mt-3">
           <h2 className="text-xl font-bold">Footer</h2>
         </div>
@@ -423,7 +504,7 @@ function ProgressBar({
         <div
           className="
             h-full rounded-full
-            bg-gradient-to-r from-blue-500 via-sky-400 to-cyan-300
+           bg-gradient-to-r from-[#7f2328] via-[#a22f35] to-[#d45a60]
             transition-all duration-3000 ease-out
           "
           style={{ width: `${width}%` }}
