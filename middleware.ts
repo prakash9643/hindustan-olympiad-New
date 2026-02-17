@@ -20,7 +20,14 @@ import { verifyResultToken } from "@/utils/jwt";
 export function middleware(req: NextRequest) {
   const token = req.cookies.get("result_token")?.value;
   const pathname = req.nextUrl.pathname;
-
+    // Skip API & static files
+    if (
+        pathname.startsWith("/api") ||
+        pathname.startsWith("/_next") ||
+        pathname.includes(".")
+    ) {
+        return NextResponse.next();
+    }
   // 🔒 Protect only /Result/[rollNumber]
   if (pathname.startsWith("/Result/")) {
     if (!token) {

@@ -4,6 +4,10 @@ const nextConfig = {
   trailingSlash: false,
   compress: true,
   basePath: '',
+  api: {
+		bodyParser:  false, // Disable Next.js's default body parser to handle multipart/form-data
+		responseLimit: '10mb',
+	},
 
   // async redirects() {
   //   return [

@@ -6,7 +6,7 @@ export function generateResultToken(studentId: string) {
   return jwt.sign(
     { studentId },
     JWT_SECRET,
-    { expiresIn: "30m" } // ⏱️ 15 minutes
+    { expiresIn: "15m" } // ⏱️ 15 minutes
   );
 }
 
