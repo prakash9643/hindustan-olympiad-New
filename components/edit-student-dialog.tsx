@@ -37,31 +37,62 @@ export default function EditStudentDialog({ student, open, onClose, onSave }: Ed
   }, [student])
 
   const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault()
-    // Validate empty fields
-    for (const [key, value] of Object.entries(formData)) {
-      if (typeof value === "string" && value.trim() === "" && key !== "stream" && key !== "city") {
-        error("All fields are required!", {
-          duration: 3000,
-          position: "top-right",
-          description: `Please fill the ${key} field.`,
-        });
-        return;
-      }
-    }
+    e.preventDefault();
 
-    if (!formData.parentContact.match(/^[0-9]{10}$/)) {
-      error("Invalid phone number!", {
+    if (
+      !formData.name.trim() ||
+      !formData.class.trim() ||
+      !formData.section.trim() ||
+      !formData.gender.trim() ||
+      !formData.parentName.trim() ||
+      !formData.parentContact.trim()
+    ) {
+      error("All fields are required!", {
         duration: 3000,
         position: "top-right",
-        description: "Parent's phone number should be 10 digits.",
       });
       return;
     }
 
-    onSave(formData)
-    onClose()
-  }
+    // if (!formData.parentContact.match(/^[0-9]{10}$/)) {
+    //   error("Invalid phone number!", {
+    //     duration: 3000,
+    //     position: "top-right",
+    //     description: "Parent's phone number should be 10 digits.",
+    //   });
+    //   return;
+    // }
+
+    onSave(formData);
+    onClose();
+  };
+
+  // const handleSubmit = (e: React.FormEvent) => {
+  //   e.preventDefault()
+  //   // Validate empty fields
+  //   for (const [key, value] of Object.entries(formData)) {
+  //     if (typeof value === "string" && value.trim() === "" && key !== "stream" && key !== "city") {
+  //       error("All fields are required!", {
+  //         duration: 3000,
+  //         position: "top-right",
+  //         description: `Please fill the ${key} field.`,
+  //       });
+  //       return;
+  //     }
+  //   }
+
+  //   if (!formData.parentContact.match(/^[0-9]{10}$/)) {
+  //     error("Invalid phone number!", {
+  //       duration: 3000,
+  //       position: "top-right",
+  //       description: "Parent's phone number should be 10 digits.",
+  //     });
+  //     return;
+  //   }
+
+  //   onSave(formData)
+  //   onClose()
+  // }
 
   const handleInputChange = (field: string, value: string) => {
     setFormData((prev) => ({ ...prev, [field]: value }))
