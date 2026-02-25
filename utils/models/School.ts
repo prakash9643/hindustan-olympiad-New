@@ -10,7 +10,7 @@ const schoolSchema = new mongoose.Schema(
     district: [String],
     region: String,
     city: String,
-    pincode: String,
+    pincode: {type: String, default: false},
     board: String,
     principalName: String,
     principalPhone: String,

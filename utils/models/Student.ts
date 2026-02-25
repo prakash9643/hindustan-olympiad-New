@@ -39,7 +39,7 @@ const studentSchema = new mongoose.Schema(
     city: String,
     district: [String],
     region: String,
-    pincode: String,
+    pincode: {type: String, default: false},
     paymentVerified: { type: Boolean, default: false },
     paymentVerifiedBy: String,
     // Source_code: String,
