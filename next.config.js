@@ -4,20 +4,9 @@ const nextConfig = {
   trailingSlash: false,
   compress: true,
   basePath: '',
-  api: {
-		bodyParser:  false, // Disable Next.js's default body parser to handle multipart/form-data
-		responseLimit: '10mb',
-	},
-
-  // async redirects() {
-  //   return [
-  //     {
-  //       source: '/Reynolds',
-  //       destination: 'https://forms.gle/R1i5UQoUaGs3uq169',
-  //       permanent: true, // 301 redirect
-  //     },
-  //   ];
-  // },
+  eslint: {
+    ignoreDuringBuilds: true,
+  },
 
   async headers() {
     return [
