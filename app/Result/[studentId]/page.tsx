@@ -126,10 +126,17 @@ export default function ResultPage() {
 
     // Stream wise subjects for 11–12
     const streamSubjects: Record<string, string[]> = {
-      PCB: ["PHYSICS", "CHEMISTRY", "BIOLOGY", "ENGLISH"],
-      PCM: ["PHYSICS", "CHEMISTRY", "MATHEMATICS", "ENGLISH"],
-      Commerce: ["ACCOUNTS", "ECONOMICS", "BUSINESSSTUDIES", "MATHEMATICS", "ENGLISH"],
-      Arts: ["HISTORY", "POLITICALSCIENCE", "ECONOMICS", "ENGLISH", "SOCIOLOGY"],
+      PCB: ["PHYSICS", "CHEMISTRY", "LOGICALREASONING", "BIOLOGY", "ENGLISH"],
+      PCM: ["PHYSICS", "CHEMISTRY", "MATHEMATICS", "ENGLISH","LOGICAL REASONING"],
+      "COMMERCE WITHOUT MATHS": [
+        "GENERAL KNOWLEDGE",
+        "LOGICAL REASONING",
+        "SCIENCE",
+        "MATHEMATICS",
+        "ENGLISH",
+      ],
+      "COMMERCE WITH MATHS": ["ACCOUNTS", "ECONOMICS", "LOGICAL REASONING", "MATHEMATICS", "ENGLISH"],
+      HUMANITIES: ["HISTORY", "GEOGRAPHY", "POLITICAL SCIENCE", "LOGICAL REASONING", "ENGLISH"],
     };
 
     const studentClass = Number(result.class);
@@ -242,7 +249,7 @@ export default function ResultPage() {
             {subjects.map((subject) => (
               <div key={subject} className="md:flex block md:gap-4 gap-2 items-center">
                 <p className="text-gray-600 w-24 truncate">
-                  <strong>{subject}</strong>
+                  <strong title={subject}>{subject}</strong>
                 </p>
                 <ProgressBar
                   label=""

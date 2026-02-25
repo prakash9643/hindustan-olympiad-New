@@ -59,21 +59,53 @@ export default function ViewStudents() {
     }
 
     const onUpdateStudent = async (student: Student) => {
+
+        const payload = {
+            name: student.name,
+            class: student.class,
+            section: student.section,
+            gender: student.gender,
+            stream: student.stream,
+            parentContact: student.parentContact,
+            schoolId: student.schoolId   // 👈 IMPORTANT
+        };
+
         const response = await fetch(`/api/students/${student._id}`, {
             method: "PUT",
             headers: {
                 "Content-Type": "application/json",
-                authorization: `${JSON.parse(localStorage.getItem("user") || "")._id}`,
+                authorization: `${JSON.parse(localStorage.getItem("user") || "{}")._id}`,
             },
-            body: JSON.stringify(student),
-        })
-        const data = await response.json()
+            body: JSON.stringify(payload),
+        });
+
+        const data = await response.json();
+
         if (data.error) {
-            error("Something went wrong!", { duration: 3000, position: "top-right", description: data.error })
+            error("Something went wrong!", { duration: 3000, position: "top-right", description: data.error });
         } else {
-            success('Student updated!', { position: "top-right", duration: 2000, description: "Your student has been updated successfully." })
+            success("Student updated!", { position: "top-right", duration: 2000 });
         }
-    }
+    };
+
+
+    // const onUpdateStudent = async (student: Student) => {
+    //     const response = await fetch(`/api/students/${student._id}`, {
+    //         method: "PUT",
+    //         headers: {
+    //             "Content-Type": "application/json",
+    //             authorization: `${JSON.parse(localStorage.getItem("user") || "")._id}`,
+    //         },
+    //         body: JSON.stringify(student),
+    //     })
+    //     const data = await response.json()
+    //     console.log("Incoming Data:", data);
+    //     if (data.error) {
+    //         error("Something went wrong!", { duration: 3000, position: "top-right", description: data.error })
+    //     } else {
+    //         success('Student updated!', { position: "top-right", duration: 2000, description: "Your student has been updated successfully." })
+    //     }
+    // }
 
     const onDeleteStudent = async (studentId: string) => {
         const response = await fetch(`/api/students/${studentId}`, {

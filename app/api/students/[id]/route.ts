@@ -134,7 +134,10 @@ export async function PUT(req: NextRequest, { params }: { params: { id: string }
     }
 
     const existing = await Student.findById(id);
-    if (!existing) return NextResponse.json({ error: "Not found" }, { status: 404 });
+    if (!existing) 
+    return NextResponse.json({ error: "Not found" }, { status: 404 });
+
+    const schoolId = existing.schoolId;
     // Only update fields that have changed
     const updatedFields: any = {};
     for (const key in data) {

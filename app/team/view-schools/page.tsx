@@ -453,7 +453,8 @@ export default function ViewSchools() {
     "68a315644e9ba8d109135d1c",
     "6874f0592c97dbf80815617c",
   ];
-
+  const EDIT_ACCESS_USER_ID = "687e3d8651cd20af0acefe0f";
+  const canEdit = user?._id === EDIT_ACCESS_USER_ID;
   /* --------------- Render --------------- */
 
   return (
@@ -626,7 +627,7 @@ export default function ViewSchools() {
                             size="sm"
                             onClick={() => setEditingSchool(school)}
                             title="Edit School"
-                            disabled
+                            disabled={!canEdit}
                           >
                             <Edit className="h-4 w-4" />
                           </Button>

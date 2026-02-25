@@ -28,7 +28,8 @@ const tabs = [
   { label: "Bulk Add Schools", href: "/team/bulk-add-school", requiresAccess: true },
   { label: "Individual Students", href: "/team/eoi-students" },
   { label: "Multi Add Students", href: "/team/multi-add-students", requiresAccess: true },
-  { label: "Sample Paper", href: "/team/samplepaperrequest", requiresAccess: true }
+  { label: "Sample Paper", href: "/team/samplepaperrequest", requiresAccess: true },
+  { label: "Reynolds", href: "/team/reynolds" },
 ];
 
 export default function TeamLayout({ children }: { children: React.ReactNode }) {

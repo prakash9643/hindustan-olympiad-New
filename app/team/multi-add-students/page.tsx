@@ -108,13 +108,13 @@ export default function BulkAddStudentForm() {
         // Process each student
         for (const row of jsonData) {
           const student: any = {
-            name: String(row["Student Name"] || "").trim(),
-            class: String(row["Class"] || "").trim(),
-            section: String(row["Section"] || "").trim(),
-            gender: String(row["Gender"] || "").trim(),
-            stream: String(row["Stream"] || "").trim(),
-            parentName: String(row["Parent Name"] || "").trim(),
-            parentContact: String(row["Parent Contact"] || "").trim(),
+            name: String(row["Student Name"] || "N/A").trim(),
+            class: String(row["Class"] || "N/A").trim(),
+            section: String(row["Section"] || "N/A").trim(),
+            gender: String(row["Gender"] || "N/A").trim(),
+            stream: String(row["Stream"] || "N/A").trim(),
+            parentName: String(row["Parent Name"] || "N/A").trim(),
+            parentContact: String(row["Parent Contact"] || "N/A").trim(),
             schoolId: String(row["School"] || row["School ID"] || "").trim(),
             // Source_code: String(row["Source_code"] || "").trim(),
             studentId: String(row["Student ID"] || "").trim(),
