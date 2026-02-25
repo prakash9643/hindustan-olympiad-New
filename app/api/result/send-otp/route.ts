@@ -59,7 +59,7 @@ export async function POST(req: Request) {
     });
 
     // 📲 Call Parent SMS API
-    const smsRes = await fetch(`/send-sms-parent`, {
+    const smsRes = await fetch(`${process.env.NEXT_PUBLIC_TESTING_URL}/api/result/send-sms-parent`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
