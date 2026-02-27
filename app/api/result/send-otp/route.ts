@@ -30,7 +30,7 @@ export async function POST(req: Request) {
     // ❌ Case 1: Mobile not filled
     if (!mobile) {
         return NextResponse.json(
-        { message: "Your provided mobile number is not valid." },
+        { message: "Your provided mobile number is not valid. Please Click on click here button to fill your details." },
         { status: 400 }
         );
     }
@@ -40,13 +40,20 @@ export async function POST(req: Request) {
 
     if (cleanNumber.length !== 10) {
         return NextResponse.json(
-        { message: "You have not filled mobile number. Please connect to customer support." },
+        { message: "You have not filled mobile number. Please Click on click here button to fill your details." },
         { status: 400 }
         );
     }
 
     // 🔐 Generate OTP
-    const otp = Math.floor(100000 + Math.random() * 900000).toString();
+    let otp;
+
+    if (process.env.NODE_ENV === "production") {
+      otp = Math.floor(100000 + Math.random() * 900000).toString();
+    } else {
+      otp = "123456"; // ✅ Fixed OTP for testing
+    }
+    // const otp = Math.floor(100000 + Math.random() * 900000).toString();
 
     // Remove old OTP
     await Otp.deleteMany({ studentId });

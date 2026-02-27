@@ -99,6 +99,7 @@ export default function ResultPage() {
 						<Button disabled={loading} onClick={sendOtp} className="h-10 block md:inline">
 							{loading ? "Sending OTP..." : "Get OTP"}
 						</Button>
+						<p className="mt-4">Can’t See Your Result? <a href="/resultnotfound" target="_blank" className="text-red-600 hover:underline">Click Here</a></p>
           </>
         )}
 

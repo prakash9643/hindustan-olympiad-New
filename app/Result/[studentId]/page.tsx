@@ -62,6 +62,7 @@ export default function ResultPage() {
       window.URL.revokeObjectURL(downloadUrl);
     } catch (err) {
       console.error(err);
+      alert(err);
     } finally {
       setDownloading(null);
     }
@@ -413,8 +414,21 @@ export default function ResultPage() {
         </div>
       </div>
       <div className="max-w-4xl mx-auto bg-[#FFF9F4] rounded-2xl shadow-xl overflow-hidden mt-6">
-        <div className="px-6 pt-3 mt-3">
-          <h2 className="text-xl font-bold">Footer</h2>
+        <div className="px-6 pt-3 mt-3 flex items-center gap-4 mb-6">
+          <div className="relative">
+            <div className="h-10 w-10 bg-gradient-to-r from-[#7f2328] via-[#a22f35] to-[#d45a60] rounded-lg flex items-center justify-center shadow-sm">
+              <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+            </div>
+            <div className="absolute -top-1 -right-1 h-5 w-5 bg-yellow-500 rounded-full flex items-center justify-center">
+              <span className="text-white text-xs font-bold">!</span>
+            </div>
+          </div>
+          <div>
+            <h2 className="text-xl font-bold text-gray-900">Important Information</h2>
+            <p className="text-sm text-gray-500 mt-1">Notices, updates & announcements</p>
+          </div>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-1 gap-4 px-6 py-4">
           <ul className="text-sm text-black-600 flex flex-col gap-2">
