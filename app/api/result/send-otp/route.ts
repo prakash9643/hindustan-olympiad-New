@@ -48,10 +48,10 @@ export async function POST(req: Request) {
     // 🔐 Generate OTP
     let otp;
 
-    if (process.env.NODE_ENV === "production") {
-      otp = Math.floor(100000 + Math.random() * 900000).toString();
+    if (process.env.TEST_MODE === "true") {
+      otp = "123456"; // fixed test otp
     } else {
-      otp = "123456"; // ✅ Fixed OTP for testing
+      otp = Math.floor(100000 + Math.random() * 900000).toString();
     }
     // const otp = Math.floor(100000 + Math.random() * 900000).toString();
 
