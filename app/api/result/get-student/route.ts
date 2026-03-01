@@ -34,7 +34,7 @@ export async function POST() {
     const studentId = payload.studentId;
     // console.log("JWT studentId:", studentId, typeof studentId);
 
-    const student = await Student.findOne({ studentId }).lean();
+    const student = await Result.findOne({ studentId }).lean();
 
     if (!student) {
       return NextResponse.json(

@@ -1,7 +1,8 @@
 import { NextResponse } from "next/server";
 import { connectDB } from "@/utils/config/dbConfig";
-import { Student } from "@/utils/models/Student";
+// import { Student } from "@/utils/models/Student";
 import { Otp } from "@/utils/models/Otp";
+import { Result } from "@/utils/models/result";
 
 export async function POST(req: Request) {
   try {
@@ -15,7 +16,7 @@ export async function POST(req: Request) {
       );
     }
     
-    const student = await Student.findOne({ studentId });
+    const student = await Result.findOne({ studentId });
 
     if (!student) {
       return NextResponse.json(
@@ -28,22 +29,22 @@ export async function POST(req: Request) {
     const mobile = student.parentContact?.trim();
 
     // ❌ Case 1: Mobile not filled
-    if (!mobile) {
-        return NextResponse.json(
-        { message: "Your provided mobile number is not valid. Please Click on click here button to fill your details." },
-        { status: 400 }
-        );
-    }
+    // if (!mobile) {
+    //     return NextResponse.json(
+    //     { message: "Your provided mobile number is not valid. Please Click on click here button to fill your details." },
+    //     { status: 400 }
+    //     );
+    // }
 
     // ❌ Case 2: Not 10 digits
-    const cleanNumber = mobile.replace(/\D/g, ""); // remove spaces, +91 etc.
+    // const cleanNumber = mobile.replace(/\D/g, ""); // remove spaces, +91 etc.
 
-    if (cleanNumber.length !== 10) {
-        return NextResponse.json(
-        { message: "You have not filled mobile number. Please Click on click here button to fill your details." },
-        { status: 400 }
-        );
-    }
+    // if (cleanNumber.length !== 10) {
+    //     return NextResponse.json(
+    //     { message: "You have not filled mobile number. Please Click on click here button to fill your details." },
+    //     { status: 400 }
+    //     );
+    // }
 
     // 🔐 Generate OTP
     let otp;
@@ -82,12 +83,12 @@ export async function POST(req: Request) {
       throw new Error("SMS sending failed");
     }
 
-    const masked = cleanNumber.replace(/\d(?=\d{4})/g, "*");
+    // const masked = cleanNumber.replace(/\d(?=\d{4})/g, "*");
     return NextResponse.json({
       success: true,
       message: "OTP sent to registered mobile number",
-      mobile: masked,
-      otp: otp, // 👈 for testing only, remove in production
+      mobile: mobile,
+      otp: otp,
     });
   } catch (error) {
     console.error("❌ OTP Error:", error);

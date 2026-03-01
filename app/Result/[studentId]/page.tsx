@@ -120,14 +120,14 @@ export default function ResultPage() {
     const subjectsUpto10 = [
       "MATHEMATICS",
       "SCIENCE",
-      "LOGICALREASONING",
+      "LOGICAL REASONING",
       "ENGLISH",
-      "GENERALKNOWLEDGE",
+      "GENERAL KNOWLEDGE",
     ];
 
     // Stream wise subjects for 11–12
     const streamSubjects: Record<string, string[]> = {
-      PCB: ["PHYSICS", "CHEMISTRY", "LOGICALREASONING", "BIOLOGY", "ENGLISH"],
+      PCB: ["PHYSICS", "CHEMISTRY", "LOGICAL REASONING", "BIOLOGY", "ENGLISH"],
       PCM: ["PHYSICS", "CHEMISTRY", "MATHEMATICS", "ENGLISH","LOGICAL REASONING"],
       "COMMERCE WITHOUT MATHS": [
         "GENERAL KNOWLEDGE",
@@ -150,6 +150,15 @@ export default function ResultPage() {
     } else if (studentClass === 11 || studentClass === 12) {
       subjects = streamSubjects[studentStream] || [];
     }
+
+    const getMarksBySubject = (subjectName: string) => {
+      for (let i = 1; i <= 6; i++) {
+        if (result[`subject${i}`] === subjectName) {
+          return Number(result[`SUBJECT${i}`]) || 0;
+        }
+      }
+      return 0;
+    };
 
     // Class 11–12 students also have the common subjects
     function formatClassWithOrdinal(classNumber: number | string) {
@@ -254,35 +263,13 @@ export default function ResultPage() {
                 </p>
                 <ProgressBar
                   label=""
-                  value={Number(result[subject]) || 0}
+                  value={getMarksBySubject(subject)}
                   max={20}
                 />
               </div>
             ))}
           </div>
 
-          {/* <div className="space-y-6 p-6 bg-gray-50">
-            <div className="flex gap-4 flex-row items-center">
-              <p className="text-gray-600">Section <strong>A</strong></p>
-              <ProgressBar label="" value={18} max={20} />
-            </div>
-            <div className="flex gap-4 flex-row items-center">
-              <p className="text-gray-600">Section <strong>B</strong></p>
-              <ProgressBar label="Section B" value={16} max={20} />
-            </div>
-            <div className="flex gap-4 flex-row items-center">
-              <p className="text-gray-600">Section <strong>C</strong></p>
-              <ProgressBar label="Section C" value={19} max={20} />
-            </div>
-            <div className="flex gap-4 flex-row items-center">
-              <p className="text-gray-600">Section <strong>D</strong></p>              
-              <ProgressBar label="Section D" value={17} max={20} />
-            </div>
-            <div className="flex gap-4 flex-row items-center">
-              <p className="text-gray-600">Section <strong>E</strong></p>
-              <ProgressBar label="Section E" value={16} max={20} />
-            </div>
-          </div> */}
           <div className="p-6 bg-white md:flex block md:gap-4 gap-2 flex-row items-center">
             <p className="text-gray-600 w-24"><strong>Total Marks</strong></p>
             <ProgressBar label="Total Marks" value={result.fullmark} max={100} bold />
@@ -407,7 +394,7 @@ export default function ResultPage() {
             Button - Request Correction</p>
           </div>
           <div className="flex md:justify-end justify-center">
-            <a href="https://forms.gle/GMegDtxsqTARLJUe8" target="_blank" className="h-10 block button bg-[#a22f35] text-[#fff] font-semibold px-6 py-2 rounded-lg transition">
+            <a href="https://chat.google.com/dm/zk2FwCAAAAE/yi2Td_lgqw0/yi2Td_lgqw0" target="_blank" className="h-10 block button bg-[#a22f35] text-[#fff] font-semibold px-6 py-2 rounded-lg transition">
               Request Correction
             </a>
           </div>
