@@ -240,44 +240,6 @@ export default function ResultPage() {
           </div>
         </div>
 
-        {/* Marks Info */}
-        <div className="px-6 pt-6 flex items-center gap-4 mb-6">
-          <div className="relative">
-            <div className="h-10 w-10 bg-gradient-to-r from-[#7f2328] via-[#a22f35] to-[#d45a60] rounded-lg flex items-center justify-center shadow-sm">
-              <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-              </svg>
-            </div>
-          </div>
-          <div>
-            <h2 className="text-xl font-bold text-gray-900">Marks</h2>
-            <p className="text-sm text-gray-500 mt-1">Scores & performance metrics</p>
-          </div>
-        </div>
-        <div className="rounded-xl shadow mx-6 mt-3">
-          <div className="space-y-6 md:p-6 p-3 bg-gray-50">
-            {subjects.map((subject) => (
-              <div key={subject} className="md:flex block md:gap-4 gap-2 items-center">
-                <p className="text-gray-600 w-24 truncate">
-                  <strong title={subject}>{subject}</strong>
-                </p>
-                <ProgressBar
-                  label=""
-                  value={getMarksBySubject(subject)}
-                  max={20}
-                />
-              </div>
-            ))}
-          </div>
-
-          <div className="p-6 bg-white md:flex block md:gap-4 gap-2 flex-row items-center">
-            <p className="text-gray-600 w-24"><strong>Total Marks</strong></p>
-            <ProgressBar label="Total Marks" value={result.fullmark} max={100} bold />
-          </div>
-        </div>
-
-
-
         {/* Rank */}
         <div className="bg-gradient-to-r mx-6 mt-8 mb-10 from-blue-50 to-purple-50 rounded-2xl md:p-6 p-3 shadow">
       
@@ -318,6 +280,42 @@ export default function ResultPage() {
               icon={<Award size={20} />}
               gradient="bg-gradient-to-r from-gray-400 to-gray-600"
             />
+          </div>
+        </div>
+
+        {/* Marks Info */}
+        <div className="px-6 pt-6 flex items-center gap-4 mb-6">
+          <div className="relative">
+            <div className="h-10 w-10 bg-gradient-to-r from-[#7f2328] via-[#a22f35] to-[#d45a60] rounded-lg flex items-center justify-center shadow-sm">
+              <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+            </div>
+          </div>
+          <div>
+            <h2 className="text-xl font-bold text-gray-900">Marks</h2>
+            <p className="text-sm text-gray-500 mt-1">Scores & performance metrics</p>
+          </div>
+        </div>
+        <div className="rounded-xl shadow mx-6 mt-3 mb-8">
+          <div className="space-y-6 md:p-6 p-3 bg-gray-50">
+            {subjects.map((subject) => (
+              <div key={subject} className="md:flex block md:gap-4 gap-2 items-center">
+                <p className="text-gray-600 w-24 truncate">
+                  <strong title={subject}>{subject}</strong>
+                </p>
+                <ProgressBar
+                  label=""
+                  value={getMarksBySubject(subject)}
+                  max={20}
+                />
+              </div>
+            ))}
+          </div>
+
+          <div className="p-6 bg-white md:flex block md:gap-4 gap-2 flex-row items-center">
+            <p className="text-gray-600 w-24"><strong>Total Marks</strong></p>
+            <ProgressBar label="Total Marks" value={result.fullmark} max={100} bold />
           </div>
         </div>
       </div>
