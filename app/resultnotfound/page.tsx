@@ -10,7 +10,7 @@ const ResultNotFound = () => {
 			<div className="container flex h-screen w-full flex-col items-center">
 				<Card className="w-full max-w-5xl text-center border-none">
 					<CardHeader>
-							<CardTitle className="text-[26px] font-bold text-primary">We recognise the you have been experiencing trouble while trying to check your Hindustan Olympiad 2025 result In order to help you access your result, we need to capture some details</CardTitle>
+							<CardTitle className="text-[26px] font-bold text-primary">We recognise that you have been experiencing trouble while trying to check your Hindustan Olympiad 2025 result. In order to help you access your result, we need to capture some details</CardTitle>
 					</CardHeader>
 					<CardContent>
 						<ul className="text-black text-md list-inside text-left gap-12 md:flex md:justify-center">
