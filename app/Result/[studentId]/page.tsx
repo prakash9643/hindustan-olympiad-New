@@ -268,7 +268,7 @@ export default function ResultPage() {
             />
 
             <RankCard
-              title="Region Rank"
+              title="Regional Rank"
               rank={result.regionrank}
               icon={<Medal size={20} />}
               gradient="bg-gradient-to-r from-orange-400 to-orange-600"
