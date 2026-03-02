@@ -81,23 +81,23 @@ export default function ResultPage() {
       </div>;
 
   // Get region and district names
-  const getRegionName = (regionId: string | number) => {
-    return regions.find(
-      r => r.value === String(regionId)
-    )?.label || "";
-  };
+  // const getRegionName = (regionId: string | number) => {
+  //   return regions.find(
+  //     r => r.value === String(regionId)
+  //   )?.label || "";
+  // };
 
-  const getDistrictName = (
-    regionId: string | number,
-    districtId: string | number
-  ) => {
-    const districtList =
-      districts[String(regionId) as keyof typeof districts] || [];
+  // const getDistrictName = (
+  //   regionId: string | number,
+  //   districtId: string | number
+  // ) => {
+  //   const districtList =
+  //     districts[String(regionId) as keyof typeof districts] || [];
 
-    return districtList.find(
-      d => d.value === String(districtId)
-    )?.label || "";
-  };
+  //   return districtList.find(
+  //     d => d.value === String(districtId)
+  //   )?.label || "";
+  // };
 
 
   if (loading)
@@ -394,7 +394,7 @@ export default function ResultPage() {
             Button - Request Correction</p>
           </div>
           <div className="flex md:justify-end justify-center">
-            <a href="https://chat.google.com/dm/zk2FwCAAAAE/yi2Td_lgqw0/yi2Td_lgqw0" target="_blank" className="h-10 block button bg-[#a22f35] text-[#fff] font-semibold px-6 py-2 rounded-lg transition">
+            <a href="https://docs.google.com/forms/d/e/1FAIpQLScgh-IYMypOVGWG2Z7jid2PJazzraBR7-kinttASP8tcRvECA/viewform" target="_blank" className="h-10 block button bg-[#a22f35] text-[#fff] font-semibold px-6 py-2 rounded-lg transition">
               Request Correction
             </a>
           </div>
