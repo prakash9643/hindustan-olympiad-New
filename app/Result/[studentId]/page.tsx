@@ -141,6 +141,24 @@ export default function ResultPage() {
     };
 
     const studentClass = Number(result.class);
+
+    const isValidNumber = (value: any) => {
+        return value !== null &&
+              value !== undefined &&
+              value !== "" &&
+              !isNaN(Number(value)) &&
+              Number(value) > 0;
+      };
+
+      const hasMarks = isValidNumber(result?.fullmark);
+
+      const hasRanking =
+        isValidNumber(result?.nationalrank) &&
+        isValidNumber(result?.regionrank) &&
+        isValidNumber(result?.districtrank);
+
+      const showResultError = !hasMarks || !hasRanking;
+
     const studentStream = result.stream;
 
     let subjects: string[] = [];
@@ -182,6 +200,33 @@ export default function ResultPage() {
       }
     }
 
+    if (showResultError) {
+      return (
+        <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-red-50 to-blue-100 p-6">
+          <div className="bg-white rounded-2xl shadow-xl p-10 text-center max-w-md">
+            <h2 className="text-2xl font-bold text-red-600 mb-4">
+              Having trouble accessing your result?
+            </h2>
+
+            <p className="text-gray-600 mb-6">
+              Some result details are currently unavailable.
+            </p>
+
+            <Button
+              onClick={() =>
+                window.open(
+                  "https://docs.google.com/forms/d/e/1FAIpQLScDYciCoU66t-Jr2E_bXQVNo2qlHlt_92EmBQk5PKlwbmi9Ew/viewform",
+                  "_blank"
+                )
+              }
+              className="bg-[#a22f35] text-white px-6 py-2 rounded-lg"
+            >
+              Click Here
+            </Button>
+          </div>
+        </div>
+      );
+    }
   return (
     <>
     <div className="min-h-screen bg-gradient-to-br from-red-50 to-blue-100 p-4 md:p-10" 
@@ -438,7 +483,7 @@ export default function ResultPage() {
     {/* <Panel18 /> */}
     <Footer />
     </>
-  );
+  ); 
 }
 
 function Info({
