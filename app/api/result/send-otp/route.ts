@@ -20,7 +20,7 @@ export async function POST(req: Request) {
 
     if (!student) {
       return NextResponse.json(
-        { message: "Invalid Roll Number" },
+        { message: "Input correct 11 digit Hindustan Olympiad 2025 Roll number" },
         { status: 404 }
       );
     }
@@ -29,22 +29,22 @@ export async function POST(req: Request) {
     const mobile = student.parentContact?.trim();
 
     // ❌ Case 1: Mobile not filled
-    // if (!mobile) {
-    //     return NextResponse.json(
-    //     { message: "Your provided mobile number is not valid. Please Click on click here button to fill your details." },
-    //     { status: 400 }
-    //     );
-    // }
+    if (!mobile) {
+        return NextResponse.json(
+        { message: "Your provided mobile number is not valid. Please Click on click here button to fill your details." },
+        { status: 400 }
+        );
+    }
 
     // ❌ Case 2: Not 10 digits
-    // const cleanNumber = mobile.replace(/\D/g, ""); // remove spaces, +91 etc.
+    const cleanNumber = mobile.replace(/\D/g, ""); // remove spaces, +91 etc.
 
-    // if (cleanNumber.length !== 10) {
-    //     return NextResponse.json(
-    //     { message: "You have not filled mobile number. Please Click on click here button to fill your details." },
-    //     { status: 400 }
-    //     );
-    // }
+    if (cleanNumber.length !== 10) {
+        return NextResponse.json(
+        { message: "You have not filled mobile number. Please Click on click here button to fill your details." },
+        { status: 400 }
+        );
+    }
 
     // 🔐 Generate OTP
     let otp;
@@ -83,11 +83,11 @@ export async function POST(req: Request) {
       throw new Error("SMS sending failed");
     }
 
-    // const masked = cleanNumber.replace(/\d(?=\d{4})/g, "*");
+    const masked = cleanNumber.replace(/\d(?=\d{4})/g, "*");
     return NextResponse.json({
       success: true,
       message: "OTP sent to registered mobile number",
-      mobile: mobile,
+      mobile: masked,
       otp: otp,
     });
   } catch (error) {

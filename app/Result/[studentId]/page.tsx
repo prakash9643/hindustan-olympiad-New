@@ -388,8 +388,7 @@ export default function ResultPage() {
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 px-6 py-4">
           <div className="text-sm text-gray-600 mb-2">
-            <p>Found an error in your certificate details? Submit a correction request here.
-            Button - Request Correction</p>
+            <p>Found an error in your certificate details? Submit a correction request here.</p>
           </div>
           <div className="flex md:justify-end justify-center">
             <a href="https://docs.google.com/forms/d/e/1FAIpQLScgh-IYMypOVGWG2Z7jid2PJazzraBR7-kinttASP8tcRvECA/viewform" target="_blank" className="h-10 block button bg-[#a22f35] text-[#fff] font-semibold px-6 py-2 rounded-lg transition">
