@@ -35,3 +35,6 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# .env.local should be ignored as it contains sensitive information such as AWS credentials.
+.env.local
