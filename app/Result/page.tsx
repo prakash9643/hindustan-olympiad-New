@@ -65,7 +65,7 @@ export default function ResultPage() {
 		if (data.success && data.studentId) {
 			window.location.href = `/Result/${data.studentId}`;
 		} else {
-			alert("Student ID missing");
+			alert("Roll Number / OMR code missing");
 		};
 	};
 
@@ -80,7 +80,7 @@ export default function ResultPage() {
         {!otpStep && (
           <>
             <label className="block mb-2 font-medium">
-              Enter Roll Number
+              Enter Roll Number / OMR code
             </label>
             <input
               type="text"

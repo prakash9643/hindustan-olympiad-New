@@ -42,29 +42,38 @@ export default function ResultPage() {
     fetchResult();
   }, []);
 
-  const handleDownload = async (url: string, filename: string) => {
-    try {
-      setDownloading(filename);
+  // const handleDownload = async (url: string, filename: string) => {
+  //   try {
+  //     setDownloading(filename);
 
-      const res = await fetch(url);
-      if (!res.ok) throw new Error("Download failed");
+  //     const res = await fetch(url);
+  //     if (!res.ok) throw new Error("Download failed");
 
-      const blob = await res.blob();
-      const downloadUrl = window.URL.createObjectURL(blob);
+  //     const blob = await res.blob();
+  //     const downloadUrl = window.URL.createObjectURL(blob);
 
-      const a = document.createElement("a");
-      a.href = downloadUrl;
-      a.download = filename;
-      document.body.appendChild(a);
-      a.click();
-      a.remove();
+  //     const a = document.createElement("a");
+  //     a.href = downloadUrl;
+  //     a.download = filename;
+  //     document.body.appendChild(a);
+  //     a.click();
+  //     a.remove();
 
-      window.URL.revokeObjectURL(downloadUrl);
-    } catch (err) {
-      console.error(err);
-      alert(err);
-    } finally {
-      setDownloading(null);
+  //     window.URL.revokeObjectURL(downloadUrl);
+  //   } catch (err) {
+  //     console.error(err);
+  //     alert(err);
+  //   } finally {
+  //     setDownloading(null);
+  //   }
+  // };
+
+    const downloadCertificate = async () => {
+    const res = await fetch("/api/result/download-certificate/");
+    const data = await res.json();
+
+    if (data.url) {
+      window.open(data.url, "_blank");
     }
   };
 
@@ -79,25 +88,6 @@ export default function ResultPage() {
           {error}
         </div>
       </div>;
-
-  // Get region and district names
-  // const getRegionName = (regionId: string | number) => {
-  //   return regions.find(
-  //     r => r.value === String(regionId)
-  //   )?.label || "";
-  // };
-
-  // const getDistrictName = (
-  //   regionId: string | number,
-  //   districtId: string | number
-  // ) => {
-  //   const districtList =
-  //     districts[String(regionId) as keyof typeof districts] || [];
-
-  //   return districtList.find(
-  //     d => d.value === String(districtId)
-  //   )?.label || "";
-  // };
 
 
   if (loading)
@@ -389,7 +379,7 @@ export default function ResultPage() {
               className="h-12"
               disabled={downloading === "certificate.pdf"}
               onClick={() =>
-                handleDownload("/api/result/download-certificate", "certificate.pdf")
+                downloadCertificate()
               }
             >
               {downloading === "certificate.pdf"
@@ -399,14 +389,15 @@ export default function ResultPage() {
 
           <Button
             className="bg-red-100 text-[#a22f35] font-bold px-4 py-2 h-12 rounded-lg hover:bg-red-200 transition"
-            disabled={downloading === "performance.pdf"}
-            onClick={() =>
-              handleDownload("/api/result/download-performance", "performance.pdf")
-            }
+            disabled
+            // onClick={() =>
+            //   handleDownload("/api/result/download-performance", "performance.pdf")
+            // }
           >
-            {downloading === "performance.pdf"
+            Performance Report (Coming Soon)
+            {/* {downloading === "performance.pdf"
               ? "Downloading..."
-              : "Download Performance Report"}
+              : "Download Performance Report"} */}
           </Button>
 
         </div>

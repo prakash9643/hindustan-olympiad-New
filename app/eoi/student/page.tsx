@@ -570,7 +570,7 @@ const handleClosePopup = () => {
 
           <CardContent>
             {/* ✅ Direct District (City) Dropdown */}
-            {/* <div className="space-y-2 mb-4">
+            <div className="space-y-2 mb-4">
               <Label htmlFor="district">City</Label>
               <Select
                 value={studentForm.district}
@@ -587,10 +587,10 @@ const handleClosePopup = () => {
                   ))}
                 </SelectContent>
               </Select>
-            </div> */}
+            </div>
 
             {/* Form fields */}
-            {/* {studentForm.district && (
+            {studentForm.district && (
               <form onSubmit={handleSubmit} className="space-y-4 mt-4">
                 <div className="space-y-2">
                   <Label>Student Name</Label>
@@ -792,7 +792,7 @@ const handleClosePopup = () => {
                   {isSubmitting ? "Submitting..." : "Submit Details"}
                 </Button>
               </form>
-            )} */}
+            )}
           </CardContent>
         </Card>
       </div>

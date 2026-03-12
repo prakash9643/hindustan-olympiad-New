@@ -11,7 +11,7 @@ export async function POST(req: Request) {
 
     if (!studentId) {
       return NextResponse.json(
-        { message: "Roll number is required" },
+        { message: "Invalid Roll number/OMR code Kindly recheck and try again" },
         { status: 400 }
       );
     }
@@ -20,7 +20,7 @@ export async function POST(req: Request) {
 
     if (!student) {
       return NextResponse.json(
-        { message: "Input correct 11 digit Hindustan Olympiad 2025 Roll number" },
+        { message: "Input correct 11 digit Hindustan Olympiad 2025 Roll number / OMR code" },
         { status: 404 }
       );
     }
