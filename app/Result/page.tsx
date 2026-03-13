@@ -57,9 +57,9 @@ export default function ResultPage() {
       headers: { "Content-Type": "application/json" },
 	  credentials: "include",
       body: JSON.stringify({
-        value: studentId,
-        type: searchType,
-        otp
+        studentId: studentId,
+        otp: otp,
+        type: searchType
       })
     });
 
