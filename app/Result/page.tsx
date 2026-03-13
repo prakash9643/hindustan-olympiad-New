@@ -9,6 +9,7 @@ export default function ResultPage() {
   const [studentId, setstudentId] = useState("");
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
+  const [description, setDescription] = useState("");
   const [otpStep, setOtpStep] = useState(false);
   const [otp, setOtp] = useState("");
   const [mobileLast4, setMobileLast4] = useState("");
@@ -37,6 +38,7 @@ export default function ResultPage() {
 
     if (!res.ok) {
       setMessage(data.message);
+      setDescription(data.description);
       return;
     }
 
@@ -162,6 +164,14 @@ export default function ResultPage() {
         {message && (
           <p className="text-center my-4 text-sm text-red-600">
             {message}
+          </p>
+        )}
+        {description && (
+          <p className="text-center my-4 text-lg text-red-600">
+            <div
+				className="text-red-600 text-sm"
+				dangerouslySetInnerHTML={{ __html: description }}
+			/>
           </p>
         )}
 

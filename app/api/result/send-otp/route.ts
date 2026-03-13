@@ -36,7 +36,13 @@ export async function POST(req: Request) {
 
     if (!student) {
       return NextResponse.json(
-        { message: "Invalid Roll number/OMR code Kindly recheck and try again" },
+        {
+          description: `
+            <b>Result Not Available</b><br/>
+            The student may have been Absent, Disqualified, or the Roll Number/OMR Code entered is incorrect.<br/>
+            Please recheck and try again.
+          `
+        },
         { status: 404 }
       );
     }
