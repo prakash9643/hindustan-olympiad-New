@@ -10,7 +10,7 @@ export async function POST(req: Request) {
 
     if (!studentId || !otp) {
       return NextResponse.json(
-        { message: "Roll number and OTP are required" },
+        { message: "OTP are required" },
         { status: 400 }
       );
     }
@@ -47,7 +47,9 @@ export async function POST(req: Request) {
 
     res.cookies.set("result_token", token, {
       httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
+      // secure: process.env.NODE_ENV === "production",
+      secure: true, // Always set secure to true for production
+      sameSite: "none",
       path: "/",
     });
 

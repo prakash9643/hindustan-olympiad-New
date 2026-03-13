@@ -11,6 +11,13 @@ const nextConfig = {
   async headers() {
     return [
       {
+        source: "/:path*",
+        headers: [
+          {
+            key: "Content-Security-Policy",
+            value: "frame-ancestors 'self' https://www.livehindustan.com"
+          }
+        ],
         // Fonts
         source: '/:all*(woff|woff2|ttf|otf)',
         headers: [

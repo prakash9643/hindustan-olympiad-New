@@ -21,7 +21,7 @@ export default function ResultPage() {
       try {
         const res = await fetch("/api/result/get-student", {
           method: "POST",
-
+          credentials: "include"
         });
 
         const data = await res.json();

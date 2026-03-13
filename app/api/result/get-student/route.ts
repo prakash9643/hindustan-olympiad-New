@@ -51,7 +51,8 @@ export async function POST() {
 
     if (!result) {
       return NextResponse.json(
-        { message: "Result not declared yet" },
+        { message: `Result Not Available 
+          The student may have been Absent, Disqualified, or the Roll Number/OMR Code entered is incorrect. Please recheck and try again.`},
         { status: 404 }
       );
     }
