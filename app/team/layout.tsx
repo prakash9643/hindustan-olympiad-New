@@ -30,6 +30,7 @@ const tabs = [
   { label: "Multi Add Students", href: "/team/multi-add-students", requiresAccess: true },
   { label: "Sample Paper", href: "/team/samplepaperrequest", requiresAccess: true },
   { label: "Reynolds", href: "/team/reynolds" },
+  // { label: "Bulk Result Upload", href: "/team/bulk-result-upload" }
 ];
 
 export default function TeamLayout({ children }: { children: React.ReactNode }) {

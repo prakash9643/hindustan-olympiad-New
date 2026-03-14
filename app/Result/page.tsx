@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
+import { Omega } from "lucide-react";
 
 export default function ResultPage() {
 
@@ -51,34 +52,34 @@ export default function ResultPage() {
 
   const verifyOtp = async () => {
 
-    setLoading(true);
-    setMessage("");
+  setLoading(true);
+  setMessage("");
 
-    const res = await fetch("/api/result/verify-otp", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-	  credentials: "include",
-      body: JSON.stringify({
-        studentId: studentId,
-        otp: otp,
-        type: searchType
-      })
-    });
+  const res = await fetch("/api/result/verify-otp", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    credentials: "include",
+    body: JSON.stringify({
+      value: studentId,   // roll ya omr value
+      type: searchType,   // "roll" ya "omr"
+      otp: otp
+    })
+  });
 
-    const data = await res.json();
-    setLoading(false);
+  const data = await res.json();
+  setLoading(false);
 
-    if (!res.ok) {
-      setMessage(data.message);
-      return;
-    }
+  if (!res.ok) {
+    setMessage(data.message);
+    return;
+  }
 
-    if (data.success && data.studentId) {
-      window.location.href = `/Result/${data.studentId}`;
-    } else {
-      alert("Roll Number / OMR code missing");
-    }
-  };
+  if (data.success && data.studentId) {
+    window.location.href = `/Result/${data.studentId}`;
+  } else {
+    alert("Roll Number / OMR code missing");
+  }
+};
 
   return (
 

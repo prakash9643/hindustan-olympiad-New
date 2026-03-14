@@ -83,6 +83,7 @@ export async function POST(req: Request) {
     // save new otp
     await Otp.create({
       studentId: student.studentId,
+      omrCode: student.omrCode,
       otp,
       expiresAt: new Date(Date.now() + 5 * 60 * 1000),
     });
