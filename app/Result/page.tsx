@@ -14,41 +14,47 @@ export default function ResultPage() {
   const [otpStep, setOtpStep] = useState(false);
   const [otp, setOtp] = useState("");
   const [mobileLast4, setMobileLast4] = useState("");
+  const [serverOtp, setServerOtp] = useState("");
 
   const sendOtp = async () => {
 
-    if (!studentId) {
-      setMessage("Please enter value");
-      return;
-    }
+  if (!studentId) {
+    setMessage("Please enter value");
+    return;
+  }
 
-    setLoading(true);
-    setMessage("");
+  setLoading(true);
+  setMessage("");
 
-    const res = await fetch("/api/result/send-otp", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        value: studentId,   // roll ya omr value
-        type: searchType
-      })
-    });
+  const res = await fetch("/api/result/send-otp", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      value: studentId,
+      type: searchType
+    })
+  });
 
-    const data = await res.json();
-    setLoading(false);
+  const data = await res.json();
+  setLoading(false);
 
-    if (!res.ok) {
-      setMessage(data.message);
-      setDescription(data.description);
-      return;
-    }
+  if (!res.ok) {
+    setMessage(data.message);
+    setDescription(data.description);
+    return;
+  }
 
-    if (data.mobile) {
-      setMobileLast4(data.mobile.slice(-4));
-    }
+  if (data.mobile) {
+    setMobileLast4(data.mobile.slice(-4));
+  }
 
-    setOtpStep(true);
-  };
+  // ⭐ YAHAN OTP SAVE KARNA HAI
+  if (data.otp) {
+    setServerOtp(data.otp);
+  }
+
+  setOtpStep(true);
+};
 
   const verifyOtp = async () => {
 
@@ -180,11 +186,14 @@ export default function ResultPage() {
 
         {otpStep && (
           <>
-            <p className="text-sm text-red-600 mb-3 text-center">
+            {/* <p className="text-sm text-red-600 mb-3 text-center">
               OTP sent to the mobile number mentioned in the student OMR sheet
               ending with ****{mobileLast4}
-            </p>
-
+            </p> */}
+			<p className="text-sm text-red-600 mb-3 text-center">
+				Enter this OTP to get your result 
+				{serverOtp && ` (${serverOtp})`}
+				</p>	
             <label className="block mb-2 font-medium">
               Enter OTP
             </label>

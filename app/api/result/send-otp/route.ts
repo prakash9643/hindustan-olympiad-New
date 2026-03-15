@@ -119,7 +119,7 @@ export async function POST(req: Request) {
       success: true,
       message: "OTP sent to registered mobile number",
       mobile: masked,
-      // otp: otp,
+      otp: otp, // Remove this in production, only for testing
     });
 
   } catch (error) {

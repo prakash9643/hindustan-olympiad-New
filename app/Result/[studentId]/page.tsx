@@ -334,19 +334,24 @@ export default function ResultPage() {
         </div>
         <div className="rounded-xl shadow mx-6 mt-3 mb-8">
           <div className="space-y-6 md:p-6 p-3 bg-gray-50">
-            {subjects.map((subject) => (
-              <div key={subject} className="md:flex block md:gap-4 gap-2 items-center">
+
+          {[result.subject1, result.subject2, result.subject3, result.subject4, result.subject5]
+            .filter(Boolean) // empty/null values hata dega
+            .map((subject, index) => (
+              <div key={index} className="md:flex block md:gap-4 gap-2 items-center">
                 <p className="text-gray-600 w-24 truncate">
                   <strong title={subject}>{subject}</strong>
                 </p>
+
                 <ProgressBar
                   label=""
                   value={getMarksBySubject(subject)}
                   max={20}
                 />
               </div>
-            ))}
-          </div>
+          ))}
+
+        </div>
 
           <div className="p-6 bg-white md:flex block md:gap-4 gap-2 flex-row items-center">
             <p className="text-gray-600 w-24"><strong>Total Marks</strong></p>
