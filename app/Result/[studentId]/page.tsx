@@ -375,7 +375,7 @@ export default function ResultPage() {
           </div>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 px-6 py-4 mt-4">
-          <Button
+          {/* <Button
               className="h-12"
               disabled={downloading === "certificate.pdf"}
               onClick={() =>
@@ -385,7 +385,20 @@ export default function ResultPage() {
               {downloading === "certificate.pdf"
                 ? "Downloading..."
                 : "Download Certificate PDF"}
-            </Button>
+            </Button> */}
+
+            <Button
+            className="bg-red-100 text-[#a22f35] font-bold px-4 py-2 h-12 rounded-lg hover:bg-red-200 transition"
+            disabled
+            // onClick={() =>
+            //   handleDownload("/api/result/download-performance", "performance.pdf")
+            // }
+          >
+            Certificate (Coming Soon)
+            {/* {downloading === "performance.pdf"
+              ? "Downloading..."
+              : "Download Performance Report"} */}
+          </Button>
 
           <Button
             className="bg-red-100 text-[#a22f35] font-bold px-4 py-2 h-12 rounded-lg hover:bg-red-200 transition"

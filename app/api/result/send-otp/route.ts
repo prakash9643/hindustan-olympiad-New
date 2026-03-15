@@ -71,14 +71,16 @@ export async function POST(req: Request) {
 
     let otp;
 
-    if (process.env.TEST_MODE === "true") {
-      otp = "123456";
-    } else {
-      otp = Math.floor(100000 + Math.random() * 900000).toString();
-    }
+    // if (process.env.TEST_MODE === "true") {
+    //   otp = "123456";
+    // } else {
+    // }
+    otp = Math.floor(100000 + Math.random() * 900000).toString();
+    console.log("Student Found:", student);
+    console.log("Student OMR:", student.omrCode);
 
     // delete old otp
-    await Otp.deleteMany({ studentId: student.studentId });
+    await Otp.deleteMany({ studentId: student.studentId, omrCode: student.omrCode });
 
     // save new otp
     await Otp.create({
@@ -91,7 +93,7 @@ export async function POST(req: Request) {
     // 📲 Send SMS
 
     const smsRes = await fetch(
-      `${process.env.NEXT_PUBLIC_TESTING_URL}/api/result/send-sms-parent`,
+      `${process.env.NEXT_PUBLIC_BASE_URL}/api/result/send-sms-parent`,
       {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -117,7 +119,7 @@ export async function POST(req: Request) {
       success: true,
       message: "OTP sent to registered mobile number",
       mobile: masked,
-      otp: otp,
+      // otp: otp,
     });
 
   } catch (error) {

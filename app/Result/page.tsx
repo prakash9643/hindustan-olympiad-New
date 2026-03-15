@@ -29,7 +29,7 @@ export default function ResultPage() {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        value: studentId,
+        value: studentId,   // roll ya omr value
         type: searchType
       })
     });
@@ -82,10 +82,12 @@ export default function ResultPage() {
 };
 
   return (
-
+<>
     <div className="min-h-screen flex items-center justify-center bg-gray-100">
-
       <div className="bg-white p-6 rounded-xl shadow-md w-full max-w-md">
+		{/* <h1 className="text-2xl font-bold text-center mb-4 mt-4 text-red-600">
+		  We are currently experiencing very high traffic. To ensure the best experience for everyone, access is temporarily limited. Please check your result after some time. We will back soon.
+		</h1> */}
 
         <h1 className="text-2xl font-bold text-center mb-4">
           Hindustan Olympiad 2025 Result
@@ -207,5 +209,6 @@ export default function ResultPage() {
 
       </div>
     </div>
+	</>
   );
 }
