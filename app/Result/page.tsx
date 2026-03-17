@@ -153,7 +153,7 @@ export default function ResultPage() {
             onClick={sendOtp}
             className="h-10 w-full"
           >
-            {loading ? "Sending OTP..." : "Get OTP"}
+            {loading ? "Checking Result..." : "Get Result"}
           </Button>
 
           <p className="mt-4 text-sm">

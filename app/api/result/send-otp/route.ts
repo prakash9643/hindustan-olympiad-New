@@ -47,25 +47,12 @@ export async function POST(req: Request) {
       );
     }
 
-    const mobile = student.parentContact?.trim();
-
-    // ❌ Mobile not filled
-    if (!mobile) {
-      return NextResponse.json(
-        { message: "No mobile number is registered with this Roll Number." },
-        { status: 400 }
-      );
-    }
+    const mobile = student.parentContact?.trim() || "";
 
     // Clean number
     const cleanNumber = mobile.replace(/\D/g, "");
 
-    if (cleanNumber.length !== 10) {
-      return NextResponse.json(
-        { message: "You have not filled mobile number. Please Click on click here button to fill your details." },
-        { status: 400 }
-      );
-    }
+    const hasMobile = cleanNumber.length === 10;
 
     // 🔐 Generate OTP
 
@@ -92,24 +79,35 @@ export async function POST(req: Request) {
 
     // 📲 Send SMS
 
-    const smsRes = await fetch(
-      `${process.env.NEXT_PUBLIC_BASE_URL}/api/result/send-sms-parent`,
-      {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          phone: cleanNumber,
-          otp: otp,
-        }),
+    if (hasMobile) {
+
+        const smsRes = await fetch(
+          `${process.env.NEXT_PUBLIC_BASE_URL}/api/result/send-sms-parent`,
+          {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              phone: cleanNumber,
+              otp: otp,
+            }),
+          }
+        );
+
+        const smsData = await smsRes.json();
+        console.log("📩 SMS RESPONSE:", smsData, otp);
+
+        if (!smsRes.ok) {
+          throw new Error("SMS sending failed");
+        }
+
       }
-    );
 
-    const smsData = await smsRes.json();
-    console.log("📩 SMS RESPONSE:", smsData, otp);
+    // const smsData = await smsRes.json();
+    // console.log("📩 SMS RESPONSE:", smsData, otp);
 
-    if (!smsRes.ok) {
-      throw new Error("SMS sending failed");
-    }
+    // if (!smsRes.ok) {
+    //   throw new Error("SMS sending failed");
+    // }
 
     // mask number
 
@@ -117,9 +115,10 @@ export async function POST(req: Request) {
 
     return NextResponse.json({
       success: true,
-      message: "OTP sent to registered mobile number",
-      mobile: masked,
-      otp: otp, // Remove this in production, only for testing
+      message: hasMobile
+        ? "OTP sent to registered mobile number"
+        : "Mobile number not available. OTP generated for testing.",
+      otp: otp,
     });
 
   } catch (error) {

@@ -1,8 +1,8 @@
 const axios = require("axios");
 
 const teamMembers = [
-  { name: "Gautam kumar vaish", email: "gautam.vaish@livehindustan.com", phone: "7533806727", region: "1,2,3,4,5", role: "finance" },
-  { name: "Deepesh mehra", email: "deepesh.mehra@livehindustan.com", phone: "7607977777", region: "1", role: "finance" },
+  { name: "ishan sharma", email: "ishan.sharma@livehindustan.com", phone: "9654411117", region: "1,2,3,4,5", role: "admin" },
+  // { name: "Deepesh mehra", email: "deepesh.mehra@livehindustan.com", phone: "7607977777", region: "1", role: "finance" },
   // { name: "Chanakya Sharma", email: "", phone: "8709829193", region: "3", role: "finance" },
   // { name: "Pramod Kumar", email: "", phone: "9470025727", region: "3", role: "finance" },
 
