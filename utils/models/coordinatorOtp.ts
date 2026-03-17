@@ -2,7 +2,7 @@ import { Omega } from "lucide-react";
 import mongoose from "mongoose";
 
 const CoordinatorotpSchema = new mongoose.Schema({
-  Coorotp: { type: String, required: true },
+  otp: { type: String, required: true },
   schoolId: { type: String, required: true },
   expiresAt: { type: Date, required: true }
 });
