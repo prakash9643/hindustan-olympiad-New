@@ -9,6 +9,9 @@ import { Trophy, Medal, Award } from "lucide-react";
 import { url } from "inspector";
 import Image from "next/image";
 import { set } from "mongoose";
+import html2canvas from "html2canvas";
+import jsPDF from "jspdf";
+import { useRef } from "react";
 
 export default function ResultPage() {
   const [student, setStudent] = useState<any>(null);
@@ -67,15 +70,38 @@ export default function ResultPage() {
   //     setDownloading(null);
   //   }
   // };
-
+    const certificateRef = useRef<HTMLDivElement>(null);
     const downloadCertificate = async () => {
-    const res = await fetch("/api/result/download-certificate/");
-    const data = await res.json();
+      try {
+        if (!certificateRef.current) return;
 
-    if (data.url) {
-      window.open(data.url, "_blank");
-    }
-  };
+        setDownloading("certificate");
+
+        await new Promise((resolve) => setTimeout(resolve, 800));
+
+        const canvas = await html2canvas(certificateRef.current, {
+          scale: 2,
+          useCORS: true,
+          backgroundColor: null,
+        });
+
+        // DEBUG (remove later)
+        document.body.appendChild(canvas);
+
+        const imgData = canvas.toDataURL("image/png");
+
+        const pdf = new jsPDF("landscape", "px", [1200, 850]);
+
+        pdf.addImage(imgData, "PNG", 0, 0, 1200, 850);
+
+        pdf.save(`${result.studentname}-certificate.pdf`);
+      } catch (err) {
+        console.error(err);
+        alert("Certificate generation failed");
+      } finally {
+        setDownloading(null);
+      }
+    };
 
 
   if (loading) return <div className="flex items-center justify-center h-screen">
@@ -392,7 +418,7 @@ export default function ResultPage() {
                 : "Download Certificate PDF"}
             </Button> */}
 
-            <Button
+            {/* <Button
             className="bg-red-100 text-[#a22f35] font-bold px-4 py-2 h-12 rounded-lg hover:bg-red-200 transition"
             disabled
             // onClick={() =>
@@ -402,7 +428,16 @@ export default function ResultPage() {
             Certificate (Coming Soon)
             {/* {downloading === "performance.pdf"
               ? "Downloading..."
-              : "Download Performance Report"} */}
+              : "Download Performance Report"}
+          </Button> */}
+          <Button
+            className="bg-red-100 text-[#a22f35] font-bold px-4 py-2 h-12 rounded-lg hover:bg-red-200 transition"
+            onClick={downloadCertificate}
+            disabled={downloading === "certificate"}
+          >
+            {downloading === "certificate"
+              ? "Generating..."
+              : "Download Certificate"}
           </Button>
 
           <Button
@@ -420,9 +455,9 @@ export default function ResultPage() {
 
         </div>
       </div>
-      <div className="max-w-4xl mx-auto bg-red-50 rounded-2xl shadow-xl overflow-hidden mt-6">
+      {/* <div className="max-w-4xl mx-auto bg-red-50 rounded-2xl shadow-xl overflow-hidden mt-6"> */}
         {/* Certificate Correction Request */}
-        <div className="px-6 pt-6 flex items-center gap-4 mb-6">
+        {/* <div className="px-6 pt-6 flex items-center gap-4 mb-6">
           <div className="relative">
             <div className="h-10 w-10 bg-gradient-to-r from-[#7f2328] via-[#a22f35] to-[#d45a60] rounded-lg flex items-center justify-center shadow-sm">
               <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -449,8 +484,8 @@ export default function ResultPage() {
               Request Correction
             </a>
           </div>
-        </div>
-      </div>
+        </div> */}
+      {/* </div> */}
       <div className="max-w-4xl mx-auto bg-[#FFF9F4] rounded-2xl shadow-xl overflow-hidden mt-6">
         <div className="px-6 pt-3 mt-3 flex items-center gap-4 mb-6">
           <div className="relative">
@@ -489,6 +524,58 @@ export default function ResultPage() {
         </div>
       </div>
     </div>
+    {/* Certificated hidden Div */}
+    <div 
+        style={{
+        position: "fixed",
+        top: 0,
+        left: 0,
+        opacity: 0,
+        zIndex: -1,
+        pointerEvents: "none",
+      }}>
+      <div
+        ref={certificateRef}
+        style={{
+          width: "1200px",
+          height: "850px",
+          position: "relative",
+          fontFamily: "serif",
+        }}
+      >
+        <img
+          src="/Certificates-Olympiad-2025_Participation.jpg"
+          crossOrigin="anonymous"
+          onLoad={() => console.log("image loaded")}
+          style={{
+            width: "100%",
+            height: "100%",
+            position: "absolute",
+            top: 0,
+            left: 0,
+          }}
+        />
+
+        {/* TEXT */}
+        <div
+          style={{
+            position: "absolute",
+            top: "450px",
+            width: "100%",
+            textAlign: "center",
+            padding: "0 150px",
+            fontSize: "26px",
+            lineHeight: "1.6",
+          }}
+        >
+          <b><u>{result.studentname}</u></b> of class{" "}
+          <b><u>{formatClassWithOrdinal(result.class)}</u></b>,{" "}
+          <b><u>{result.schoolname}</u></b> in acknowledgement of his/her successful
+          participation in Hindustan Olympiad 2025.
+        </div>
+      </div>
+    </div>
+    {/* End Here */}
     {/* <Panel18 /> */}
     <Footer />
     </>
