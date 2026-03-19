@@ -47,10 +47,12 @@ export async function POST(req: Request) {
       );
     }
 
-    const mobile = student.parentContact?.trim() || "";
+    // const mobile = student.parentContact?.trim() || "";
+    const mobile = String(student.parentContact || "").trim();
 
     // Clean number
-    const cleanNumber = mobile.replace(/\D/g, "");
+    // const cleanNumber = mobile.replace(/\D/g, "");
+    const cleanNumber = (mobile || "").toString().replace(/\D/g, "");
 
     const hasMobile = cleanNumber.length === 10;
 
@@ -79,8 +81,31 @@ export async function POST(req: Request) {
 
     // 📲 Send SMS
 
-    if (hasMobile) {
+    // if (hasMobile) {
 
+    //     const smsRes = await fetch(
+    //       `${process.env.NEXT_PUBLIC_BASE_URL}/api/result/send-sms-parent`,
+    //       {
+    //         method: "POST",
+    //         headers: { "Content-Type": "application/json" },
+    //         body: JSON.stringify({
+    //           phone: cleanNumber,
+    //           otp: otp,
+    //         }),
+    //       }
+    //     );
+
+    //     const smsData = await smsRes.json();
+    //     console.log("📩 SMS RESPONSE:", smsData, otp);
+
+    //     if (!smsRes.ok) {
+    //       throw new Error("SMS sending failed");
+    //     }
+
+    //   }
+
+    if (hasMobile && process.env.NEXT_PUBLIC_BASE_URL) {
+      try {
         const smsRes = await fetch(
           `${process.env.NEXT_PUBLIC_BASE_URL}/api/result/send-sms-parent`,
           {
@@ -94,13 +119,13 @@ export async function POST(req: Request) {
         );
 
         const smsData = await smsRes.json();
-        console.log("📩 SMS RESPONSE:", smsData, otp);
+        console.log("📩 SMS RESPONSE:", smsData);
+        console.log("BASE URL:", process.env.NEXT_PUBLIC_BASE_URL);
 
-        if (!smsRes.ok) {
-          throw new Error("SMS sending failed");
-        }
-
+      } catch (err) {
+        console.error("SMS Error:", err);
       }
+    }
 
     // const smsData = await smsRes.json();
     // console.log("📩 SMS RESPONSE:", smsData, otp);
