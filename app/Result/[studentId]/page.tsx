@@ -70,6 +70,18 @@ export default function ResultPage() {
   //     setDownloading(null);
   //   }
   // };
+      const getCertificateImage = () => {
+      if (result?.nationalrank == 1) {
+        return "/Certificates-Olympiad-2025-national.jpg";
+      }
+      if (result?.regionrank == 1) {
+        return "/Certificates-Olympiad-2025-regional.jpg";
+      }
+      if (result?.districtrank == 1) {
+        return "/Certificates-Olympiad-2025-district.jpg";
+      }
+      return "/Certificates-Olympiad-2025_Participation.jpg";
+    };
     const certificateRef = useRef<HTMLDivElement>(null);
     const downloadCertificate = async () => {
       try {
@@ -544,7 +556,7 @@ export default function ResultPage() {
         }}
       >
         <img
-          src="/Certificates-Olympiad-2025_Participation.jpg"
+          src={getCertificateImage()}
           crossOrigin="anonymous"
           onLoad={() => console.log("image loaded")}
           style={{
@@ -568,8 +580,12 @@ export default function ResultPage() {
             lineHeight: "1.6",
           }}
         >
-          <b><u>{result.studentname}</u></b> of class{" "}
-          <b><u>{formatClassWithOrdinal(result.class)}</u></b>,{" "}
+          <b><u>{result.studentname}</u></b>   of class{" "}
+          <b><u>{result.class}</u></b>  
+          {(result.class == 11 || result.class == 12) && result.stream ? (
+            <> (<b><u>{result.stream}</u></b>)</>
+          ) : null}
+          ,{" "}  
           <b><u>{result.schoolname}</u></b> in acknowledgement of his/her successful
           participation in Hindustan Olympiad 2025.
         </div>
