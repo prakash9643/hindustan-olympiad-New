@@ -100,7 +100,7 @@ export default function Navbar() {
       <div className={`${isMenuOpen ? "pb-4" : "pb-0"} bg-white px-4  flex items-center justify-between flex-wrap w-full max-w-7xl mx-auto bg-white shadow-[0_2px_4px_0_rgba(0,0,0,0.1)] md:shadow-none`}>
         {/* Logo and Sponsor Logos (Left Side) */}
         <div className="flex items-center w-full md:w-auto justify-between">
-          <div className="flex items-center space-x-2">
+          <div className="flex items-center md:space-x-2 space-x-4 justify-between">
             <Link href="/" onClick={() => handleCtaClick("hindustan_olympiad_2025", "article_top")}>
               <div className="flex items-center h-[80px] cursor-pointer">
                 <Image
@@ -176,8 +176,12 @@ export default function Navbar() {
               </Link> */}
               
             </div>
+            <Link href="/Result" className="h-10 block md:hidden" onClick={() => handleCtaClick("Olympiad-Result-2025", "article_top")}>
+              <Button>
+                 Result
+              </Button>
+            </Link>
           </div>
-
           {/* Hamburger Menu for Mobile (Visible on Small Screens) */}
           <button
             className="md:hidden text-gray-600 focus:outline-none"
@@ -303,13 +307,19 @@ export default function Navbar() {
               Olympiad Result 2025
             </Button>
           </Link>
-          {pathname === "/" && user && userType ? (
+
+          <Link href="/coordinator-student-result" className="h-10 block md:inline" onClick={() => handleCtaClick("Olympiad-Result-2025", "article_top")}>
+            <Button>
+              School Result
+            </Button>
+          </Link>
+          {/* {pathname === "/" && user && userType ? (
             <Link href={userType === "school-coordinator" ? "/school" : "/team"} className="h-10 block md:inline">
               <Button>
                 {userType === "school-coordinator" ? "School Dashboard" : "Team Dashboard"}
               </Button>
             </Link>
-          ) : null}
+          ) : null} */}
 
           {/* User Dropdown or Login Button */}
           {user ? (
@@ -320,7 +330,6 @@ export default function Navbar() {
               >
                 <User className="h-5 w-5" />
               </button>
-
               {/* User Dropdown Menu */}
               {isUserDropdownOpen && (
                 <div className="absolute top-full md:right-0 right-[-7.5rem] mt-2 w-72 bg-white border border-gray-200 rounded-lg shadow-lg z-50">
