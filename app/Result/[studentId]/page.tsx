@@ -71,17 +71,32 @@ export default function ResultPage() {
   //   }
   // };
       const getCertificateImage = () => {
-      if (result?.nationalrank == 1) {
-        return "/Certificates-Olympiad-2025-national.jpg";
-      }
-      if (result?.regionrank == 1) {
-        return "/Certificates-Olympiad-2025-regional.jpg";
-      }
-      if (result?.districtrank == 1) {
-        return "/Certificates-Olympiad-2025-district.jpg";
-      }
-      return "/Certificates-Olympiad-2025_Participation.jpg";
-    };
+        const nationalRank = Number(result?.nationalrank);
+        const regionRank = Number(result?.regionrank);
+        const districtRank = Number(result?.districtrank);
+
+        // 🥇 NATIONAL (Top priority)
+        if (nationalRank >= 1 && nationalRank <= 3) {
+          return "/Certificates-Olympiad-2025-national.jpg";
+        }
+
+        // 🥈 REGION (only if valid region rank)
+        if (regionRank >= 1 && regionRank <= 3) {
+          // extra check (optional safety)
+          if (districtRank >= 1 && districtRank <= 3) {
+            return "/Certificates-Olympiad-2025-regional.jpg";
+          }
+          return "/Certificates-Olympiad-2025-regional.jpg";
+        }
+
+        // 🥉 DISTRICT
+        if (districtRank >= 1 && districtRank <= 3) {
+          return "/Certificates-Olympiad-2025-district.jpg";
+        }
+
+        // 🎖️ PARTICIPATION
+        return "/Certificates-Olympiad-2025_Participation.jpg";
+      };
     const certificateRef = useRef<HTMLDivElement>(null);
     const downloadCertificate = async () => {
       try {

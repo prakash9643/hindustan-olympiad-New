@@ -209,15 +209,15 @@ export default function SchoolResultPage() {
                             </td>
 
                             <td className="px-4 py-3 text-sm text-purple-600 font-medium">
-                                #{s.districtrank}
+                                {s.districtrank || "N/A" }
                             </td>
 
                             <td className="px-4 py-3 text-sm text-indigo-600 font-medium">
-                                #{s.regionrank}
+                                {s.regionrank || "N/A" }
                             </td>
 
                             <td className="px-4 py-3 text-sm text-red-600 font-bold">
-                                #{s.nationalrank}
+                                {s.nationalrank || "N/A" }
                             </td>
                             </tr>
                         ))}
