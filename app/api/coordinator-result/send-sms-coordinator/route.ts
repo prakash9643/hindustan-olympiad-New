@@ -6,9 +6,9 @@ export async function POST(req: NextRequest) {
   try {
     // const body = await req.json();
     // console.log("📥 SMS API BODY:", body);
-    const { coordinatorPhone, Coorotp } = await req.json();
+    const { phone, otp } = await req.json();
 
-    if (!coordinatorPhone || !Coorotp) {
+    if (!phone || !otp) {
       return NextResponse.json(
         { success: false, error: "Phone and OTP are required" },
         { status: 400 }
@@ -26,7 +26,7 @@ export async function POST(req: NextRequest) {
     
     const data = qs.stringify({
       sender: "HNOLYM",
-            content: `Your OTP to view Hindustan Olympiad 2025 Result is ${Coorotp}.
+            content: `Your OTP to view Hindustan Olympiad 2025 Result is ${otp}.
       Warm Regards, 
       Team Hindustan
       `,
@@ -34,7 +34,7 @@ export async function POST(req: NextRequest) {
             type: "normal",
             pe_id: "1601100000000000354",
             template_id: "1107176959284918351", // 👈 parent SMS ka DLT template_id
-            to: coordinatorPhone,
+            to: phone,
             tm_id: "1702158080740553305",       // 👈 parent SMS ka DLT tm_id
     });
 
