@@ -301,18 +301,43 @@ export default function Navbar() {
             Sample Paper
           </Button>
           </Link> */}
-          {/* End Here */}
-          <Link href="/Result" className="h-10 block md:inline" onClick={() => handleCtaClick("Olympiad-Result-2025", "article_top")}>
-            <Button>
-              Olympiad Result 2025
-            </Button>
-          </Link>
+          {/* End Here */}          
+          <div className="relative inline-block group">
+            <button
+              className="h-10 block md:inline bg-[#B2252A] hover:bg-[#A62828] text-white transition-colors px-4 rounded"
+            >
+              Hindustan Olympiad 2025 Result
+            </button>
 
-          <Link href="/coordinator-student-result" className="h-10 block md:inline" onClick={() => handleCtaClick("Olympiad-Result-2025", "article_top")}>
-            <Button>
-              School Result
-            </Button>
-          </Link>
+            {/* Dropdown */}
+            <div className="absolute hidden group-hover:block top-full md:right-0 right-[-7.5rem] mt-2 w-72 bg-white border border-gray-200 rounded-lg shadow-lg z-50">
+              <div className="py-3 px-4 border-b border-gray-100">
+                <div className="py-2 gap-2 flex flex-col w-100">
+                  
+                  <Link
+                    href="/Result"
+                    onClick={() =>
+                      handleCtaClick("Olympiad-Result-2025", "article_top")
+                    }
+                  >
+                    <Button 
+                    className="h-10 flex w-full">Student Result</Button>
+                  </Link>
+
+                  <Link
+                    href="/coordinator-student-result"
+                    onClick={() =>
+                      handleCtaClick("Olympiad-Result-2025", "article_top")
+                    }
+                  >
+                    <Button
+                    className="h-10 flex w-full">School Result</Button>
+                  </Link>
+
+                </div>
+              </div>
+            </div>
+          </div>  
           {/* {pathname === "/" && user && userType ? (
             <Link href={userType === "school-coordinator" ? "/school" : "/team"} className="h-10 block md:inline">
               <Button>
