@@ -595,14 +595,24 @@ export default function ResultPage() {
             lineHeight: "1.6",
           }}
         >
-          <b><u>{result.studentname}</u></b>   of class{" "}
-          <b><u>{result.class}</u></b>  
+          <b><u>{result.studentname}</u></b> of class{" "}
+          <b><u>{result.class}</u></b>
+
           {(result.class == 11 || result.class == 12) && result.stream ? (
             <> (<b><u>{result.stream}</u></b>)</>
           ) : null}
-          ,{" "}  
-          <b><u>{result.schoolname}</u></b> in acknowledgement of his/her successful
-          participation in Hindustan Olympiad 2025.
+          ,{" "}
+          <b><u>{result.schoolname}</u></b>{" "}
+
+          {result.nationalrank ? (
+            <> securing <b><u>{result.nationalrank}</u></b> rank at national level in Hindustan Olympiad 2025.</>
+          ) : result.regionrank ? (
+            <> securing <b><u>{result.regionrank}</u></b> rank at regional level in Hindustan Olympiad 2025.</>
+          ) : result.districtrank ? (
+            <> securing <b><u>{result.districtrank}</u></b> rank at district level in Hindustan Olympiad 2025.</>
+          ) : (
+            <> in acknowledgement of his/her successful participation in Hindustan Olympiad 2025.</>
+          )}
         </div>
       </div>
     </div>
