@@ -242,7 +242,12 @@ export default function ResultPage() {
           return num + "th";
       }
     }
-
+    const getRankSuffix = (rank: number) => {
+      if (rank === 1) return "1st";
+      if (rank === 2) return "2nd";
+      if (rank === 3) return "3rd";
+      return rank;
+    };
     if (showResultError) {
       return (
         <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-red-50 to-blue-100 p-6">
@@ -584,36 +589,45 @@ export default function ResultPage() {
         />
 
         {/* TEXT */}
-        <div
-          style={{
-            position: "absolute",
-            top: "450px",
-            width: "100%",
-            textAlign: "center",
-            padding: "0 150px",
-            fontSize: "26px",
-            lineHeight: "1.6",
-          }}
-        >
-          <b><u>{result.studentname}</u></b> of class{" "}
-          <b><u>{result.class}</u></b>
+          <div
+            style={{
+              position: "absolute",
+              top: "450px",
+              width: "100%",
+              textAlign: "center",
+              padding: "0 150px",
+              fontSize: "26px",
+              lineHeight: "1.6",
+            }}
+          >
+            <b><u>{result.studentname}</u></b> of class{" "}
+            <b><u>{result.class}</u></b>
 
-          {(result.class == 11 || result.class == 12) && result.stream ? (
-            <> (<b><u>{result.stream}</u></b>)</>
-          ) : null}
-          ,{" "}
-          <b><u>{result.schoolname}</u></b>{" "}
+            {(result.class == 11 || result.class == 12) && result.stream ? (
+              <> (<b><u>{result.stream}</u></b>)</>
+            ) : null}
+            ,{" "}
+            <b><u>{result.schoolname}</u></b>{" "}
 
-          {result.nationalrank ? (
-            <> securing <b><u>{result.nationalrank}</u></b> rank at national level in Hindustan Olympiad 2025.</>
-          ) : result.regionrank ? (
-            <> securing <b><u>{result.regionrank}</u></b> rank at regional level in Hindustan Olympiad 2025.</>
-          ) : result.districtrank ? (
-            <> securing <b><u>{result.districtrank}</u></b> rank at district level in Hindustan Olympiad 2025.</>
-          ) : (
-            <> in acknowledgement of his/her successful participation in Hindustan Olympiad 2025.</>
-          )}
-        </div>
+            {[1, 2, 3].includes(Number(result.nationalrank)) ? (
+              <>
+                securing{" "}
+                <b><u>{getRankSuffix(Number(result.nationalrank))}</u></b> rank at national level in Hindustan Olympiad 2025.
+              </>
+            ) : [1, 2, 3].includes(Number(result.regionrank)) ? (
+              <>
+                securing{" "}
+                <b><u>{getRankSuffix(Number(result.regionrank))}</u></b> rank at regional level in Hindustan Olympiad 2025.
+              </>
+            ) : [1, 2, 3].includes(Number(result.districtrank)) ? (
+              <>
+                securing{" "}
+                <b><u>{getRankSuffix(Number(result.districtrank))}</u></b> rank at district level in Hindustan Olympiad 2025.
+              </>
+            ) : (
+              <> in acknowledgement of his/her successful participation in Hindustan Olympiad 2025.</>
+            )}
+          </div>
       </div>
     </div>
     {/* End Here */}
