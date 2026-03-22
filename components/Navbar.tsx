@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { Button } from "./ui/button";
@@ -16,6 +16,8 @@ export default function Navbar() {
   const [user, setUser] = useState<any>(null);
   const [userType, setUserType] = useState<any>(null);
   const [isUserDropdownOpen, setIsUserDropdownOpen] = useState(false)
+  const [isOpen, setIsOpen] = useState(false);
+  const dropdownRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
     const userData = localStorage.getItem("user");
@@ -94,6 +96,26 @@ export default function Navbar() {
       domain_name: window.location.hostname,
     });
   };
+
+  // Dropdown Click
+    const toggleDropdown = () => {
+      setIsOpen(!isOpen);
+    };
+
+    // Click outside close
+    useEffect(() => {
+      const handleClickOutside = (event: MouseEvent) => {
+        if (
+          dropdownRef.current &&
+          !dropdownRef.current.contains(event.target as Node)
+        ) {
+          setIsOpen(false);
+        }
+      };
+
+      document.addEventListener("mousedown", handleClickOutside);
+      return () => document.removeEventListener("mousedown", handleClickOutside);
+    }, []);
 
   return (
     <nav className="bg-white shadow-md fixed top-0 w-full left-0 right-0 z-50 h-[80px]">
@@ -302,42 +324,45 @@ export default function Navbar() {
           </Button>
           </Link> */}
           {/* End Here */}          
-          <div className="relative inline-block group">
-            <button
-              className="h-10 block md:inline bg-[#B2252A] hover:bg-[#A62828] text-white transition-colors px-4 rounded"
-            >
-              Hindustan Olympiad 2025 Result
-            </button>
+           <div ref={dropdownRef} className="relative inline-block">
+              <Button
+                onClick={toggleDropdown}
+                className="h-10 px-4 text-white rounded"
+              >
+                Hindustan Olympiad 2025 Result
+              </Button>
 
-            {/* Dropdown */}
-            <div className="absolute hidden group-hover:block top-full md:right-0 right-[-7.5rem] mt-2 w-72 bg-white border border-gray-200 rounded-lg shadow-lg z-50">
-              <div className="py-3 px-4 border-b border-gray-100">
-                <div className="py-2 gap-2 flex flex-col w-100">
-                  
-                  <Link
-                    href="/Result"
-                    onClick={() =>
-                      handleCtaClick("Olympiad-Result-2025", "article_top")
-                    }
-                  >
-                    <Button 
-                    className="h-10 flex w-full">Student Result</Button>
-                  </Link>
+              {isOpen && (
+                <div className="absolute top-full md:right-0 right-[-7.5rem] mt-2 w-72 bg-white border border-gray-200 rounded-lg shadow-lg z-50">
+                  <div className="py-3 px-4 border-b border-gray-100">
+                    <div className="py-2">
+                      
+                      <Link
+                        href="/Result"
+                        className="mb-2 block"
+                        onClick={() => {
+                          handleCtaClick("Olympiad-Result-2025", "article_top");
+                          setIsOpen(false);
+                        }}
+                      >
+                        <Button className="w-full block">Student Result</Button>
+                      </Link>
 
-                  <Link
-                    href="/coordinator-student-result"
-                    onClick={() =>
-                      handleCtaClick("Olympiad-Result-2025", "article_top")
-                    }
-                  >
-                    <Button
-                    className="h-10 flex w-full">School Result</Button>
-                  </Link>
+                      <Link
+                        href="/coordinator-student-result"
+                        onClick={() => {
+                          handleCtaClick("Olympiad-Result-2025", "article_top");
+                          setIsOpen(false);
+                        }}
+                      >
+                        <Button className="w-full block">School Result</Button>
+                      </Link>
 
+                    </div>
+                  </div>
                 </div>
-              </div>
+              )}
             </div>
-          </div>  
           {/* {pathname === "/" && user && userType ? (
             <Link href={userType === "school-coordinator" ? "/school" : "/team"} className="h-10 block md:inline">
               <Button>
