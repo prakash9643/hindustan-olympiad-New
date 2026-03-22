@@ -242,10 +242,10 @@ export default function ResultPage() {
           return num + "th";
       }
     }
-    const getRankSuffix = (rank: number) => {
-      if (rank === 1) return "1st";
-      if (rank === 2) return "2nd";
-      if (rank === 3) return "3rd";
+    const getRankWord = (rank: number) => {
+      if (rank === 1) return "First";
+      if (rank === 2) return "Second";
+      if (rank === 3) return "Third";
       return rank;
     };
     if (showResultError) {
@@ -612,17 +612,17 @@ export default function ResultPage() {
             {[1, 2, 3].includes(Number(result.nationalrank)) ? (
               <>
                 securing{" "}
-                <b><u>{getRankSuffix(Number(result.nationalrank))}</u></b> rank at national level in Hindustan Olympiad 2025.
+                <b><u>{getRankWord(Number(result.nationalrank))}</u></b> rank at national level in Hindustan Olympiad 2025.
               </>
             ) : [1, 2, 3].includes(Number(result.regionrank)) ? (
               <>
                 securing{" "}
-                <b><u>{getRankSuffix(Number(result.regionrank))}</u></b> rank at regional level in Hindustan Olympiad 2025.
+                <b><u>{getRankWord(Number(result.regionrank))}</u></b> rank at regional level in Hindustan Olympiad 2025.
               </>
             ) : [1, 2, 3].includes(Number(result.districtrank)) ? (
               <>
                 securing{" "}
-                <b><u>{getRankSuffix(Number(result.districtrank))}</u></b> rank at district level in Hindustan Olympiad 2025.
+                <b><u>{getRankWord(Number(result.districtrank))}</u></b> rank at district level in Hindustan Olympiad 2025.
               </>
             ) : (
               <> in acknowledgement of his/her successful participation in Hindustan Olympiad 2025.</>
