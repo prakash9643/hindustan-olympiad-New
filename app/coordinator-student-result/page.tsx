@@ -9,6 +9,7 @@ export default function SchoolResultPage() {
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
   const [serverOtp, setServerOtp] = useState("");
+  const [mobileLast4, setMobileLast4] = useState("");
 
   // Send OTP
   const sendOtp = async () => {
@@ -24,11 +25,15 @@ export default function SchoolResultPage() {
     });
 
     const data = await res.json();
+    console.log("API RESPONSE:", data);
     setLoading(false);
 
     if (!data.success) {
       alert(data.message);
       return;
+    }
+    if (data.mobile) {
+         setMobileLast4(data.mobile.slice(-4));
     }
     console.log(data.otp)
     if (data.otp){
@@ -116,9 +121,12 @@ export default function SchoolResultPage() {
             <h1 className="text-2xl font-bold text-center mb-4 text-primary">
             Hindustan Olympiad 2025 Result
             </h1>
-            <p className="text-sm text-red-600 mb-3 text-center">
+            {/* <p className="text-sm text-red-600 mb-3 text-center">
 				Enter this OTP to get student result 
 				{serverOtp && ` (${serverOtp})`}
+            </p> */}
+            <p className="text-sm text-red-600 mb-3 text-center">
+              OTP sent to the mobile number Register in school Id ****{mobileLast4}
             </p>
             <div className="flex gap-2 mb-4 flex-col">
                 <label className="block mb-2 font-medium">

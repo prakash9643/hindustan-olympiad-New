@@ -24,6 +24,15 @@ export async function POST(req: Request) {
         "Either you have entered an incorrect school ID or there is no mobile number associated with this school ID. Kindly contact the Hindustan Representative.",
     });
   }
+
+  const mobile = String(school.coordinatorPhone || "").trim();
+
+    // Clean number
+    // const cleanNumber = mobile.replace(/\D/g, "");
+    const cleanNumber = (mobile || "").toString().replace(/\D/g, "");
+
+    const hasMobile = cleanNumber.length === 10;
+
   // 2. Generate OTP
   const Coorotp = Math.floor(100000 + Math.random() * 900000);
   console.log(Coorotp, "OTP Not Recieved")
@@ -35,33 +44,39 @@ export async function POST(req: Request) {
     expiresAt: Date.now() + 5 * 60 * 1000, // 5 min
   });
 
-  try {
-    const smsRes = await fetch(
-        `${process.env.NEXT_PUBLIC_BASE_URL}/api/coordinator-result/send-sms-coordinator`,
-        {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-            phone: school.coordinatorPhone,
-            otp: Coorotp,
-        }),
-        }
-    );
+  if (hasMobile && process.env.NEXT_PUBLIC_BASE_URL) {
+    try {
+        const smsRes = await fetch(
+            `${process.env.NEXT_PUBLIC_BASE_URL}/api/coordinator-result/send-sms-coordinator`,
+            {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+                phone: cleanNumber,
+                otp: Coorotp,
+            }),
+            }
+        );
+    
+        const smsData = await smsRes.json();
+        console.log("📩 SMS RESPONSE:", smsData);
+        console.log("BASE URL:", process.env.NEXT_PUBLIC_BASE_URL);
+    
+        } catch (err) {
+        console.error("SMS Error:", err);
+    }
+  }
 
-    const smsData = await smsRes.json();
-    console.log("📩 SMS RESPONSE:", smsData);
-    console.log("BASE URL:", process.env.NEXT_PUBLIC_BASE_URL);
-
-    } catch (err) {
-    console.error("SMS Error:", err);
-}
 
   // 4. Send OTP (for now console)
   console.log("OTP:", Coorotp);
 
   return NextResponse.json({
     success: true,
-    message: `OTP sent to ${school.coordinatorPhone}`,
+    message: hasMobile
+        ? "OTP sent to registered mobile number"
+        : "Mobile number not available. OTP generated for testing.",
     otp: Coorotp,
+    mobile: cleanNumber.slice(-4), // 👈 only last 4 digits
   });
 }

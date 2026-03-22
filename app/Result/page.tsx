@@ -48,7 +48,6 @@ export default function ResultPage() {
     setMobileLast4(data.mobile.slice(-4));
   }
 
-  // ⭐ YAHAN OTP SAVE KARNA HAI
   if (data.otp) {
     setServerOtp(data.otp);
   }
