@@ -9,7 +9,9 @@ export async function POST(req: Request) {
   const { schoolId } = await req.json();
 
   // 1. Get students of that school
-  const students = await Student.find({ schoolId });
+  const students = await Result.find({ schoolId }).sort({
+    studentname: 1, // 1 = ascending (A → Z)
+    });
 
   if (!students.length) {
     return NextResponse.json({
@@ -35,7 +37,7 @@ export async function POST(req: Request) {
     return {
       _id: s._id,
       rollNo: s.studentId,
-      name: s.name,
+      studentname: s.studentname,
       class: s.class,
       stream: s.stream,
 

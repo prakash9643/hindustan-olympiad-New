@@ -25,7 +25,7 @@ export default function SchoolResultPage() {
     });
 
     const data = await res.json();
-    console.log("API RESPONSE:", data);
+    // console.log("API RESPONSE:", data);
     setLoading(false);
 
     if (!data.success) {
@@ -121,10 +121,10 @@ export default function SchoolResultPage() {
             <h1 className="text-2xl font-bold text-center mb-4 text-primary">
             Hindustan Olympiad 2025 Result
             </h1>
-            {/* <p className="text-sm text-red-600 mb-3 text-center">
+            <p className="text-sm text-red-600 mb-3 text-center">
 				Enter this OTP to get student result 
 				{serverOtp && ` (${serverOtp})`}
-            </p> */}
+            </p>
             <p className="text-sm text-red-600 mb-3 text-center">
               OTP sent to the mobile number Register in school Id ****{mobileLast4}
             </p>
@@ -201,7 +201,7 @@ export default function SchoolResultPage() {
                             </td>
 
                             <td className="px-4 py-3 text-sm text-gray-800">
-                                {s.name}
+                                {s.studentname}
                             </td>
 
                             <td className="px-4 py-3 text-sm text-gray-700">
