@@ -93,7 +93,7 @@ export default function SchoolResultPage() {
             </h1>
             <div className="flex gap-2 mb-4 flex-col">
                 <label className="block mb-2 font-medium">
-                    Enter SchoolId
+                    Enter School Id
                 </label>
                 <input
                     placeholder="Enter School ID"

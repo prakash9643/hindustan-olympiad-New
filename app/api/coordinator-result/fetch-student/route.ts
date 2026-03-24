@@ -9,9 +9,24 @@ export async function POST(req: Request) {
   const { schoolId } = await req.json();
 
   // 1. Get students of that school
-  const students = await Result.find({ schoolId }).sort({
-    studentname: 1, // 1 = ascending (A → Z)
-    });
+//   const students = await Result.find({ schoolId }).sort({
+//     class: 1,
+//     studentname: 1, // 1 = ascending (A → Z)
+//     });
+    const students = await Result.aggregate([
+    { $match: { schoolId } },
+    {
+        $addFields: {
+        classNum: { $toInt: "$class" },
+        },
+    },
+    {
+        $sort: {
+        classNum: 1,
+        studentname: 1,
+        },
+    },
+    ]);
 
   if (!students.length) {
     return NextResponse.json({
