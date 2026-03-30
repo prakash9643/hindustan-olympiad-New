@@ -12,6 +12,7 @@ import { set } from "mongoose";
 import html2canvas from "html2canvas";
 import jsPDF from "jspdf";
 import { useRef } from "react";
+import Chart from "chart.js/auto";
 
 export default function ResultPage() {
   const [student, setStudent] = useState<any>(null);
@@ -28,6 +29,7 @@ export default function ResultPage() {
         });
 
         const data = await res.json();
+        console.log("API RESPONSE:", data);
 
         if (!data.success) {
           setError(data.message || "Result not found");
@@ -125,6 +127,154 @@ export default function ResultPage() {
       } catch (err) {
         console.error(err);
         alert("Certificate generation failed");
+      } finally {
+        setDownloading(null);
+      }
+    };
+
+    const reportRef = useRef<HTMLDivElement>(null);
+    const calcPercent = (marks: number, total: number) => {
+      if (!marks || !total) return 0;
+      return Number(((marks / total) * 100).toFixed(2));
+    };
+    const overallPercentage = calcPercent(result?.fullmark ?? 0, 100);
+    const renderChart = () => {
+      const ctx = document.getElementById("reportChart") as HTMLCanvasElement;      
+      if (!ctx) return;
+      console.log("FULL RESULT:", result);
+      console.table([
+        {
+          type: "Your %",
+          total: result?.SAVGTOT,
+          sub1: result?.SAVGSUB1,
+          sub2: result?.SAVGSUB2,
+        },
+        {
+          type: "District",
+          total: result?.DAVGTOT,
+          sub1: result?.DAVGSUB1,
+        },
+        {
+          type: "Regional",
+          total: result?.RAVGTOT,
+        },
+        {
+          type: "National",
+          total: result?.NAVGTOT,
+        }
+      ]);
+      new Chart(ctx, {
+        type: "bar",
+        data: {
+          labels: [
+            "Overall",
+            result.subject1,
+            result.subject2,
+            result.subject3,
+            result.subject4,
+            result.subject5,
+          ],
+          datasets: [
+            {
+              label: "Your %",
+              data: [
+                Number(result?.SAVGTOT) || 0,
+                Number(result?.SAVGSUB1) || 0,
+                Number(result?.SAVGSUB2) || 0,
+                Number(result?.SAVGSUB3) || 0,
+                Number(result?.SAVGSUB4) || 0,
+                Number(result?.SAVGSUB5) || 0
+              ],
+              backgroundColor: "#e53935",
+            },
+            {
+              label: "District Avg",
+              data: [
+                Number(result?.DAVGTOT) || 0, 
+                Number(result?.DAVGSUB1) || 0, 
+                Number(result?.DAVGSUB2) || 0, 
+                Number(result?.DAVGSUB3) || 0, 
+                Number(result?.DAVGSUB4) || 0, 
+                Number(result?.DAVGSUB5) || 0
+              ],
+              backgroundColor: "#1e88e5",
+            },
+            {
+              label: "Regional Avg",
+              data: [
+                Number(result?.RAVGTOT) || 0, 
+                Number(result?.RAVGSUB1) || 0, 
+                Number(result?.RAVGSUB2) || 0, 
+                Number(result?.RAVGSUB3) || 0, 
+                Number(result?.RAVGSUB4) || 0, 
+                Number(result?.RAVGSUB5) || 0
+              ],
+              backgroundColor: "#43a047",
+            },
+            {
+              label: "National Avg",
+              data: [
+                Number(result?.NAVGTOT) || 0, 
+                Number(result?.NAVGSUB1) || 0, 
+                Number(result?.NAVGSUB2) || 0, 
+                Number(result?.NAVGSUB3) || 0, 
+                Number(result?.NAVGSUB4) || 0, 
+                Number(result?.NAVGSUB5) || 0
+              ],
+              backgroundColor: "#fdd835",
+            },
+          ],
+        },
+        options: {
+          responsive: true,
+          plugins: {
+            legend: {
+              position: "top",
+            },
+          },
+          scales: {
+             x: {
+              stacked: false,
+            },
+            y: {
+              beginAtZero: true,
+              max: 100,
+            },
+          },
+        },
+      });
+    };
+
+    const downloadReport = async () => {
+      try {
+        setDownloading("report");
+
+        renderChart();
+
+        await new Promise((res) => setTimeout(res, 1200));
+
+        const canvas = await html2canvas(reportRef.current!, {
+          scale: 2,
+        });
+
+        const imgData = canvas.toDataURL("image/png");
+        const pdf = new jsPDF("portrait", "px", [
+          canvas.width,
+          canvas.height,
+        ]);
+
+        pdf.addImage(
+          imgData,
+          "PNG",
+          0,
+          0,
+          canvas.width,
+          canvas.height
+        );
+
+        pdf.save(`${result.studentname}-performance.pdf`);
+      } catch (err) {
+        console.error(err);
       } finally {
         setDownloading(null);
       }
@@ -472,7 +622,7 @@ export default function ResultPage() {
               : "Download Certificate"}
           </Button>
 
-          <Button
+          {/* <Button
             className="bg-red-100 text-[#a22f35] font-bold px-4 py-2 h-12 rounded-lg hover:bg-red-200 transition"
             disabled
             // onClick={() =>
@@ -482,7 +632,17 @@ export default function ResultPage() {
             Performance Report (Coming Soon)
             {/* {downloading === "performance.pdf"
               ? "Downloading..."
-              : "Download Performance Report"} */}
+              : "Download Performance Report"} 
+          </Button> */}
+
+          <Button
+            onClick={downloadReport}
+            disabled={downloading === "report"}
+            className="font-bold px-4 py-2 h-12 rounded-lg hover:bg-red-200 transition"
+          >
+            {downloading === "report"
+              ? "Generating..."
+              : "Download Performance Report"}
           </Button>
 
         </div>
@@ -631,6 +791,209 @@ export default function ResultPage() {
       </div>
     </div>
     {/* End Here */}
+
+    {/* Performance Report hideen div */}
+    <div
+      style={{
+        position: "fixed",
+        top: 0,
+        left: 0,
+        opacity: 0,
+        pointerEvents: "none",
+        zIndex: -1,
+      }}
+    >
+      <div
+        ref={reportRef}
+        style={{
+          width: "900px",
+          background: "#fff",
+          fontFamily: "Arial",
+          border: "2px solid #ccc",
+          position:"relative",
+        }}
+      >
+        <img
+          src="/student-performance.jpg"
+          crossOrigin="anonymous"
+          onLoad={() => console.log("image loaded")}
+          style={{
+            width: "100%",
+            height: "100%",
+            objectFit:"cover",
+          }}
+        />
+
+        {/* First Info */}
+        <div style={{ 
+          marginTop: "10px",
+          position: "absolute",
+          top:"20%",
+          left:"25%",
+          backgroundColor: "rgba(255, 255, 255, 0.8)",
+          padding: "15px",
+          borderRadius: "12px",
+          width: "400px"
+        }}>
+          <p style={{marginBottom:"5px"}}><b>Name: <u>{result.studentname}</u> </b></p>
+          <p style={{marginBottom:"5px"}}><b>Roll Number: <u>{result.studentId}</u> </b></p>
+          <p style={{marginBottom:"5px"}}><b>Class: <u>{result.class}</u></b> &nbsp; &nbsp; <b>Stream: <u>{result.stream}</u></b></p>
+          <p style={{marginBottom:"5px"}}><b>School Name: <u>{result.schoolname}</u></b></p>
+          <p style={{marginBottom:"5px"}}><b>District: <u>{result.district}</u></b> &nbsp; &nbsp; <b>Region: <u>{result.region}</u></b></p>
+        </div>
+        {/* End Here */}
+
+        {/* STUDENT INFO */}
+        <div style={{ 
+          marginTop: "10px",
+          position: "absolute",
+          top:"51.5%",
+          left:"7%"
+        }}>
+          <p><b>Student Name: {result.studentname}</b></p>
+          <p><b>Class:</b> {result.class}</p>
+          <p><b>School Name:</b> {result.schoolname}</p>
+        </div>
+
+        {/* TABLE */}
+        <table
+          style={{
+            width: "85%",
+            borderCollapse: "collapse",
+            marginTop: "20px",
+            fontSize: "14px",
+            position: "absolute",
+            top:"53%",
+            left:"7%",
+            border:"1px solid #000"
+          }}
+          border={1}
+        >
+          <thead>
+            <tr>
+              <th style={{
+                border: "2px solid #000",
+                padding: "5px"
+              }}
+              ></th>
+              <th style={{
+                border: "2px solid #000",
+                padding: "5px"
+              }}>Maximum Marks</th>
+              <th style={{
+                border: "2px solid #000",
+                padding: "5px"
+              }}>Marks Obtained</th>
+              <th style={{
+                border: "2px solid #000",
+                padding: "5px"
+              }}>Your Percentage</th>
+              <th style={{
+                border: "2px solid #000",
+                padding: "5px"
+              }}>District Rank</th>
+              <th style={{
+                border: "2px solid #000",
+                padding: "5px"
+              }}>Regional Rank</th>
+              <th style={{
+                border: "2px solid #000",
+                padding: "5px"
+              }}>National Rank</th>
+            </tr>
+          </thead>
+          <tbody>
+            {/* Overall */}
+            <tr>
+              <td style={{
+                border: "2px solid #000",
+                padding: "5px"
+              }}><b>Overall</b></td>
+              <td style={{
+                border: "2px solid #000",
+                padding: "5px",
+                textAlign: "center"
+              }}>100</td>
+              <td style={{
+                border: "2px solid #000",
+                padding: "5px",
+                textAlign: "center"
+              }}>{result.fullmark}</td>
+              <td style={{
+                border: "2px solid #000",
+                padding: "5px",
+                textAlign: "center"
+              }}>{overallPercentage}%</td>
+              <td style={{
+                border: "2px solid #000",
+                padding: "5px",
+                textAlign: "center"
+              }} rowSpan={6}>{result.districtrank}</td>
+              <td style={{
+                border: "2px solid #000",
+                padding: "5px",
+                textAlign: "center"
+              }} rowSpan={6}>{result.regionrank}</td>
+              <td style={{
+                border: "2px solid #000",
+                padding: "5px",
+                textAlign: "center"
+              }} rowSpan={6}>{result.nationalrank}</td>
+            </tr>
+
+            {[result.subject1, result.subject2, result.subject3, result.subject4, result.subject5]
+              .filter(Boolean)
+              .map((sub, i) => {
+                const marks = getMarksBySubject(sub);
+                return (
+                  <tr key={i}>
+                    <td style={{
+                        border: "2px solid #000",
+                        padding: "5px"
+                    }}
+                    >{sub}</td>
+                    <td style={{
+                        border: "2px solid #000",
+                        padding: "5px",
+                textAlign: "center"
+                      }}
+                    >20</td>
+                    <td style={{
+                        border: "2px solid #000",
+                        padding: "5px",
+                textAlign: "center"
+                      }}
+                    >{marks}</td>
+                    <td style={{
+                        border: "2px solid #000",
+                        padding: "5px",
+                textAlign: "center"
+                      }}
+                    >{((marks / 20) * 100).toFixed(2)}%</td>
+                  </tr>
+                );
+              })}
+          </tbody>
+        </table>
+
+        {/* CHART */}
+        <div style={{ 
+          marginTop: "30px",
+          position: "absolute",
+          top: "59%",
+          left: "5%"
+        }}>
+          <canvas id="reportChart" width="800" height="400" style={{border:"1px solid #000"}}></canvas>
+        </div>
+
+        {/* FOOTER NOTE */}
+        <p style={{ fontSize: "10px", marginTop: "10px" }}>
+          * National Winner is determined from the combined pool of students participating from UP, Bihar, Jharkhand, and Delhi.
+        </p>
+      </div>
+    </div>
+    {/* End Here */}
+
     {/* <Panel18 /> */}
     <Footer />
     </>

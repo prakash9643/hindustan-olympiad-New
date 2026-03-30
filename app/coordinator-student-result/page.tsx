@@ -121,12 +121,12 @@ export default function SchoolResultPage() {
             <h1 className="text-2xl font-bold text-center mb-4 text-primary">
             Hindustan Olympiad 2025 Result
             </h1>
-            <p className="text-sm text-red-600 mb-3 text-center">
+            {/* <p className="text-sm text-red-600 mb-3 text-center">
 				Enter this OTP to get student result 
 				{serverOtp && ` (${serverOtp})`}
-            </p>
+            </p> */}
             <p className="text-sm text-red-600 mb-3 text-center">
-              OTP sent to the mobile number Register in school Id ****{mobileLast4}
+              OTP is sent to your registered mobile number ending with ****{mobileLast4}
             </p>
             <div className="flex gap-2 mb-4 flex-col">
                 <label className="block mb-2 font-medium">
