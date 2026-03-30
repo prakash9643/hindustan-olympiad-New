@@ -4,7 +4,6 @@ import { Student } from "@/utils/models/Student";
 import { cookies } from "next/headers";
 import { verifyResultToken } from "@/utils/jwt";
 import { Result } from "@/utils/models/result";
-import { Performance } from "@/utils/models/performance";
 
 export async function POST() {
   try {
