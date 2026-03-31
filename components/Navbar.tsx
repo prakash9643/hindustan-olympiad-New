@@ -18,6 +18,7 @@ export default function Navbar() {
   const [isUserDropdownOpen, setIsUserDropdownOpen] = useState(false)
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement | null>(null);
+  const [open, setOpen] = useState(false);
 
   useEffect(() => {
     const userData = localStorage.getItem("user");
@@ -198,11 +199,50 @@ export default function Navbar() {
               </Link> */}
               
             </div>
-            <Link href="/Result" className="h-10 block md:hidden" onClick={() => handleCtaClick("Olympiad-Result-2025", "article_top")}>
+            {/* <Link href="/Result" className="h-10 block md:hidden" onClick={() => handleCtaClick("Olympiad-Result-2025", "article_top")}>
               <Button>
                  Result
               </Button>
-            </Link>
+            </Link> */}
+            <div ref={dropdownRef} className="relative md:hidden inline-block">
+              <Button
+                onClick={toggleDropdown}
+                className="h-10 px-4 text-white rounded"
+              >
+                Result
+              </Button>
+
+              {isOpen && (
+                <div className="absolute top-full md:right-0 right-[-7.5rem] mt-2 w-72 bg-white border border-gray-200 rounded-lg shadow-lg z-50">
+                  <div className="py-3 px-4 border-b border-gray-100">
+                    <div className="py-2">
+                      
+                      <Link
+                        href="/Result"
+                        className="mb-2 block"
+                        onClick={() => {
+                          handleCtaClick("Olympiad-Result-2025", "article_top");
+                          setIsOpen(false);
+                        }}
+                      >
+                        <Button className="w-full block">Student Result</Button>
+                      </Link>
+
+                      <Link
+                        href="/coordinator-student-result"
+                        onClick={() => {
+                          handleCtaClick("Olympiad-Result-2025", "article_top");
+                          setIsOpen(false);
+                        }}
+                      >
+                        <Button className="w-full block">School Result</Button>
+                      </Link>
+
+                    </div>
+                  </div>
+                </div>
+              )}
+            </div>
           </div>
           {/* Hamburger Menu for Mobile (Visible on Small Screens) */}
           <button
@@ -218,6 +258,33 @@ export default function Navbar() {
           className={`w-full md:w-auto flex flex-col md:flex-row space-y-4 md:space-y-0 md:space-x-4 items-center pt-4 md:pt-0 ${isMenuOpen ? "block" : "hidden md:block"
             }`}
         >
+          
+          <div className="relative group inline-block">
+            <button
+              onClick={() => setOpen(true)}
+              className="flex items-center font-bold text-red-700 hover:text-orange-600 text-base py-2"
+            >
+              Olympiad 2026
+            </button>
+          </div>
+          {/* Popup Modal */}
+          {open && (
+            <div className="fixed inset-0 flex items-center justify-center bg-black/50 z-50">
+              <div className="bg-white w-[500px] rounded-xl shadow-lg p-6 w-[300px] text-center">
+                <h2 className="text-[30px] font-bold text-red-800 mb-4">
+                  Hindustan Olympiad 2026
+                </h2>
+                <p className="text-gray-600 mb-6 text-[24px]">Coming Soon 🚀</p>
+
+                <button
+                  onClick={() => setOpen(false)}
+                  className="text-red-600 px-4 py-2 rounded-lg text-underline"
+                >
+                  Close
+                </button>
+              </div>
+            </div>
+          )}
           <div className="relative group inline-block">
             <Link href="/#about" className="flex items-center text-gray-700 hover:text-orange-600 text-base py-2">
               About Olympiad
@@ -258,8 +325,9 @@ export default function Navbar() {
               </div>
             </div>
           </div>
+
           {/* Olympiad 2025 Dropdown */}
-          <div className="relative group inline-block">
+          {/* <div className="relative group inline-block">
             <Link
               href="/#olympiad-2025"
               className="flex items-center text-gray-700 hover:text-orange-600 text-base py-2"
@@ -269,7 +337,7 @@ export default function Navbar() {
               <ChevronDown className="ml-1 h-4 w-4 transition-transform group-hover:rotate-180" />
             </Link>
 
-            {/* Dropdown Menu for Olympiad 2025 */}
+            {/* Dropdown Menu for Olympiad 2025 
             <div className="absolute top-full left-0 mt-1 w-80 bg-white border border-gray-200 rounded-lg shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
               <div className="py-2">
                 <Link
@@ -316,7 +384,7 @@ export default function Navbar() {
                 </Link>
               </div>
             </div>
-          </div>
+          </div> */}
           {/* Sample Paper */}
           {/* <Link href="#sample-papers" className="h-10 block md:inline" onClick={() => handleCtaClick("participate_now", "article_bottom")}>
           <Button>
@@ -324,12 +392,12 @@ export default function Navbar() {
           </Button>
           </Link> */}
           {/* End Here */}          
-           <div ref={dropdownRef} className="relative inline-block">
+           <div ref={dropdownRef} className="relative md:inline-block hidden">
               <Button
                 onClick={toggleDropdown}
                 className="h-10 px-4 text-white rounded"
               >
-                Hindustan Olympiad 2025 Result
+                Result
               </Button>
 
               {isOpen && (
