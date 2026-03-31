@@ -226,16 +226,13 @@ export default function ResultPage() {
           ],
         },
         options: {
-          responsive: true,
+          responsive: false,
           plugins: {
             legend: {
               position: "top",
             },
           },
           scales: {
-             x: {
-              stacked: false,
-            },
             y: {
               beginAtZero: true,
               max: 100,
