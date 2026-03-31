@@ -75,20 +75,20 @@ const Panel16: React.FC = () => {
         Want to Register for Hindustan Olympiad 2025?
       </motion.h2>
         <div className="flex flex-col md:flex-row gap-4 mt-6">
-          {/* <button
+          <button
             onClick={() => { chooseSchool(); handleCtaClick("register_as_school", "article_bottom"); }}
             className="bg-[#B2252A] text-white font-bold text-base sm:text-lg px-6 py-3 rounded-md shadow transition hover:bg-[#861B1D]"
             style={{ fontFamily: "Poppins, sans-serif" }}
           >
             Register as school
-          </button> */}
-          <button
+          </button>
+          {/* <button
             onClick={() => {chooseStudent(); handleCtaClick("register_for_individual_student", "article_bottom");}}
             className="bg-[#B2252A] text-white font-bold text-base sm:text-lg px-6 py-3 rounded-md shadow transition hover:bg-[#861B1D]"
             style={{ fontFamily: "Poppins, sans-serif" }}
           >
             Register as individual student 
-          </button>
+          </button> */}
         </div>
       {/* Initial Heading & CTA */}
       {/* {step === "initial" && (

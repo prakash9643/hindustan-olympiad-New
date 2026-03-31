@@ -63,7 +63,7 @@ const Panel8: React.FC = () => (
           className="text-center text-lg mb-2 font-inter"
           style={{ color: black, fontFamily: "Inter, sans-serif" }}
         >
-          Win <span className="font-bold">cash prizes, gold, electric scooters, cars</span> and more!
+          Win <span className="font-bold">cash prizes, electric scooters, cars</span> and more!
         </p>
       </motion.div>
 

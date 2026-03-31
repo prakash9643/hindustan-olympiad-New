@@ -80,7 +80,7 @@ const Panel10: React.FC = () => (
             </div>
           </div>
           <div className="text-2xl font-bold text-[#B2252A] flex items-center gap-2 justify-start">
-            🚗 Luxury Car
+            🚗 New Car
           </div>
           <p className="text-gray-600 text-sm mt-2">
             1 lucky winner will <span className="font-bold text-[#B2252A]">win a car</span>
