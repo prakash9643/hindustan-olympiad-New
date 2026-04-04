@@ -12,8 +12,10 @@ import { set } from "mongoose";
 import html2canvas from "html2canvas";
 import jsPDF from "jspdf";
 import { useRef } from "react";
-import Chart from "chart.js/auto";
+import Chart, { ChartOptions } from "chart.js/auto";
+import ChartDataLabels from "chartjs-plugin-datalabels";
 
+Chart.register(ChartDataLabels);
 export default function ResultPage() {
   const [student, setStudent] = useState<any>(null);
   const [loading, setLoading] = useState(true);
@@ -138,6 +140,43 @@ export default function ResultPage() {
       return Number(((marks / total) * 100).toFixed(2));
     };
     const overallPercentage = calcPercent(result?.fullmark ?? 0, 100);
+    const options: ChartOptions<"bar"> = {
+      responsive: false,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: {
+          position: "top",
+        },
+        datalabels: {
+          anchor: "end",
+          align: "end",
+          offset: 6,
+          formatter: (value: number) => value + "%",
+          font: {
+            size: 8,
+            weight: "bold",
+          },
+        },
+      },
+      scales: {
+        x: {
+          ticks: {
+            maxRotation: 30,
+            minRotation: 30,
+          },
+        },
+        y: {
+          beginAtZero: true,
+          max: 100,
+          ticks: {
+            callback: (value) => value + "%",
+          },
+          grid: {
+            color: "rgba(0,0,0,0.05)",
+          },
+        },
+      },
+    };
     const renderChart = () => {
       const ctx = document.getElementById("reportChart") as HTMLCanvasElement;      
       if (!ctx) return;
@@ -225,20 +264,7 @@ export default function ResultPage() {
             },
           ],
         },
-        options: {
-          responsive: false,
-          plugins: {
-            legend: {
-              position: "top",
-            },
-          },
-          scales: {
-            y: {
-              beginAtZero: true,
-              max: 100,
-            },
-          },
-        },
+        options,
       });
     };
 
@@ -251,10 +277,11 @@ export default function ResultPage() {
         await new Promise((res) => setTimeout(res, 1200));
 
         const canvas = await html2canvas(reportRef.current!, {
-          scale: 2,
+          scale: 1, // increase
+          useCORS: true,
         });
 
-        const imgData = canvas.toDataURL("image/png");
+        const imgData = canvas.toDataURL("image/jpeg");
         const pdf = new jsPDF("portrait", "px", [
           canvas.width,
           canvas.height,
@@ -262,7 +289,7 @@ export default function ResultPage() {
 
         pdf.addImage(
           imgData,
-          "PNG",
+          "JPEG",
           0,
           0,
           canvas.width,
@@ -803,7 +830,7 @@ export default function ResultPage() {
       <div
         ref={reportRef}
         style={{
-          width: "900px",
+          width: "1180px",
           background: "#fff",
           fontFamily: "Arial",
           border: "2px solid #ccc",
@@ -811,7 +838,7 @@ export default function ResultPage() {
         }}
       >
         <img
-          src="/student-performance.jpg"
+          src="/student-report-new.jpg"
           crossOrigin="anonymous"
           onLoad={() => console.log("image loaded")}
           style={{
@@ -826,7 +853,7 @@ export default function ResultPage() {
           marginTop: "10px",
           position: "absolute",
           top:"20%",
-          left:"25%",
+          left:"32%",
           backgroundColor: "rgba(255, 255, 255, 0.8)",
           padding: "15px",
           borderRadius: "12px",
@@ -978,9 +1005,9 @@ export default function ResultPage() {
           marginTop: "30px",
           position: "absolute",
           top: "59%",
-          left: "5%"
+          left: "45px"
         }}>
-          <canvas id="reportChart" width="800" height="400" style={{border:"1px solid #000"}}></canvas>
+          <canvas id="reportChart" width="1080" height="450" style={{border:"1px solid #000"}}></canvas>
         </div>
 
         {/* FOOTER NOTE */}
